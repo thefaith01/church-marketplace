@@ -87,9 +87,14 @@ export default async function DashboardPage() {
               </dd>
             </div>
           </dl>
-          <a href="/dashboard/edit-church" className="mt-5 block rounded-xl border-[1.5px] border-[#E5D8C0] p-2.5 text-center text-sm font-semibold text-[#5A4F40] no-underline hover:bg-chip">
-            Edit church info
-          </a>
+          <div className="mt-5 grid grid-cols-2 gap-2">
+            <a href="/dashboard/profile" className="block rounded-xl border-[1.5px] border-[#E5D8C0] p-2.5 text-center text-sm font-semibold text-[#5A4F40] no-underline hover:bg-chip">
+              Edit profile
+            </a>
+            <a href="/dashboard/edit-church" className="block rounded-xl border-[1.5px] border-[#E5D8C0] p-2.5 text-center text-sm font-semibold text-[#5A4F40] no-underline hover:bg-chip">
+              Church info
+            </a>
+          </div>
         </div>
 
         <div className="col-span-2 grid grid-cols-2 gap-4">

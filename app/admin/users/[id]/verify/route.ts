@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
+import { notifyVerified } from "@/lib/email";
 
 export async function POST(
   req: NextRequest,
@@ -14,10 +15,17 @@ export async function POST(
 
   const { id: profileId } = await params;
 
-  await prisma.userProfile.update({
+  const updated = await prisma.userProfile.update({
     where: { id: profileId },
     data: { verificationStatus: "VERIFIED" },
+    include: { user: true },
   });
+
+  try {
+    await notifyVerified({ to: updated.user.email, fullName: updated.fullName });
+  } catch (err) {
+    console.error("[verify] email failed:", err);
+  }
 
   return NextResponse.redirect(new URL("/admin/users", req.url));
 }

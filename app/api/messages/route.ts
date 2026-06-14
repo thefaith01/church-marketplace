@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { notifyNewMessage } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -51,6 +52,23 @@ export async function POST(req: NextRequest) {
     where: { id: conversationId },
     data: { lastMessageAt: new Date() },
   });
+
+  try {
+    const recipientId =
+      conversation.participantOneId === user.id
+        ? conversation.participantTwoId
+        : conversation.participantOneId;
+    const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
+    if (recipient) {
+      await notifyNewMessage({
+        to: recipient.email,
+        senderName: message.sender.profile?.fullName || user.email,
+        conversationId,
+      });
+    }
+  } catch (err) {
+    console.error("[message] email failed:", err);
+  }
 
   return NextResponse.json(message);
 }

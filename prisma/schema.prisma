@@ -57,11 +57,13 @@ model User {
   conversationsAsOne Conversation[]   @relation("ParticipantOne")
   conversationsAsTwo Conversation[]   @relation("ParticipantTwo")
   messages           Message[]
+  resetTokens        PasswordResetToken[]
 }
 
 model UserProfile {
   id                    String             @id @default(cuid())
   fullName              String
+  bio                   String?
   role                  Role               @default(MEMBER)
   verificationStatus    VerificationStatus @default(UNVERIFIED)
   subscriptionStatus    SubscriptionStatus @default(FREE)
@@ -136,6 +138,16 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   senderId       String
   sender         User         @relation(fields: [senderId], references: [id])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 }
 
 model BookingRequest {

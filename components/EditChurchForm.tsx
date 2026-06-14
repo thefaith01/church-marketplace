@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ui } from "@/components/ui";
 
 type Props = {
   initial: {
+    churchId: string;
     churchReferenceName: string;
     churchReferenceCity: string;
     churchReferencePerson: string;
@@ -20,6 +21,14 @@ export function EditChurchForm({ initial, hasExistingDoc, status }: Props) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [churches, setChurches] = useState<{ id: string; name: string; city: string | null }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/churches")
+      .then((r) => r.json())
+      .then((data) => Array.isArray(data) && setChurches(data))
+      .catch(() => {});
+  }, []);
 
   function set(k: string, v: string) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -30,6 +39,7 @@ export function EditChurchForm({ initial, hasExistingDoc, status }: Props) {
     setLoading(true);
     setError("");
     const body = new FormData();
+    body.append("churchId", form.churchId);
     body.append("churchReferenceName", form.churchReferenceName);
     body.append("churchReferenceCity", form.churchReferenceCity);
     body.append("churchReferencePerson", form.churchReferencePerson);
@@ -70,6 +80,21 @@ export function EditChurchForm({ initial, hasExistingDoc, status }: Props) {
           Add or update your church details and upload a reference document if you
           have one. Submitting sends your account to an admin for review.
         </div>
+      )}
+
+      {churches.length > 0 && (
+        <label className="block">
+          <span className={ui.label}>Select your church (if listed)</span>
+          <select className={ui.input} value={form.churchId} onChange={(e) => set("churchId", e.target.value)}>
+            <option value="">Not listed / enter manually</option>
+            {churches.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+                {c.city ? ` — ${c.city}` : ""}
+              </option>
+            ))}
+          </select>
+        </label>
       )}
 
       <label className="block">

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { notifyBookingResponse } from "@/lib/email";
 
 export async function POST(
   req: NextRequest,
@@ -12,7 +13,14 @@ export async function POST(
   }
 
   const { id } = await params;
-  const booking = await prisma.bookingRequest.findUnique({ where: { id } });
+  const booking = await prisma.bookingRequest.findUnique({
+    where: { id },
+    include: {
+      listing: true,
+      requester: true,
+      provider: { include: { profile: true } },
+    },
+  });
   if (!booking) {
     return NextResponse.json({ error: "Booking not found" }, { status: 404 });
   }
@@ -24,6 +32,17 @@ export async function POST(
     where: { id },
     data: { status: "DECLINED" },
   });
+
+  try {
+    await notifyBookingResponse({
+      to: booking.requester.email,
+      providerName: booking.provider.profile?.fullName || "The provider",
+      listingTitle: booking.listing.title,
+      accepted: false,
+    });
+  } catch (err) {
+    console.error("[booking decline] email failed:", err);
+  }
 
   return NextResponse.redirect(new URL("/manage", req.url));
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ui, Arch } from "@/components/ui";
 
@@ -11,6 +11,7 @@ export default function SignupPage() {
     password: "",
     fullName: "",
     role: "MEMBER",
+    churchId: "",
     churchReferenceName: "",
     churchReferenceCity: "",
     churchReferencePerson: "",
@@ -18,6 +19,14 @@ export default function SignupPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [churches, setChurches] = useState<{ id: string; name: string; city: string | null }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/churches")
+      .then((r) => r.json())
+      .then((data) => Array.isArray(data) && setChurches(data))
+      .catch(() => {});
+  }, []);
 
   function set(k: string, v: any) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -97,6 +106,20 @@ export default function SignupPage() {
               <div className="rounded-xl bg-[#F4E7CE] p-3 text-sm text-[#8A6420]">
                 We need your church details so an admin can verify you. You can update these later from your dashboard.
               </div>
+              {churches.length > 0 && (
+                <label className="block">
+                  <span className={ui.label}>Select your church (if listed)</span>
+                  <select className={ui.input} value={form.churchId} onChange={(e) => set("churchId", e.target.value)}>
+                    <option value="">Not listed / enter manually</option>
+                    {churches.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                        {c.city ? ` — ${c.city}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               <label className="block">
                 <span className={ui.label}>Church name</span>
                 <input className={ui.input} value={form.churchReferenceName} onChange={(e) => set("churchReferenceName", e.target.value)} />

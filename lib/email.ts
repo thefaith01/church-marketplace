@@ -90,3 +90,89 @@ export async function notifyAdminsOfSignup(args: {
     html,
   });
 }
+
+/** Absolute link into the app, if APP_URL is configured; otherwise a relative path. */
+function appLink(path: string) {
+  const base = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || "";
+  return base ? `${base.replace(/\/$/, "")}${path}` : path;
+}
+
+function shell(heading: string, body: string, cta?: { label: string; href: string }) {
+  return `
+    <div style="font-family: system-ui, sans-serif; color: #2A2018; max-width: 520px;">
+      <h2 style="color:#C05A36;">${heading}</h2>
+      <div style="font-size:15px; line-height:1.55; color:#3C3528;">${body}</div>
+      ${
+        cta
+          ? `<p style="margin-top:20px;"><a href="${cta.href}" style="background:#C05A36;color:#fff;text-decoration:none;padding:10px 18px;border-radius:999px;font-weight:600;">${cta.label}</a></p>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+/** Tell the requester their booking was accepted or declined. */
+export function notifyBookingResponse(args: {
+  to: string;
+  providerName: string;
+  listingTitle: string;
+  accepted: boolean;
+}) {
+  const verb = args.accepted ? "accepted" : "declined";
+  return sendEmail({
+    to: args.to,
+    subject: `Your booking request was ${verb}`,
+    html: shell(
+      `Booking ${verb}`,
+      `${args.providerName} has <strong>${verb}</strong> your booking request for "${args.listingTitle}".`,
+      { label: "View booking", href: appLink("/manage") }
+    ),
+  });
+}
+
+/** Tell a provider they have a new booking request. */
+export function notifyNewBooking(args: {
+  to: string;
+  requesterName: string;
+  listingTitle: string;
+}) {
+  return sendEmail({
+    to: args.to,
+    subject: `New booking request: ${args.listingTitle}`,
+    html: shell(
+      "New booking request",
+      `${args.requesterName} has requested your service "${args.listingTitle}". Respond from your bookings.`,
+      { label: "View request", href: appLink("/manage") }
+    ),
+  });
+}
+
+/** Tell a user they have a new message. */
+export function notifyNewMessage(args: {
+  to: string;
+  senderName: string;
+  conversationId: string;
+}) {
+  return sendEmail({
+    to: args.to,
+    subject: `New message from ${args.senderName}`,
+    html: shell(
+      "You have a new message",
+      `${args.senderName} sent you a message on the marketplace.`,
+      { label: "Open conversation", href: appLink(`/messages/${args.conversationId}`) }
+    ),
+  });
+}
+
+/** Tell a member their account has been verified. */
+export function notifyVerified(args: { to: string; fullName: string }) {
+  return sendEmail({
+    to: args.to,
+    subject: "You're verified — the marketplace is unlocked",
+    html: shell(
+      "You're verified",
+      `Hi ${args.fullName.split(" ")[0]}, an admin has confirmed your church connection. You can now browse services, message providers, and make bookings.`,
+      { label: "Go to dashboard", href: appLink("/dashboard") }
+    ),
+  });
+}

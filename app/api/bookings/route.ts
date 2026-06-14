@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { findOrCreateConversation } from "@/lib/conversation";
+import { notifyNewBooking } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -64,6 +65,22 @@ export async function POST(req: NextRequest) {
     where: { id: conversation.id },
     data: { lastMessageAt: new Date() },
   });
+
+  try {
+    const [provider, requesterProfile] = await Promise.all([
+      prisma.user.findUnique({ where: { id: listing.providerId } }),
+      prisma.userProfile.findUnique({ where: { userId: user.id } }),
+    ]);
+    if (provider) {
+      await notifyNewBooking({
+        to: provider.email,
+        requesterName: requesterProfile?.fullName || user.email,
+        listingTitle: listing.title,
+      });
+    }
+  } catch (err) {
+    console.error("[booking create] email failed:", err);
+  }
 
   return NextResponse.json({
     ok: true,

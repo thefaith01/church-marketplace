@@ -538,7 +538,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <div className="px-9 pb-10 pt-8">
               <h3 className="font-display text-[30px] font-bold text-ink">Welcome back, Ruth</h3>
               <p className="mt-1 text-[15px] text-[#7A6E5C]">Your hub for the church marketplace.</p>
-              <div className="mt-[22px] flex items-center justify-between gap-4 rounded-2xl border border-[#E8D3A6] bg-[#F4E7CE] px-[22px] py-[18px]">
+              <div className="mt-[22px] flex flex-col items-start gap-3 rounded-2xl border border-[#E8D3A6] bg-[#F4E7CE] px-[22px] py-[18px] sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <div className="flex items-center gap-3.5">
                   <span className="grid h-[42px] w-[42px] flex-shrink-0 place-items-center rounded-xl bg-honey">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -546,12 +546,12 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                       <path d="M12 7.5V12l3 2" stroke="#3A2A12" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-base font-bold text-[#5A4214]">Verification pending</div>
                     <div className="mt-px text-sm text-[#7A6230]">Your church admin is confirming your membership. Most features unlock once verified.</div>
                   </div>
                 </div>
-                <a href="#" className="whitespace-nowrap rounded-full bg-clay px-[18px] py-2.5 text-sm font-semibold text-paper no-underline">Check status</a>
+                <a href="#" className="shrink-0 whitespace-nowrap rounded-full bg-clay px-[18px] py-2.5 text-sm font-semibold text-paper no-underline">Check status</a>
               </div>
               <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-[0.85fr_1.15fr]">
                 <div className="rounded-[18px] border border-line bg-paper p-6">

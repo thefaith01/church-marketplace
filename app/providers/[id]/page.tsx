@@ -61,6 +61,7 @@ export default async function ProviderProfilePage({
             </div>
           </div>
         </div>
+        {p.bio && <p className="mt-5 whitespace-pre-line text-sm leading-[1.6] text-muted">{p.bio}</p>}
       </div>
 
       <h2 className="mt-8 font-display text-xl font-bold text-ink">Active listings</h2>

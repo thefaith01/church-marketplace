@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
   const churchReferenceName = (body.get("churchReferenceName") as string) || null;
   const churchReferenceCity = (body.get("churchReferenceCity") as string) || null;
   const churchReferencePerson = (body.get("churchReferencePerson") as string) || null;
+  const churchId = (body.get("churchId") as string) || null;
 
   const letterFile = body.get("churchReferenceLetter") as File | null;
   let churchReferenceLetterUrl: string | null = null;
@@ -42,6 +43,7 @@ export async function POST(req: NextRequest) {
           churchReferenceCity,
           churchReferencePerson,
           churchReferenceLetter: churchReferenceLetterUrl,
+          ...(churchId ? { churchId } : {}),
         },
       },
     },

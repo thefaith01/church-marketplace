@@ -27,6 +27,7 @@ export default async function EditChurchPage() {
           status={profile.verificationStatus}
           hasExistingDoc={Boolean(profile.churchReferenceLetter)}
           initial={{
+            churchId: profile.churchId ?? "",
             churchReferenceName: profile.churchReferenceName ?? "",
             churchReferenceCity: profile.churchReferenceCity ?? "",
             churchReferencePerson: profile.churchReferencePerson ?? "",

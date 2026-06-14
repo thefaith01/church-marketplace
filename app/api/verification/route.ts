@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     (body.get("churchReferenceCity") as string)?.trim() || null;
   const churchReferencePerson =
     (body.get("churchReferencePerson") as string)?.trim() || null;
+  const churchId = (body.get("churchId") as string) || null;
 
   let churchReferenceLetter = profile.churchReferenceLetter;
   const file = body.get("churchReferenceLetter") as File | null;
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
   await prisma.userProfile.update({
     where: { id: profile.id },
     data: {
+      churchId,
       churchReferenceName,
       churchReferenceCity,
       churchReferencePerson,
