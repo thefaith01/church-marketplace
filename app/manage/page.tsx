@@ -88,12 +88,24 @@ export default async function ManagePage() {
                   <span>Status: {booking.status}</span>
                 </div>
               </div>
-              <Badge tone={booking.status === "PENDING" ? "pending" : booking.status === "ACCEPTED" ? "verified" : "danger"}>
+              <Badge
+                tone={
+                  booking.status === "PENDING"
+                    ? "pending"
+                    : booking.status === "ACCEPTED"
+                      ? "info"
+                      : booking.status === "COMPLETED"
+                        ? "verified"
+                        : booking.status === "CANCELLED"
+                          ? "neutral"
+                          : "danger"
+                }
+              >
                 {booking.status}
               </Badge>
             </div>
 
-            {(booking.providerId === user.id && booking.status === "PENDING") || booking.conversationId ? (
+            {booking.status === "PENDING" || booking.status === "ACCEPTED" || booking.conversationId ? (
               <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#EFE7D6] pt-3">
                 {booking.providerId === user.id && booking.status === "PENDING" && (
                   <>
@@ -108,6 +120,21 @@ export default async function ManagePage() {
                       </button>
                     </form>
                   </>
+                )}
+                {booking.status === "ACCEPTED" && (
+                  <form action={`/api/bookings/${booking.id}/complete`} method="POST">
+                    <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">
+                      Mark as done
+                    </button>
+                  </form>
+                )}
+                {(booking.status === "ACCEPTED" ||
+                  (booking.status === "PENDING" && booking.requesterId === user.id)) && (
+                  <form action={`/api/bookings/${booking.id}/cancel`} method="POST">
+                    <button type="submit" className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-chip">
+                      Cancel
+                    </button>
+                  </form>
                 )}
                 {booking.conversationId && (
                   <a href={`/messages/${booking.conversationId}`} className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink no-underline hover:bg-chip">

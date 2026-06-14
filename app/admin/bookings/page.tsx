@@ -50,7 +50,19 @@ export default async function AdminBookingsPage() {
                   <span>{new Date(booking.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
-              <Badge tone={booking.status === "PENDING" ? "pending" : booking.status === "ACCEPTED" ? "verified" : "danger"}>
+              <Badge
+                tone={
+                  booking.status === "PENDING"
+                    ? "pending"
+                    : booking.status === "ACCEPTED"
+                      ? "info"
+                      : booking.status === "COMPLETED"
+                        ? "verified"
+                        : booking.status === "CANCELLED"
+                          ? "neutral"
+                          : "danger"
+                }
+              >
                 {booking.status}
               </Badge>
             </div>

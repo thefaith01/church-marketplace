@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel older runs of the same branch/PR when a new commit arrives.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Typecheck & build
+    runs-on: ubuntu-latest
+
+    # Placeholder values so `prisma generate` and `next build` run without real
+    # secrets. The app's pages are dynamic (they read cookies at request time),
+    # so the build never connects to the database. Real values live in Vercel.
+    env:
+      DATABASE_URL: "postgresql://user:password@localhost:5432/db?schema=public&pgbouncer=true"
+      DIRECT_URL: "postgresql://user:password@localhost:5432/db?schema=public"
+      JWT_SECRET: "ci-placeholder-secret-not-used-at-build-time"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npx next build

@@ -22,9 +22,9 @@ The minimum for the marketplace to feel complete and reliable.
 - 🔨 Email notifications: booking accepted/declined → requester, new booking →
   provider, new message → recipient, verified → member
 - 🔨 Real password reset (token emailed, link sets a new password)
-- ⬜ Booking lifecycle: add COMPLETED and CANCELLED states + "mark as done"
+- ✅ Booking lifecycle: COMPLETED and CANCELLED states + "mark as done" / cancel
 
-Requires a database migration (see the runbook at the bottom).
+Requires database migrations (see the runbook at the bottom).
 
 ## Phase 1 — Trust & safety, the church way
 
@@ -67,7 +67,7 @@ Trust signals that fit a no-public-ratings model.
 
 ## Phase 6 — Quality & infrastructure
 
-- ⬜ CI: GitHub Action running typecheck + build on every push
+- ✅ CI: GitHub Action running typecheck + build on every push (.github/workflows/ci.yml)
 - ⬜ Tests (API routes, auth, booking flow)
 - ⬜ Input validation + rate limiting on auth and form-POST routes
 - ⬜ Security pass (JWT, bcrypt, CSRF on form posts, access controls)
@@ -95,11 +95,15 @@ Phase 0 adds two things to the schema: `UserProfile.bio` and a
 
 Run this on your machine, in the `CMM` folder, after pulling these changes:
 
+There are two migrations to run (bio/reset was the first wave; booking states are
+the second). If you've already applied the first, just run the booking one.
+
 ```bash
-# 1. Create + apply the migration and regenerate the Prisma client.
-#    This updates your dev database and writes a migration file under
-#    prisma/migrations/. Uses DIRECT_URL from your .env.
+# Wave 1 (if not already applied): UserProfile.bio + PasswordResetToken
 npx prisma migrate dev --name add_bio_and_password_reset
+
+# Wave 2: COMPLETED and CANCELLED booking states
+npx prisma migrate dev --name add_booking_states
 
 # 2. Commit the generated migration files along with the code.
 git add .
