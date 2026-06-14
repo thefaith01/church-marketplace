@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { DeleteListingButton } from "@/components/DeleteListingButton";
 import { redirect } from "next/navigation";
 
 export default async function MyListingsPage() {
@@ -68,9 +69,7 @@ export default async function MyListingsPage() {
               >
                 Edit
               </a>
-              <button className="rounded-md border border-red-200 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-50">
-                Delete
-              </button>
+              <DeleteListingButton listingId={l.id} />
             </div>
           </div>
         ))}

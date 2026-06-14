@@ -51,15 +51,20 @@ export default async function DashboardPage() {
       </p>
 
       {!verified && (
-        <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 flex items-center justify-between">
+        <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 flex items-center justify-between gap-4">
           <div>
             <p className="font-semibold text-amber-900">Verification Pending</p>
             <p className="text-sm text-amber-800 mt-0.5">
-              Your account is awaiting church verification. Some features are
-              restricted until verified.
+              Your account is awaiting church verification. Add your church
+              details and a reference document to help an admin confirm you.
             </p>
           </div>
-          <span className="text-2xl">⏳</span>
+          <a
+            href="/dashboard/edit-church"
+            className="shrink-0 rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+          >
+            Update details
+          </a>
         </div>
       )}
 

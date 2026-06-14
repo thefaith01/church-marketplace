@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import * as bcrypt from "bcryptjs";
 import { signJwt } from "@/lib/jwt";
+import { notifyAdminsOfSignup } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const body = await req.formData();
@@ -45,6 +46,19 @@ export async function POST(req: NextRequest) {
       },
     },
   });
+
+  // Notify admins of the new signup. Never block account creation on email.
+  try {
+    await notifyAdminsOfSignup({
+      fullName,
+      email,
+      role,
+      churchReferenceName,
+      churchReferenceCity,
+    });
+  } catch (err) {
+    console.error("[signup] admin notification failed:", err);
+  }
 
   const token = await signJwt({ userId: user.id });
   const res = NextResponse.json({ ok: true });

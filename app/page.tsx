@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/session";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const user = await getCurrentUser();
+
   return (
     <div>
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
@@ -10,18 +13,37 @@ export default function HomePage() {
             Hire trusted Christian providers. Verified by your church community.
           </p>
           <div className="mt-8 flex gap-4 justify-center">
-            <Link
-              href="/signup"
-              className="rounded-md bg-white px-6 py-3 text-lg font-semibold text-blue-700 hover:bg-blue-50"
-            >
-              Get Started
-            </Link>
-            <Link
-              href="/login"
-              className="rounded-md border-2 border-white px-6 py-3 text-lg font-semibold text-white hover:bg-blue-700"
-            >
-              Log In
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="rounded-md bg-white px-6 py-3 text-lg font-semibold text-blue-700 hover:bg-blue-50"
+                >
+                  Go to Dashboard
+                </Link>
+                <Link
+                  href="/listings"
+                  className="rounded-md border-2 border-white px-6 py-3 text-lg font-semibold text-white hover:bg-blue-700"
+                >
+                  Browse Services
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/signup"
+                  className="rounded-md bg-white px-6 py-3 text-lg font-semibold text-blue-700 hover:bg-blue-50"
+                >
+                  Get Started
+                </Link>
+                <Link
+                  href="/login"
+                  className="rounded-md border-2 border-white px-6 py-3 text-lg font-semibold text-white hover:bg-blue-700"
+                >
+                  Log In
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -90,17 +112,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 px-6 text-center">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-          <Link
-            href="/signup"
-            className="inline-block rounded-md bg-blue-700 px-8 py-3 text-lg font-semibold text-white hover:bg-blue-800"
-          >
-            Join Now
-          </Link>
-        </div>
-      </section>
+      {!user && (
+        <section className="py-16 px-6 text-center">
+          <div className="mx-auto max-w-2xl">
+            <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+            <Link
+              href="/signup"
+              className="inline-block rounded-md bg-blue-700 px-8 py-3 text-lg font-semibold text-white hover:bg-blue-800"
+            >
+              Join Now
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
