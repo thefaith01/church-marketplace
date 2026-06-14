@@ -180,9 +180,9 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <span className="-ml-3 grid h-9 w-9 place-items-center rounded-full border-[2.5px] border-cream bg-[#7A6A55] text-[13px] font-bold text-white">+</span>
             </div>
             <p className="text-sm leading-[1.4] text-muted">
-              Verified members across
+              Every member
               <br />
-              <strong className="text-ink">40+ local churches</strong> and growing
+              <strong className="text-ink">verified by their church</strong>
             </p>
           </div>
         </div>
@@ -285,14 +285,14 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <p className="mt-[22px] max-w-[480px] text-lg leading-[1.6] text-[#CBD7C2]">
               On an open marketplace, anyone can sign up. Here, every person is a confirmed member of a local church, not just an attendee, before they can browse, message or book. That verification is the foundation everything else is built on.
             </p>
-            <div className="mt-9 flex gap-10">
+            <div className="mt-9 flex flex-wrap gap-10">
               {[
-                { stat: '100%', label: 'members verified' },
-                { stat: '40+', label: 'churches connected' },
-                { stat: '1', label: 'community behind you' },
+                { stat: 'Verified', label: 'every member, no exceptions' },
+                { stat: 'Private', label: 'members-only by design' },
+                { stat: 'Accountable', label: 'grounded in real churches' },
               ].map((s) => (
                 <div key={s.label}>
-                  <div className="font-display text-[40px] font-extrabold text-honey">{s.stat}</div>
+                  <div className="font-display text-[28px] font-extrabold text-honey">{s.stat}</div>
                   <div className="mt-0.5 text-sm text-[#A9BCA0]">{s.label}</div>
                 </div>
               ))}
@@ -374,16 +374,16 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
 
       {/* ============================ WHO IT'S FOR ============================ */}
       <section id="who" className="mx-auto max-w-[1080px] px-8 py-20">
-        <div className="grid grid-cols-1 items-center gap-12 rounded-[28px] border border-line bg-paper p-12 lg:grid-cols-[0.85fr_1fr]">
+        <div className="grid grid-cols-1 items-center gap-12 rounded-[28px] border border-line bg-paper p-6 sm:p-9 lg:grid-cols-[0.85fr_1fr] lg:p-12">
           <div>
             <h2 className="font-display text-[38px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">Built for everyone in the pew</h2>
             <p className="mt-3.5 text-base leading-[1.55] text-muted">Members hire, providers earn, and churches keep it trustworthy. Pick a view:</p>
-            <div className="mt-[26px] inline-flex gap-1.5 rounded-full bg-chip p-[5px]">
+            <div className="mt-[26px] flex w-full gap-1.5 rounded-[28px] bg-chip p-[5px] sm:inline-flex sm:w-auto">
               {(['members', 'providers', 'churches'] as AudienceKey[]).map((k) => (
                 <button
                   key={k}
                   onClick={() => setAudience(k)}
-                  className={`rounded-full px-5 py-2.5 text-[14.5px] font-semibold capitalize transition-all ${
+                  className={`flex-1 whitespace-nowrap rounded-full px-2 py-2.5 text-center text-[13.5px] font-semibold capitalize transition-all sm:flex-none sm:px-5 sm:text-[14.5px] ${
                     audience === k ? 'bg-ink text-cream' : 'bg-transparent text-muted'
                   }`}
                 >
