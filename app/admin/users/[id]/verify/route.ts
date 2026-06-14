@@ -14,7 +14,7 @@ export async function POST(
 
   const { id: profileId } = await params;
 
-  const profile = await prisma.userProfile.update({
+  await prisma.userProfile.update({
     where: { id: profileId },
     data: { verificationStatus: "VERIFIED" },
   });
