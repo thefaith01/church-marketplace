@@ -75,6 +75,54 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      <section id="ekklesia" className="scroll-mt-20 px-6 py-14">
+        <div className="mx-auto max-w-3xl">
+          <p className="mb-2.5 font-serif text-xl italic text-clay">The word behind the marketplace</p>
+          <h2 className="font-display text-[32px] font-bold leading-[1.08] tracking-[-0.02em] text-ink">
+            What we mean by the ekklesia
+          </h2>
+          <p className="mt-4 text-[17px] leading-[1.6] text-muted">
+            Ekklesia (ἐκκλησία) means &quot;assembly,&quot; the company of those God calls out to
+            himself. In the New Testament it carries two senses at once. It is the local church: a
+            particular congregation you can name, gather with, and be known by. And it is the
+            universal church: every believer in Christ across all places and times, his one body and
+            his bride.
+          </p>
+          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+            Scripture holds both together.{" "}
+            <a
+              href="https://www.biblegateway.com/passage/?search=Matthew%2018%3A17&version=NASB1995"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-clay hover:underline"
+            >
+              Matthew 18:17
+            </a>{" "}
+            shows the local church in its most concrete form, an assembly with the authority to
+            receive a member and, where needed, to discipline one.{" "}
+            <a
+              href="https://www.biblegateway.com/passage/?search=Ephesians%201%3A22-23&version=NASB1995"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-clay hover:underline"
+            >
+              Ephesians
+            </a>{" "}
+            lifts our eyes to the universal church, Christ&apos;s body gathered under him as head, the
+            bride he loves and is making holy.
+          </p>
+          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+            This marketplace lives where the two meet. The universal church is real, but you cannot
+            verify it directly; there is no way to check whether a stranger online truly belongs to
+            the body of Christ. The local church can be verified. So we join the two by the only means
+            available: church membership. Everyone here is confirmed by their own local congregation,
+            which means they are submitted to its leadership and accountable within it. That local
+            accountability is what lets you trust a brother or sister from across the wider body you
+            may never have met.
+          </p>
+        </div>
+      </section>
+
       <section className="px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2.5 font-serif text-xl italic text-clay">Bigger than a transaction</p>

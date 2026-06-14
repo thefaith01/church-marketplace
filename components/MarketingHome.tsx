@@ -159,9 +159,13 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <span className="text-[13px] font-semibold text-[#3C5040]">For church members across congregations</span>
           </div>
           <h1 className="font-display text-[68px] font-extrabold leading-[0.98] tracking-[-0.03em] text-ink [text-wrap:balance]">
-            Hire the people
+            Hire people from
             <br />
-            in your <span className="font-serif text-[68px] font-medium italic text-clay">pews</span>.
+            the{" "}
+            <a href="/about#ekklesia" className="font-serif text-[68px] font-medium italic text-clay hover:underline">
+              ekklesia
+            </a>
+            .
           </h1>
           <p className="mt-6 max-w-[480px] text-[19px] leading-[1.55] text-[#5A4F40] [text-wrap:pretty]">
             A private marketplace where committed members of local churches hire one another across congregations, not just your own. Every member is church-verified before they can take part.
