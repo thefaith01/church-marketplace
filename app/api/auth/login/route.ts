@@ -5,20 +5,15 @@ import { signJwt } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
+
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    return NextResponse.json(
-      { error: "Invalid email or password" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
   }
 
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) {
-    return NextResponse.json(
-      { error: "Invalid email or password" },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
   }
 
   const token = await signJwt({ userId: user.id });
