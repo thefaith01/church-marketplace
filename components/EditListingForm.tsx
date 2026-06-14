@@ -13,6 +13,7 @@ type Listing = {
   serviceArea: string | null;
   availabilityNotes: string | null;
   status: string;
+  isFreeHelp: boolean;
 };
 
 export function EditListingForm({ listing }: { listing: Listing }) {
@@ -28,6 +29,7 @@ export function EditListingForm({ listing }: { listing: Listing }) {
     serviceArea: listing.serviceArea ?? "",
     availabilityNotes: listing.availabilityNotes ?? "",
     status: listing.status,
+    isFreeHelp: listing.isFreeHelp,
   });
 
   const [categories, setCategories] = useState<{ id: string; name: string; icon: string | null }[]>([]);
@@ -147,6 +149,15 @@ export function EditListingForm({ listing }: { listing: Listing }) {
       <label className="block">
         <span className={ui.label}>Availability notes</span>
         <input className={ui.input} value={form.availabilityNotes} onChange={(e) => update("availabilityNotes", e.target.value)} />
+      </label>
+
+      <label className="flex items-center gap-2.5 rounded-xl border border-line bg-paper p-3">
+        <input
+          type="checkbox"
+          checked={form.isFreeHelp}
+          onChange={(e) => setForm((f) => ({ ...f, isFreeHelp: e.target.checked }))}
+        />
+        <span className="text-sm text-muted">Free community help (acts of service), not a paid service</span>
       </label>
 
       {error && <p className="text-sm text-clay-dark">{error}</p>}

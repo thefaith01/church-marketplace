@@ -515,7 +515,11 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         </div>
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 border-t border-[#E7DDC9] px-8 pb-10 pt-5">
           <span className="text-[13.5px] text-faint">© 2026 CMM Church Member Marketplace</span>
-          <span className="text-[13.5px] text-faint">Private. Members only. Church verified.</span>
+          <div className="flex flex-wrap gap-4 text-[13.5px]">
+            <a href="/help" className="text-faint no-underline hover:text-clay">Help</a>
+            <a href="/terms" className="text-faint no-underline hover:text-clay">Terms</a>
+            <a href="/privacy" className="text-faint no-underline hover:text-clay">Privacy</a>
+          </div>
         </div>
       </footer>
 

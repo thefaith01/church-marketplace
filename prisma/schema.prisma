@@ -81,6 +81,7 @@ model UserProfile {
   fullName              String
   bio                   String?
   role                  Role               @default(MEMBER)
+  isChurchLeader        Boolean            @default(false)
   verificationStatus    VerificationStatus @default(UNVERIFIED)
   subscriptionStatus    SubscriptionStatus @default(FREE)
   churchReferenceName   String?
@@ -120,6 +121,8 @@ model Listing {
   serviceArea       String?
   availabilityNotes String?
   status            ActiveStatus @default(ACTIVE)
+  featured          Boolean      @default(false)
+  isFreeHelp        Boolean      @default(false)
 
   providerId String
   provider   User              @relation(fields: [providerId], references: [id])

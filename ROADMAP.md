@@ -23,7 +23,7 @@ The minimum for the marketplace to feel complete and reliable.
   provider, new message → recipient, verified → member
 - 🔨 Real password reset (token emailed, link sets a new password)
 - ✅ Booking lifecycle: COMPLETED and CANCELLED states + "mark as done" / cancel
-- ✅ Verification document uploads — private Supabase bucket, admin signed-URL viewing (needs SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY set and a "verification-docs" bucket)
+- ✅ Verification document uploads — private Supabase bucket, admin signed-URL viewing (configured: bucket + SUPABASE_URL/SERVICE_ROLE_KEY set)
 
 Requires database migrations (see the runbook at the bottom).
 
@@ -31,8 +31,7 @@ Requires database migrations (see the runbook at the bottom).
 
 Trust signals that fit a no-public-ratings model.
 
-- ⬜ Member endorsements / "vouches" (a member confirms they'd recommend someone),
-  visible only inside the network
+- ✅ Church leader (elder) approval — leaders verify/revoke members of their own church
 - ✅ Report / flag flow for users and listings, with an admin moderation queue
 - ⬜ Verification renewal (status can expire and be re-confirmed)
 - ⬜ Admin audit log (who verified/deactivated what, when)
@@ -43,6 +42,8 @@ Trust signals that fit a no-public-ratings model.
 - ✅ First-class Category model (icons, slugs); admin-managed, used by listing forms + browse
 - ⬜ Location + radius filtering, availability filters, sorting
 - ✅ "Request a service": members post a need, providers respond by message
+- ✅ Acts of service (free community help) listings, flagged and badged
+- ✅ Smart matching: providers emailed when a new request matches their category
 - ⬜ Favorites / shortlist and saved searches
 
 ## Phase 3 — Engagement & retention
@@ -62,7 +63,7 @@ Trust signals that fit a no-public-ratings model.
 ## Phase 5 — Giving & monetization
 
 - ⬜ Receipts / "this supported a member of <church>" and per-church totals
-- ⬜ Featured listings (uses existing SubscriptionStatus FREE/PAID)
+- ✅ Featured listings (admin-set; sorted first with a badge)
 - ⬜ Church sponsorships
 - Keep actual payment off-platform for now; add invoicing/receipts, not processing
 

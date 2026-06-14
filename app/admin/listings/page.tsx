@@ -46,6 +46,12 @@ export default async function AdminListingsPage() {
               </div>
               <div className="flex items-center gap-3">
                 <Badge tone={listing.status === "ACTIVE" ? "verified" : "neutral"}>{listing.status}</Badge>
+                {listing.featured && <Badge tone="pending">Featured</Badge>}
+                <form action={`/api/admin/listings/${listing.id}/feature`} method="POST">
+                  <button type="submit" className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-chip">
+                    {listing.featured ? "Unfeature" : "Feature"}
+                  </button>
+                </form>
                 <form action={`/admin/listings/${listing.id}/toggle`} method="POST">
                   <button
                     type="submit"

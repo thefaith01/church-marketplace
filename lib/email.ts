@@ -176,3 +176,20 @@ export function notifyVerified(args: { to: string; fullName: string }) {
     ),
   });
 }
+
+/** Tell a provider that a new service request matches a category they offer. */
+export function notifyServiceRequestMatch(args: {
+  to: string;
+  requestTitle: string;
+  requestId: string;
+}) {
+  return sendEmail({
+    to: args.to,
+    subject: "A new request matches your service",
+    html: shell(
+      "A request matches what you offer",
+      `A member posted "${args.requestTitle}" in a category you provide. Respond if you can help.`,
+      { label: "View request", href: appLink(`/requests/${args.requestId}`) }
+    ),
+  });
+}

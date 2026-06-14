@@ -36,6 +36,7 @@ export default async function EditListingPage({
             serviceArea: listing.serviceArea,
             availabilityNotes: listing.availabilityNotes,
             status: listing.status,
+            isFreeHelp: listing.isFreeHelp,
           }}
         />
       </div>

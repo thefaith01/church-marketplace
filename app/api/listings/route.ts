@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
   const indicativePrice = (body.indicativePrice as string)?.trim() || null;
   const serviceArea = (body.serviceArea as string)?.trim() || null;
   const availabilityNotes = (body.availabilityNotes as string)?.trim() || null;
+  const isFreeHelp = body.isFreeHelp === true;
 
   if (!title || !category || !description) {
     return NextResponse.json(
@@ -47,6 +48,7 @@ export async function POST(req: NextRequest) {
       indicativePrice,
       serviceArea,
       availabilityNotes,
+      isFreeHelp,
       providerId: user.id,
     },
   });

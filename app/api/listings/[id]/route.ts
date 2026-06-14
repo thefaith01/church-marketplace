@@ -53,6 +53,7 @@ export async function PATCH(
       indicativePrice: (body.indicativePrice as string)?.trim() || null,
       serviceArea: (body.serviceArea as string)?.trim() || null,
       availabilityNotes: (body.availabilityNotes as string)?.trim() || null,
+      isFreeHelp: body.isFreeHelp === true,
       status,
     },
   });

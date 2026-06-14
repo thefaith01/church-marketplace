@@ -76,6 +76,18 @@ export default async function AdminUsersPage() {
                         Doc
                       </a>
                     )}
+                    <form action={`/api/admin/users/${profile.id}/toggle-leader`} method="POST">
+                      <button
+                        type="submit"
+                        className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                          profile.isChurchLeader
+                            ? "border-forest text-forest"
+                            : "border-line text-ink hover:bg-chip"
+                        }`}
+                      >
+                        {profile.isChurchLeader ? "Leader ✓" : "Make leader"}
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>

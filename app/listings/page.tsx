@@ -50,7 +50,7 @@ export default async function ListingsPage({
         : {}),
     },
     include: { provider: { include: { profile: true } } },
-    orderBy: { createdAt: "desc" },
+    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
   });
 
   return (

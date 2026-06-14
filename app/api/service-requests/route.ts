@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
+import { notifyServiceRequestMatch } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -36,6 +37,32 @@ export async function POST(req: NextRequest) {
   const request = await prisma.serviceRequest.create({
     data: { title, description, category, serviceArea, budget, requesterId: user.id },
   });
+
+  // Smart matching: notify providers who offer this category.
+  if (category) {
+    try {
+      const matches = await prisma.listing.findMany({
+        where: {
+          status: "ACTIVE",
+          category: { equals: category, mode: "insensitive" },
+          NOT: { providerId: user.id },
+        },
+        select: { providerId: true, provider: { select: { email: true } } },
+        distinct: ["providerId"],
+      });
+      await Promise.all(
+        matches.map((m) =>
+          notifyServiceRequestMatch({
+            to: m.provider.email,
+            requestTitle: title,
+            requestId: request.id,
+          })
+        )
+      );
+    } catch (err) {
+      console.error("[service-request match] email failed:", err);
+    }
+  }
 
   return NextResponse.json({ ok: true, id: request.id });
 }
