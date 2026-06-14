@@ -19,7 +19,12 @@ type Current = {
   pricingType?: string;
 };
 
-function toQuery(s: Partial<Search & Current>) {
+function toQuery(s: {
+  keyword?: string | null;
+  category?: string | null;
+  serviceArea?: string | null;
+  pricingType?: string | null;
+}) {
   const p = new URLSearchParams();
   if (s.keyword) p.set("keyword", s.keyword);
   if (s.category) p.set("category", s.category);
