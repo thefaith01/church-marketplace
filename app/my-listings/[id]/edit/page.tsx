@@ -17,14 +17,12 @@ export default async function EditListingPage({
   if (listing.providerId !== user.id) redirect("/my-listings");
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <a href="/my-listings" className="text-sm text-blue-700 hover:underline">
+    <div className="mx-auto max-w-2xl px-6 py-10">
+      <a href="/my-listings" className="text-sm font-semibold text-clay hover:underline">
         ← Back to my listings
       </a>
-      <h1 className="mt-3 text-2xl font-bold">Edit listing</h1>
-      <p className="text-gray-500 text-sm mt-1">
-        Update your service details or change its status.
-      </p>
+      <h1 className="mt-3 font-display text-[32px] font-bold tracking-[-0.02em] text-ink">Edit listing</h1>
+      <p className="mt-1 text-sm text-muted">Update your service details or change its status.</p>
 
       <div className="mt-6">
         <EditListingForm

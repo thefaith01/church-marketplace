@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
+import { Container, PageHeader, Badge, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 
 export default async function AdminUsersPage() {
@@ -12,101 +13,57 @@ export default async function AdminUsersPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const pendingCount = users.filter(
-    (u) => u.verificationStatus === "PENDING"
-  ).length;
-  const verifiedCount = users.filter(
-    (u) => u.verificationStatus === "VERIFIED"
-  ).length;
-  const unverifiedCount = users.filter(
-    (u) => u.verificationStatus === "UNVERIFIED"
-  ).length;
+  const count = (s: string) => users.filter((u) => u.verificationStatus === s).length;
+  const stats = [
+    ["Unverified", count("UNVERIFIED")],
+    ["Pending", count("PENDING")],
+    ["Verified", count("VERIFIED")],
+  ] as const;
 
   return (
-    <div className="mx-auto max-w-6xl p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Manage Users</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Verify church members and manage access
-          </p>
-        </div>
+    <Container size="wide">
+      <PageHeader title="Manage users" subtitle="Verify church members and manage access." />
+
+      <div className="mb-6 grid grid-cols-3 gap-4">
+        {stats.map(([label, value]) => (
+          <div key={label} className="rounded-[18px] border border-line bg-paper p-4 shadow-sm">
+            <p className="text-sm text-faint">{label}</p>
+            <p className="mt-2 font-display text-3xl font-extrabold text-ink">{value}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="rounded-lg border p-4">
-          <p className="text-gray-500 text-sm">Unverified</p>
-          <p className="mt-2 text-3xl font-bold text-amber-600">{unverifiedCount}</p>
-        </div>
-        <div className="rounded-lg border p-4">
-          <p className="text-gray-500 text-sm">Pending</p>
-          <p className="mt-2 text-3xl font-bold text-blue-600">{pendingCount}</p>
-        </div>
-        <div className="rounded-lg border p-4">
-          <p className="text-gray-500 text-sm">Verified</p>
-          <p className="mt-2 text-3xl font-bold text-green-600">{verifiedCount}</p>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto border rounded-lg">
+      <div className="overflow-x-auto rounded-[18px] border border-line bg-paper">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="border-b border-line bg-chip/50">
             <tr>
-              <th className="px-6 py-3 text-left font-semibold">Name</th>
-              <th className="px-6 py-3 text-left font-semibold">Email</th>
-              <th className="px-6 py-3 text-left font-semibold">Role</th>
-              <th className="px-6 py-3 text-left font-semibold">Church</th>
-              <th className="px-6 py-3 text-left font-semibold">Status</th>
-              <th className="px-6 py-3 text-left font-semibold">Actions</th>
+              {["Name", "Email", "Role", "Church", "Status", "Actions"].map((h) => (
+                <th key={h} className="px-5 py-3 text-left font-semibold text-[#5A4F40]">{h}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {users.map((profile) => (
-              <tr key={profile.id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-3">{profile.fullName}</td>
-                <td className="px-6 py-3 text-gray-600">{profile.user.email}</td>
-                <td className="px-6 py-3">
-                  <span className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
-                    {profile.role}
-                  </span>
-                </td>
-                <td className="px-6 py-3 text-gray-600">
-                  {profile.church?.name || "Not linked"}
-                </td>
-                <td className="px-6 py-3">
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs font-medium
-                    ${
-                      profile.verificationStatus === "VERIFIED"
-                        ? "bg-green-100 text-green-700"
-                        : profile.verificationStatus === "PENDING"
-                          ? "bg-amber-100 text-amber-700"
-                          : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
+              <tr key={profile.id} className="border-b border-line last:border-0 hover:bg-cream/60">
+                <td className="px-5 py-3 font-medium text-ink">{profile.fullName}</td>
+                <td className="px-5 py-3 text-muted">{profile.user.email}</td>
+                <td className="px-5 py-3"><Badge>{profile.role}</Badge></td>
+                <td className="px-5 py-3 text-muted">{profile.church?.name || "Not linked"}</td>
+                <td className="px-5 py-3">
+                  <Badge tone={profile.verificationStatus === "VERIFIED" ? "verified" : profile.verificationStatus === "PENDING" ? "pending" : "neutral"}>
                     {profile.verificationStatus}
-                  </span>
+                  </Badge>
                 </td>
-                <td className="px-6 py-3">
+                <td className="px-5 py-3">
                   <div className="flex gap-2">
                     {profile.verificationStatus !== "VERIFIED" && (
                       <form action={`/admin/users/${profile.id}/verify`} method="POST">
-                        <button
-                          type="submit"
-                          className="rounded-md bg-green-600 px-3 py-1 text-xs font-medium text-white hover:bg-green-700"
-                        >
-                          Verify
-                        </button>
+                        <button type="submit" className="rounded-full bg-forest px-3 py-1 text-xs font-semibold text-paper hover:opacity-90">Verify</button>
                       </form>
                     )}
                     {profile.verificationStatus === "VERIFIED" && (
                       <form action={`/admin/users/${profile.id}/reject`} method="POST">
-                        <button
-                          type="submit"
-                          className="rounded-md bg-red-600 px-3 py-1 text-xs font-medium text-white hover:bg-red-700"
-                        >
-                          Reject
-                        </button>
+                        <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3 py-1 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">Reject</button>
                       </form>
                     )}
                   </div>
@@ -117,12 +74,7 @@ export default async function AdminUsersPage() {
         </table>
       </div>
 
-      {users.length === 0 && (
-        <div className="mt-12 text-center text-gray-400">
-          <p className="text-4xl">👥</p>
-          <p className="mt-2">No users found.</p>
-        </div>
-      )}
-    </div>
+      {users.length === 0 && <EmptyState icon="👥" title="No users found." />}
+    </Container>
   );
 }

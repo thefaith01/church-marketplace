@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/session";
 import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
 import { ListingCard } from "@/components/ListingCard";
+import { Container, PageHeader, ui, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 
 export default async function ListingsPage({
@@ -31,39 +32,17 @@ export default async function ListingsPage({
       ...(searchParams.keyword
         ? {
             OR: [
-              {
-                title: {
-                  contains: searchParams.keyword,
-                  mode: "insensitive",
-                },
-              },
-              {
-                description: {
-                  contains: searchParams.keyword,
-                  mode: "insensitive",
-                },
-              },
+              { title: { contains: searchParams.keyword, mode: "insensitive" } },
+              { description: { contains: searchParams.keyword, mode: "insensitive" } },
             ],
           }
         : {}),
       ...(searchParams.category
-        ? {
-            category: {
-              contains: searchParams.category,
-              mode: "insensitive",
-            },
-          }
+        ? { category: { contains: searchParams.category, mode: "insensitive" } }
         : {}),
-      ...(searchParams.pricingType
-        ? { pricingType: searchParams.pricingType as any }
-        : {}),
+      ...(searchParams.pricingType ? { pricingType: searchParams.pricingType as any } : {}),
       ...(searchParams.serviceArea
-        ? {
-            serviceArea: {
-              contains: searchParams.serviceArea,
-              mode: "insensitive",
-            },
-          }
+        ? { serviceArea: { contains: searchParams.serviceArea, mode: "insensitive" } }
         : {}),
     },
     include: { provider: { include: { profile: true } } },
@@ -71,51 +50,28 @@ export default async function ListingsPage({
   });
 
   return (
-    <div className="mx-auto max-w-6xl p-6">
-      <h1 className="text-2xl font-bold">Find Trusted Services</h1>
-      <p className="text-gray-500 text-sm mt-1">
-        Browse services offered by verified Christian providers
-      </p>
+    <Container size="wide">
+      <PageHeader
+        eyebrow="Whatever you need doing"
+        title="Find trusted services"
+        subtitle="Offered by verified members of your church network."
+      />
 
-      <form method="GET" className="mt-6 flex flex-wrap gap-3">
-        <input
-          name="keyword"
-          defaultValue={searchParams.keyword}
-          placeholder="Keyword"
-          className="rounded-md border px-3 py-2 text-sm w-44"
-        />
-        <input
-          name="category"
-          defaultValue={searchParams.category}
-          placeholder="Category"
-          className="rounded-md border px-3 py-2 text-sm w-44"
-        />
-        <input
-          name="serviceArea"
-          defaultValue={searchParams.serviceArea}
-          placeholder="Service area"
-          className="rounded-md border px-3 py-2 text-sm w-44"
-        />
-        <select
-          name="pricingType"
-          defaultValue={searchParams.pricingType}
-          className="rounded-md border px-3 py-2 text-sm"
-        >
+      <form method="GET" className="flex flex-wrap gap-3">
+        <input name="keyword" defaultValue={searchParams.keyword} placeholder="Keyword" className={`${ui.input} mt-0 w-44`} />
+        <input name="category" defaultValue={searchParams.category} placeholder="Category" className={`${ui.input} mt-0 w-44`} />
+        <input name="serviceArea" defaultValue={searchParams.serviceArea} placeholder="Service area" className={`${ui.input} mt-0 w-44`} />
+        <select name="pricingType" defaultValue={searchParams.pricingType} className={`${ui.input} mt-0 w-auto`}>
           <option value="">Any pricing</option>
           <option value="HOURLY">Hourly</option>
           <option value="FIXED">Fixed</option>
           <option value="QUOTE">Quote</option>
         </select>
-        <button
-          type="submit"
-          className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
-        >
-          Search
-        </button>
+        <button type="submit" className={ui.btnPrimary}>Search</button>
       </form>
 
-      <p className="mt-6 text-sm text-gray-400">
-        {listings.length} listing{listings.length !== 1 ? "s" : ""} found
+      <p className="mt-6 text-sm text-faint">
+        <strong className="text-ink">{listings.length}</strong> listing{listings.length !== 1 ? "s" : ""} found
       </p>
 
       <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -125,11 +81,8 @@ export default async function ListingsPage({
       </div>
 
       {listings.length === 0 && (
-        <div className="mt-20 text-center text-gray-400">
-          <p className="text-4xl">🔍</p>
-          <p className="mt-2">No listings match your search.</p>
-        </div>
+        <EmptyState icon="🔍" title="No listings match your search." hint="Try clearing a filter or widening your area." />
       )}
-    </div>
+    </Container>
   );
 }

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { DeleteListingButton } from "@/components/DeleteListingButton";
+import { Container, PageHeader, Badge, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 
 export default async function MyListingsPage() {
@@ -18,54 +19,38 @@ export default async function MyListingsPage() {
   });
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">My Service Listings</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Active listings are visible only to verified church members.
-          </p>
-        </div>
-        <a
-          href="/my-listings/create"
-          className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
-        >
-          + Create Listing
-        </a>
-      </div>
-
-      <div className="mt-6 space-y-4">
-        {listings.map((l) => (
-          <div
-            key={l.id}
-            className="rounded-xl border p-5 shadow-sm flex items-start justify-between"
+    <Container>
+      <PageHeader
+        title="My service listings"
+        subtitle="Active listings are visible only to verified church members."
+        action={
+          <a
+            href="/my-listings/create"
+            className="rounded-full bg-clay px-5 py-2.5 text-sm font-semibold text-paper no-underline hover:bg-clay-dark"
           >
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-semibold">{l.title}</h3>
-                <span
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium
-                  ${
-                    l.status === "ACTIVE"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  {l.status}
-                </span>
+            + Create listing
+          </a>
+        }
+      />
+
+      <div className="space-y-4">
+        {listings.map((l) => (
+          <div key={l.id} className="flex items-start justify-between rounded-[18px] border border-line bg-paper p-5 shadow-sm">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-display text-base font-bold text-ink">{l.title}</h3>
+                <Badge tone={l.status === "ACTIVE" ? "verified" : "neutral"}>{l.status}</Badge>
               </div>
-              <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                {l.description}
-              </p>
-              <div className="mt-2 flex gap-4 text-xs text-gray-500">
+              <p className="mt-1 line-clamp-2 text-sm text-muted">{l.description}</p>
+              <div className="mt-2 flex gap-4 text-xs text-faint">
                 <span>{l.category}</span>
                 <span>{l.pricingType}</span>
               </div>
             </div>
-            <div className="flex gap-2 ml-4">
+            <div className="ml-4 flex gap-2">
               <a
                 href={`/my-listings/${l.id}/edit`}
-                className="rounded-md border px-3 py-1 text-xs font-medium hover:bg-gray-50"
+                className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink no-underline hover:bg-chip"
               >
                 Edit
               </a>
@@ -76,11 +61,8 @@ export default async function MyListingsPage() {
       </div>
 
       {listings.length === 0 && (
-        <div className="mt-12 text-center text-gray-400">
-          <p className="text-4xl">📋</p>
-          <p className="mt-2">No listings yet. Create your first one.</p>
-        </div>
+        <EmptyState icon="📋" title="No listings yet." hint="Create your first one to start receiving bookings." />
       )}
-    </div>
+    </Container>
   );
 }

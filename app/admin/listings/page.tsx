@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
+import { Container, PageHeader, Badge, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 
 export default async function AdminListingsPage() {
@@ -16,64 +17,40 @@ export default async function AdminListingsPage() {
   const inactiveCount = listings.filter((l) => l.status === "INACTIVE").length;
 
   return (
-    <div className="mx-auto max-w-6xl p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Manage Listings</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Review and manage service listings
-          </p>
-        </div>
-      </div>
+    <Container size="wide">
+      <PageHeader title="Manage listings" subtitle="Review and manage service listings." />
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="rounded-lg border p-4">
-          <p className="text-gray-500 text-sm">Active</p>
-          <p className="mt-2 text-3xl font-bold text-green-600">{activeCount}</p>
+      <div className="mb-6 grid grid-cols-2 gap-4">
+        <div className="rounded-[18px] border border-line bg-paper p-4 shadow-sm">
+          <p className="text-sm text-faint">Active</p>
+          <p className="mt-2 font-display text-3xl font-extrabold text-forest">{activeCount}</p>
         </div>
-        <div className="rounded-lg border p-4">
-          <p className="text-gray-500 text-sm">Inactive</p>
-          <p className="mt-2 text-3xl font-bold text-gray-600">{inactiveCount}</p>
+        <div className="rounded-[18px] border border-line bg-paper p-4 shadow-sm">
+          <p className="text-sm text-faint">Inactive</p>
+          <p className="mt-2 font-display text-3xl font-extrabold text-muted">{inactiveCount}</p>
         </div>
       </div>
 
       <div className="space-y-4">
         {listings.map((listing) => (
-          <div key={listing.id} className="rounded-lg border p-4 hover:bg-gray-50">
-            <div className="flex items-start justify-between">
+          <div key={listing.id} className="rounded-[18px] border border-line bg-paper p-5 shadow-sm">
+            <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
-                <h3 className="font-semibold">{listing.title}</h3>
-                <p className="mt-1 text-sm text-gray-600">{listing.description}</p>
-                <div className="mt-2 flex gap-4 text-xs text-gray-500">
+                <h3 className="font-display font-bold text-ink">{listing.title}</h3>
+                <p className="mt-1 text-sm text-muted">{listing.description}</p>
+                <div className="mt-2 flex flex-wrap gap-3 text-xs text-faint">
                   <span>By {listing.provider.profile?.fullName}</span>
-                  <span className="text-gray-300">·</span>
                   <span>{listing.category}</span>
-                  <span className="text-gray-300">·</span>
                   <span>{listing.pricingType}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-3 ml-4">
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium
-                  ${
-                    listing.status === "ACTIVE"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  {listing.status}
-                </span>
-                <form
-                  action={`/admin/listings/${listing.id}/toggle`}
-                  method="POST"
-                >
+              <div className="flex items-center gap-3">
+                <Badge tone={listing.status === "ACTIVE" ? "verified" : "neutral"}>{listing.status}</Badge>
+                <form action={`/admin/listings/${listing.id}/toggle`} method="POST">
                   <button
                     type="submit"
-                    className={`rounded-md px-3 py-1 text-xs font-medium text-white
-                    ${
-                      listing.status === "ACTIVE"
-                        ? "bg-red-600 hover:bg-red-700"
-                        : "bg-green-600 hover:bg-green-700"
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold text-paper ${
+                      listing.status === "ACTIVE" ? "border-[1.5px] border-[#E2C3B6] !text-clay-dark hover:bg-[#F3E1D9]" : "bg-forest hover:opacity-90"
                     }`}
                   >
                     {listing.status === "ACTIVE" ? "Deactivate" : "Activate"}
@@ -85,12 +62,7 @@ export default async function AdminListingsPage() {
         ))}
       </div>
 
-      {listings.length === 0 && (
-        <div className="mt-12 text-center text-gray-400">
-          <p className="text-4xl">📋</p>
-          <p className="mt-2">No listings found.</p>
-        </div>
-      )}
-    </div>
+      {listings.length === 0 && <EmptyState icon="📋" title="No listings found." />}
+    </Container>
   );
 }

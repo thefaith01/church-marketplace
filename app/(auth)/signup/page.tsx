@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ui, Arch } from "@/components/ui";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -38,173 +39,96 @@ export default function SignupPage() {
       return;
     }
     router.push("/dashboard");
+    router.refresh();
   }
 
-  const inp =
-    "w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
-  const btn =
-    "w-full rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-50";
-
   return (
-    <div className="mx-auto max-w-md p-8">
-      <h1 className="text-2xl font-bold text-blue-700">Create your account</h1>
-      <p className="mt-1 text-sm text-gray-400">Step {step} of 2</p>
+    <div className="mx-auto max-w-md px-6 py-16">
+      <div className="rounded-[24px] border border-line bg-paper p-8 shadow-sm">
+        <div className="flex items-center gap-2.5">
+          <Arch />
+          <span className="font-display text-xl font-extrabold text-ink">cmm</span>
+        </div>
+        <h1 className="mt-5 font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Create your account</h1>
+        <p className="mt-1 text-sm text-muted">Step {step} of 2</p>
 
-      <form
-        onSubmit={
-          step === 1 ? (e) => { e.preventDefault(); setStep(2); } : handleSubmit
-        }
-        className="mt-6 space-y-4"
-      >
-        {step === 1 && (
-          <>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Full name
-              </span>
-              <input
-                required
-                className={`mt-1 ${inp}`}
-                value={form.fullName}
-                onChange={(e) => set("fullName", e.target.value)}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Email address
-              </span>
-              <input
-                required
-                type="email"
-                className={`mt-1 ${inp}`}
-                value={form.email}
-                onChange={(e) => set("email", e.target.value)}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Password
-              </span>
-              <input
-                required
-                type="password"
-                minLength={8}
-                className={`mt-1 ${inp}`}
-                value={form.password}
-                onChange={(e) => set("password", e.target.value)}
-              />
-            </label>
-            <div>
-              <span className="text-sm font-medium text-gray-700">
-                I am joining as a...
-              </span>
-              <div className="mt-2 flex gap-4">
-                {(["MEMBER", "PROVIDER"] as const).map((r) => (
-                  <label
-                    key={r}
-                    className={`flex-1 cursor-pointer rounded-lg border-2 p-4 text-center text-sm font-medium transition
-                      ${
-                        form.role === r
-                          ? "border-blue-700 bg-blue-50 text-blue-700"
-                          : "border-gray-200 text-gray-500"
-                      }`}
-                  >
-                    <input
-                      type="radio"
-                      className="sr-only"
-                      value={r}
-                      checked={form.role === r}
-                      onChange={() => set("role", r)}
-                    />
-                    {r === "MEMBER" ? "👤 Member" : "🔧 Provider"}
-                    <p className="mt-1 text-xs font-normal text-gray-400">
-                      {r === "MEMBER"
-                        ? "I want to hire providers"
-                        : "I want to offer services"}
-                    </p>
-                  </label>
-                ))}
+        <form
+          onSubmit={step === 1 ? (e) => { e.preventDefault(); setStep(2); } : handleSubmit}
+          className="mt-6 space-y-4"
+        >
+          {step === 1 && (
+            <>
+              <label className="block">
+                <span className={ui.label}>Full name</span>
+                <input required className={ui.input} value={form.fullName} onChange={(e) => set("fullName", e.target.value)} />
+              </label>
+              <label className="block">
+                <span className={ui.label}>Email address</span>
+                <input required type="email" className={ui.input} value={form.email} onChange={(e) => set("email", e.target.value)} />
+              </label>
+              <label className="block">
+                <span className={ui.label}>Password</span>
+                <input required type="password" minLength={8} className={ui.input} value={form.password} onChange={(e) => set("password", e.target.value)} />
+              </label>
+              <div>
+                <span className={ui.label}>I am joining as a…</span>
+                <div className="mt-2 flex gap-3">
+                  {(["MEMBER", "PROVIDER"] as const).map((r) => (
+                    <label
+                      key={r}
+                      className={`flex-1 cursor-pointer rounded-2xl border-2 p-4 text-center text-sm font-semibold transition
+                        ${form.role === r ? "border-clay bg-chip text-clay-dark" : "border-line text-muted"}`}
+                    >
+                      <input type="radio" className="sr-only" value={r} checked={form.role === r} onChange={() => set("role", r)} />
+                      {r === "MEMBER" ? "👤 Member" : "🔧 Provider"}
+                      <p className="mt-1 text-xs font-normal text-faint">
+                        {r === "MEMBER" ? "I want to hire providers" : "I want to offer services"}
+                      </p>
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
-            <button type="submit" className={btn}>
-              Continue →
-            </button>
-          </>
-        )}
+              <button type="submit" className={`w-full ${ui.btnPrimary}`}>Continue →</button>
+            </>
+          )}
 
-        {step === 2 && (
-          <>
-            <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-800">
-              We need your church details so an admin can verify you. You can
-              update these later from your dashboard.
-            </div>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Church name
-              </span>
-              <input
-                className={`mt-1 ${inp}`}
-                value={form.churchReferenceName}
-                onChange={(e) => set("churchReferenceName", e.target.value)}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Church city
-              </span>
-              <input
-                className={`mt-1 ${inp}`}
-                value={form.churchReferenceCity}
-                onChange={(e) => set("churchReferenceCity", e.target.value)}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Reference person (pastor or elder)
-              </span>
-              <input
-                className={`mt-1 ${inp}`}
-                value={form.churchReferencePerson}
-                onChange={(e) =>
-                  set("churchReferencePerson", e.target.value)
-                }
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium text-gray-700">
-                Reference letter (optional, PDF or image)
-              </span>
-              <input
-                type="file"
-                accept=".pdf,image/*"
-                className="mt-1 text-sm"
-                onChange={(e) =>
-                  set("churchReferenceLetter", e.target.files?.[0] ?? null)
-                }
-              />
-            </label>
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="flex-1 rounded-md border px-4 py-2 text-sm hover:bg-gray-50"
-              >
-                ← Back
-              </button>
-              <button type="submit" disabled={loading} className={`flex-1 ${btn}`}>
-                {loading ? "Creating account…" : "Create account"}
-              </button>
-            </div>
-          </>
-        )}
-      </form>
-      <p className="mt-4 text-center text-sm text-gray-500">
-        Already a member?{" "}
-        <a href="/login" className="text-blue-700 underline">
-          Log in
-        </a>
-      </p>
+          {step === 2 && (
+            <>
+              <div className="rounded-xl bg-[#F4E7CE] p-3 text-sm text-[#8A6420]">
+                We need your church details so an admin can verify you. You can update these later from your dashboard.
+              </div>
+              <label className="block">
+                <span className={ui.label}>Church name</span>
+                <input className={ui.input} value={form.churchReferenceName} onChange={(e) => set("churchReferenceName", e.target.value)} />
+              </label>
+              <label className="block">
+                <span className={ui.label}>Church city</span>
+                <input className={ui.input} value={form.churchReferenceCity} onChange={(e) => set("churchReferenceCity", e.target.value)} />
+              </label>
+              <label className="block">
+                <span className={ui.label}>Reference person (pastor or elder)</span>
+                <input className={ui.input} value={form.churchReferencePerson} onChange={(e) => set("churchReferencePerson", e.target.value)} />
+              </label>
+              <label className="block">
+                <span className={ui.label}>Reference letter (optional, PDF or image)</span>
+                <input type="file" accept=".pdf,image/*" className="mt-1 block text-sm text-muted" onChange={(e) => set("churchReferenceLetter", e.target.files?.[0] ?? null)} />
+              </label>
+              {error && <p className="text-sm text-clay-dark">{error}</p>}
+              <div className="flex gap-3">
+                <button type="button" onClick={() => setStep(1)} className={`flex-1 ${ui.btnGhost}`}>← Back</button>
+                <button type="submit" disabled={loading} className={`flex-1 ${ui.btnPrimary}`}>
+                  {loading ? "Creating…" : "Create account"}
+                </button>
+              </div>
+            </>
+          )}
+        </form>
+
+        <p className="mt-5 text-center text-sm text-muted">
+          Already a member?{" "}
+          <a href="/login" className={ui.link}>Log in</a>
+        </p>
+      </div>
     </div>
   );
 }

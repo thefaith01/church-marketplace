@@ -35,16 +35,16 @@ export function MessageComposer({ conversationId }: { conversationId: string }) 
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Type a message…"
-        className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="flex-1 rounded-full border border-line bg-paper px-4 py-2.5 text-sm text-ink placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-clay/40"
       />
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 hover:bg-blue-800"
+        className="rounded-full bg-clay px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-clay-dark disabled:opacity-50"
       >
         {loading ? "Sending…" : "Send"}
       </button>
-      {error && <span className="text-sm text-red-600">{error}</span>}
+      {error && <span className="text-sm text-clay-dark">{error}</span>}
     </form>
   );
 }

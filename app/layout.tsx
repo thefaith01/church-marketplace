@@ -15,11 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-white">
+      <body className="bg-cream">
         <ConditionalHeader>
           <Header />
         </ConditionalHeader>
-        <main className="min-h-screen bg-gray-50">{children}</main>
+        <main className="min-h-screen bg-cream text-ink">{children}</main>
       </body>
     </html>
   );

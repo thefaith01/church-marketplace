@@ -15,9 +15,7 @@ export function DeleteListingButton({ listingId }: { listingId: string }) {
       return;
     }
     setLoading(true);
-    const res = await fetch(`/api/listings/${listingId}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(`/api/listings/${listingId}`, { method: "DELETE" });
     setLoading(false);
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -31,7 +29,7 @@ export function DeleteListingButton({ listingId }: { listingId: string }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="rounded-md border border-red-200 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
+      className="rounded-full border-[1.5px] border-[#E2C3B6] px-3.5 py-1.5 text-xs font-semibold text-clay-dark transition-colors hover:bg-[#F3E1D9] disabled:opacity-50"
     >
       {loading ? "Deleting…" : "Delete"}
     </button>

@@ -29,7 +29,7 @@ const NAV = [
   { href: '#how', label: 'How it works' },
   { href: '#trust', label: 'Why verified' },
   { href: '#who', label: "Who it's for" },
-  { href: '#product', label: 'The product' },
+  { href: '#product', label: 'Inside the marketplace' },
 ]
 
 const AUDIENCES = {
@@ -523,9 +523,9 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <section id="product" className="border-t border-[#DAD2C4] bg-[#E9E4DA]">
         <div className="mx-auto max-w-[1240px] px-8 pb-24 pt-20">
           <div className="mx-auto mb-14 max-w-[600px] text-center">
-            <p className="mb-2.5 font-serif text-xl italic text-clay">Inside the product</p>
+            <p className="mb-2.5 font-serif text-xl italic text-clay">Inside the marketplace</p>
             <h2 className="font-display text-[40px] font-bold tracking-[-0.02em] text-ink">The same warmth, all the way in</h2>
-            <p className="mt-3 text-base text-muted">Two key screens in the new CMM brand. The browse filter below is live. Try it.</p>
+            <p className="mt-3 text-base text-muted">An illustrative preview of the member experience. Names and listings shown are samples only. The browse filter below is live, try it.</p>
           </div>
 
           {/* Dashboard frame */}

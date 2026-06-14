@@ -13,12 +13,12 @@ export default async function EditChurchPage() {
   if (!profile) redirect("/signup");
 
   return (
-    <div className="mx-auto max-w-xl p-6">
-      <a href="/dashboard" className="text-sm text-blue-700 hover:underline">
+    <div className="mx-auto max-w-xl px-6 py-10">
+      <a href="/dashboard" className="text-sm font-semibold text-clay hover:underline">
         ← Back to dashboard
       </a>
-      <h1 className="mt-3 text-2xl font-bold">Church & verification</h1>
-      <p className="text-gray-500 text-sm mt-1">
+      <h1 className="mt-3 font-display text-[32px] font-bold tracking-[-0.02em] text-ink">Church &amp; verification</h1>
+      <p className="mt-1 text-sm text-muted">
         Keep your church details up to date so an admin can verify you.
       </p>
 
