@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { VerificationGate } from "@/components/VerificationGate";
+import { isAdmin } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function MessagesPage() {
@@ -12,7 +13,7 @@ export default async function MessagesPage() {
   });
   if (!profile) redirect("/signup");
 
-  if (profile.verificationStatus !== "VERIFIED") {
+  if (profile.verificationStatus !== "VERIFIED" && !isAdmin(user)) {
     return <VerificationGate title="Messages require verification" />;
   }
 

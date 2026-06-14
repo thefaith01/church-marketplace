@@ -13,7 +13,7 @@ export default async function ManagePage() {
     const [pendingUsers, verifiedUsers, allListings, pendingBookings] =
       await Promise.all([
         prisma.userProfile.count({
-          where: { verificationStatus: "PENDING" },
+          where: { verificationStatus: { not: "VERIFIED" } },
         }),
         prisma.userProfile.count({
           where: { verificationStatus: "VERIFIED" },
@@ -29,7 +29,7 @@ export default async function ManagePage() {
 
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
           <div className="rounded-lg border p-4">
-            <p className="text-gray-500 text-sm">Pending Users</p>
+            <p className="text-gray-500 text-sm">Awaiting Verification</p>
             <p className="mt-2 text-3xl font-bold">{pendingUsers}</p>
           </div>
           <div className="rounded-lg border p-4">
@@ -138,6 +138,48 @@ export default async function ManagePage() {
                 {booking.status}
               </span>
             </div>
+
+            {(booking.providerId === user.id &&
+              booking.status === "PENDING") ||
+            booking.conversationId ? (
+              <div className="mt-3 flex flex-wrap items-center gap-2 border-t pt-3">
+                {booking.providerId === user.id &&
+                  booking.status === "PENDING" && (
+                    <>
+                      <form
+                        action={`/api/bookings/${booking.id}/accept`}
+                        method="POST"
+                      >
+                        <button
+                          type="submit"
+                          className="rounded-md bg-green-600 px-3 py-1 text-xs font-medium text-white hover:bg-green-700"
+                        >
+                          Accept
+                        </button>
+                      </form>
+                      <form
+                        action={`/api/bookings/${booking.id}/decline`}
+                        method="POST"
+                      >
+                        <button
+                          type="submit"
+                          className="rounded-md bg-red-600 px-3 py-1 text-xs font-medium text-white hover:bg-red-700"
+                        >
+                          Decline
+                        </button>
+                      </form>
+                    </>
+                  )}
+                {booking.conversationId && (
+                  <a
+                    href={`/messages/${booking.conversationId}`}
+                    className="rounded-md border px-3 py-1 text-xs font-medium hover:bg-gray-50"
+                  >
+                    Open conversation
+                  </a>
+                )}
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/session";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -10,7 +11,9 @@ const nav = [
   { href: "/about", label: "About Us" },
 ];
 
-export function Header() {
+export async function Header() {
+  const user = await getCurrentUser();
+
   return (
     <header className="flex items-center justify-between border-b px-6 py-4 bg-white">
       <Link href="/" className="text-xl font-bold text-blue-700">
@@ -28,18 +31,36 @@ export function Header() {
         ))}
       </nav>
       <div className="flex items-center gap-2">
-        <Link
-          href="/login"
-          className="rounded-md bg-blue-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-800"
-        >
-          Log In
-        </Link>
-        <Link
-          href="/signup"
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
-        >
-          Sign Up
-        </Link>
+        {user ? (
+          <>
+            <span className="hidden text-sm text-gray-500 sm:inline">
+              {user.email}
+            </span>
+            <form action="/api/auth/logout" method="POST">
+              <button
+                type="submit"
+                className="rounded-md bg-blue-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-800"
+              >
+                Log Out
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="rounded-md bg-blue-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-800"
+            >
+              Log In
+            </Link>
+            <Link
+              href="/signup"
+              className="rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

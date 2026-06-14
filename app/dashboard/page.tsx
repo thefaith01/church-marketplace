@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { isVerified } from "@/lib/auth";
+import { isVerified, isAdmin } from "@/lib/auth";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   });
   if (!profile) redirect("/signup");
 
-  const verified = isVerified(profile);
+  const verified = isVerified(profile) || isAdmin(user);
 
   const [activeListings, inactiveListings, conversations, pendingBookings] =
     await Promise.all([

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { canBrowseMarketplace } from "@/lib/auth";
+import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
 import { ListingCard } from "@/components/ListingCard";
 import { redirect } from "next/navigation";
@@ -21,7 +21,7 @@ export default async function ListingsPage({
   const profile = await prisma.userProfile.findUnique({
     where: { userId: user.id },
   });
-  if (!profile || !canBrowseMarketplace(profile)) {
+  if (!profile || (!canBrowseMarketplace(profile) && !isAdmin(user))) {
     return <VerificationGate title="Verification Required" />;
   }
 
