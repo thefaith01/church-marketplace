@@ -24,6 +24,13 @@ export default async function AdminCategoriesPage() {
           <input name="sortOrder" type="number" placeholder="Order" className={`${ui.input} mt-0 sm:w-24`} />
           <button type="submit" className={ui.btnPrimary}>Add</button>
         </form>
+        {categories.length === 0 && (
+          <form action="/api/admin/categories/seed" method="POST" className="mt-3">
+            <button type="submit" className="text-sm font-semibold text-clay hover:underline">
+              Or add a starter set of common categories
+            </button>
+          </form>
+        )}
       </div>
 
       <div className="mt-6 space-y-2">

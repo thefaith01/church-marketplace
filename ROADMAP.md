@@ -8,7 +8,7 @@ Status keys: ✅ done · 🔨 in progress · ⬜ planned
 
 ---
 
-## Phase 0 — Finish the core loop (in progress)
+## Phase 0 — Finish the core loop (COMPLETE ✅)
 
 The minimum for the marketplace to feel complete and reliable.
 

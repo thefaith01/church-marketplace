@@ -53,18 +53,31 @@ export async function POST(req: NextRequest) {
     data: { lastMessageAt: new Date() },
   });
 
+  // Notify the recipient, but suppress emails on rapid consecutive messages
+  // from the same sender so an active exchange doesn't flood their inbox.
   try {
-    const recipientId =
-      conversation.participantOneId === user.id
-        ? conversation.participantTwoId
-        : conversation.participantOneId;
-    const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
-    if (recipient) {
-      await notifyNewMessage({
-        to: recipient.email,
-        senderName: message.sender.profile?.fullName || user.email,
-        conversationId,
-      });
+    const prev = await prisma.message.findFirst({
+      where: { conversationId, NOT: { id: message.id } },
+      orderBy: { timestamp: "desc" },
+    });
+    const justMessaged =
+      !!prev &&
+      prev.senderId === user.id &&
+      Date.now() - new Date(prev.timestamp).getTime() < 10 * 60 * 1000;
+
+    if (!justMessaged) {
+      const recipientId =
+        conversation.participantOneId === user.id
+          ? conversation.participantTwoId
+          : conversation.participantOneId;
+      const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
+      if (recipient) {
+        await notifyNewMessage({
+          to: recipient.email,
+          senderName: message.sender.profile?.fullName || user.email,
+          conversationId,
+        });
+      }
     }
   } catch (err) {
     console.error("[message] email failed:", err);
