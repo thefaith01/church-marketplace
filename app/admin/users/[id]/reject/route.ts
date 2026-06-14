@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 
 export async function POST(
   req: NextRequest,
@@ -14,10 +15,12 @@ export async function POST(
 
   const { id: profileId } = await params;
 
-  await prisma.userProfile.update({
+  const updated = await prisma.userProfile.update({
     where: { id: profileId },
-    data: { verificationStatus: "UNVERIFIED" },
+    data: { verificationStatus: "UNVERIFIED", verifiedAt: null },
   });
+
+  await logAudit(user.id, "Revoked verification", updated.fullName);
 
   return NextResponse.redirect(new URL("/admin/users", req.url));
 }

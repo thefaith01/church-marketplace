@@ -21,7 +21,10 @@ export async function POST(req: NextRequest) {
 
   const profile = await prisma.userProfile.update({
     where: { id: profileId },
-    data: { verificationStatus },
+    data: {
+      verificationStatus,
+      verifiedAt: verificationStatus === "VERIFIED" ? new Date() : null,
+    },
     include: { user: true },
   });
 

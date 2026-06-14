@@ -46,9 +46,14 @@ domain connected, GitHub Actions CI.
 - ✅ Church leader (elder) approval — leaders verify/revoke members of their own church
 - ✅ Report / flag flow for listings and members + admin moderation queue
 - ✅ Background-check flags for sensitive categories (admin-set; badged on listings)
-- 🔨 Safety guidance in copy (due-diligence framing now on the About and Terms pages)
-- ⬜ Verification renewal (status can expire and be re-confirmed)
-- ⬜ Admin audit log (who verified/deactivated what, when)
+- ✅ Safety guidance in copy (due-diligence framing on the About and Terms pages)
+- ✅ Verification renewal — verification expires (providers 1 year, members 2 years)
+  and must be re-confirmed; dashboard shows an "expired" banner
+- ✅ Member → provider requests — members ask to offer services; needs church
+  acknowledgement (a note/document upload, a request to their church leader, or an
+  admin reaching out via the church contact); admin approves to flip the role
+- ✅ Admin audit log — verify/revoke (admin + leader) and provider-request decisions
+  are recorded with who, what, and when (`/admin/audit`)
 
 ## Phase 2 — Discovery & matching
 
@@ -58,8 +63,11 @@ domain connected, GitHub Actions CI.
 - ✅ Smart matching: providers emailed when a new request matches their category
 - ✅ "Hired by your church" recommendations on the browse page
 - ✅ Favorites / saved listings
-- ⬜ Saved searches
-- ⬜ Location + radius filtering, availability filters, sorting
+- ✅ Saved searches — save the current keyword/category/area/pricing filter and
+  re-apply it as a chip on the browse page
+- ✅ Sorting on browse (newest, oldest, name A–Z; featured always first)
+- ⬜ Location + radius filtering, availability filters
+  (radius needs a geocoding service; deferred until one is chosen)
 
 ## Phase 3 — Engagement & retention
 
@@ -130,7 +138,19 @@ add_booking_states
 add_reports_categories_requests
 add_leader_featured_freehelp
 add_favorites_checks_images
+add_provider_requests_audit_saved_verified
 ```
+
+> The last migration above is **pending** — run it on your machine to apply this
+> batch's schema (the `verifiedAt` field plus the `ProviderRequest`, `AuditLog`,
+> and `SavedSearch` models):
+>
+> ```bash
+> npx prisma migrate dev --name add_provider_requests_audit_saved_verified
+> ```
+>
+> Until you run it, a local typecheck/build will flag the new Prisma models as
+> unknown — `prisma migrate dev` regenerates the client and clears that.
 
 If `prisma migrate dev` ever warns about resetting the database or "drift," stop
 and check before answering, so you don't wipe data on a shared database.

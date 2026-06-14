@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { canLeaderModerate } from "@/lib/auth";
 import { notifyVerified } from "@/lib/email";
+import { logAudit } from "@/lib/audit";
 
 export async function POST(
   req: NextRequest,
@@ -31,8 +32,10 @@ export async function POST(
 
   await prisma.userProfile.update({
     where: { id },
-    data: { verificationStatus: "VERIFIED" },
+    data: { verificationStatus: "VERIFIED", verifiedAt: new Date() },
   });
+
+  await logAudit(user.id, "Confirmed member (leader)", target.fullName);
 
   try {
     await notifyVerified({ to: target.user.email, fullName: target.fullName });

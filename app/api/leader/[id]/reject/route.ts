@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { canLeaderModerate } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
 
 export async function POST(
   req: NextRequest,
@@ -27,8 +28,10 @@ export async function POST(
 
   await prisma.userProfile.update({
     where: { id },
-    data: { verificationStatus: "UNVERIFIED" },
+    data: { verificationStatus: "UNVERIFIED", verifiedAt: null },
   });
+
+  await logAudit(user.id, "Revoked member (leader)", target.fullName);
 
   return NextResponse.redirect(new URL("/leader", req.url));
 }

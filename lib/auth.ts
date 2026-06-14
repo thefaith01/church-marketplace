@@ -1,7 +1,27 @@
 import { VerificationStatus, Role } from "@prisma/client";
 
-export function isVerified(profile: { verificationStatus: VerificationStatus }) {
-  return profile.verificationStatus === VerificationStatus.VERIFIED;
+// How long a verification stays valid before it must be re-confirmed.
+export const VERIFICATION_DAYS = { PROVIDER: 365, OTHER: 730 };
+
+export function verificationExpiresAt(profile: {
+  verifiedAt?: Date | string | null;
+  role?: Role | string;
+}): Date | null {
+  if (!profile.verifiedAt) return null;
+  const days = profile.role === Role.PROVIDER ? VERIFICATION_DAYS.PROVIDER : VERIFICATION_DAYS.OTHER;
+  return new Date(new Date(profile.verifiedAt).getTime() + days * 24 * 60 * 60 * 1000);
+}
+
+export function isVerified(profile: {
+  verificationStatus: VerificationStatus;
+  verifiedAt?: Date | string | null;
+  role?: Role | string;
+}) {
+  if (profile.verificationStatus !== VerificationStatus.VERIFIED) return false;
+  const expiresAt = verificationExpiresAt(profile);
+  // Grandfather profiles verified before expiry tracking (no verifiedAt yet).
+  if (!expiresAt) return true;
+  return Date.now() < expiresAt.getTime();
 }
 
 export function canBrowseMarketplace(profile: any) {

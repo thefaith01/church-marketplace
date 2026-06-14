@@ -55,6 +55,12 @@ enum ServiceRequestStatus {
   CLOSED
 }
 
+enum ProviderRequestStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -75,6 +81,8 @@ model User {
   reportsReceived    Report[]         @relation("ReportsReceived")
   serviceRequests    ServiceRequest[]
   favorites          Favorite[]
+  auditLogs          AuditLog[]       @relation("Auditor")
+  savedSearches      SavedSearch[]
 }
 
 model UserProfile {
@@ -85,6 +93,7 @@ model UserProfile {
   role                  Role               @default(MEMBER)
   isChurchLeader        Boolean            @default(false)
   backgroundCheckCleared Boolean           @default(false)
+  verifiedAt            DateTime?
   verificationStatus    VerificationStatus @default(UNVERIFIED)
   subscriptionStatus    SubscriptionStatus @default(FREE)
   churchReferenceName   String?
@@ -96,6 +105,8 @@ model UserProfile {
   church    Church?  @relation(fields: [churchId], references: [id])
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
+
+  providerRequests ProviderRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -219,6 +230,38 @@ model ServiceRequest {
 
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
+}
+
+model ProviderRequest {
+  id           String                @id @default(cuid())
+  status       ProviderRequestStatus @default(PENDING)
+  note         String?
+  documentPath String?
+  profileId    String
+  profile      UserProfile           @relation(fields: [profileId], references: [id])
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String
+  actor     User     @relation("Auditor", fields: [actorId], references: [id])
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model SavedSearch {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  label       String?
+  keyword     String?
+  category    String?
+  serviceArea String?
+  pricingType String?
+  createdAt   DateTime @default(now())
 }
 
 model PasswordResetToken {

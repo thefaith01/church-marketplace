@@ -177,6 +177,77 @@ export function notifyVerified(args: { to: string; fullName: string }) {
   });
 }
 
+/** Tell admins a member wants to become a provider. */
+export async function notifyAdminsOfProviderRequest(args: {
+  fullName: string;
+  churchName?: string | null;
+  churchContact?: string | null;
+  hasDocument: boolean;
+}) {
+  const admins = await prisma.user.findMany({
+    where: { isAdmin: true },
+    select: { email: true },
+  });
+  const recipients = admins.map((a) => a.email);
+  if (recipients.length === 0 && process.env.ADMIN_EMAIL) {
+    recipients.push(process.env.ADMIN_EMAIL);
+  }
+  if (recipients.length === 0) return { skipped: true as const };
+
+  const lines = [
+    `<strong>${args.fullName}</strong> has asked to become a provider.`,
+    `Church: ${args.churchName || "Not linked"}`,
+    `Church contact: ${args.churchContact || "Not provided"}`,
+    `Reference document: ${args.hasDocument ? "Attached" : "None"}`,
+  ].join("<br/>");
+
+  return sendEmail({
+    to: recipients,
+    subject: `Provider request: ${args.fullName}`,
+    html: shell("New provider request", lines, {
+      label: "Review request",
+      href: appLink("/admin/provider-requests"),
+    }),
+  });
+}
+
+/** Ask a church leader to review a member's provider request. */
+export function notifyLeaderOfProviderRequest(args: {
+  to: string[];
+  fullName: string;
+}) {
+  if (args.to.length === 0) return Promise.resolve({ skipped: true as const });
+  return sendEmail({
+    to: args.to,
+    subject: `A member wants to become a provider: ${args.fullName}`,
+    html: shell(
+      "Provider request from your congregation",
+      `${args.fullName} from your church has asked to offer services on the marketplace. You can confirm their membership from your church members page.`,
+      { label: "Review members", href: appLink("/leader") }
+    ),
+  });
+}
+
+/** Tell a member their provider request was approved or declined. */
+export function notifyProviderDecision(args: {
+  to: string;
+  fullName: string;
+  approved: boolean;
+}) {
+  const verb = args.approved ? "approved" : "declined";
+  return sendEmail({
+    to: args.to,
+    subject: `Your provider request was ${verb}`,
+    html: shell(
+      `Provider request ${verb}`,
+      args.approved
+        ? `Hi ${args.fullName.split(" ")[0]}, your request to become a provider has been approved. You can now create listings and offer your services.`
+        : `Hi ${args.fullName.split(" ")[0]}, your request to become a provider was not approved at this time. Reach out to your church or an admin if you have questions.`,
+      { label: "Go to dashboard", href: appLink("/dashboard") }
+    ),
+  });
+}
+
 /** Tell a provider that a new service request matches a category they offer. */
 export function notifyServiceRequestMatch(args: {
   to: string;

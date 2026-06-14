@@ -30,6 +30,7 @@ const NAV = [
   { href: '#trust', label: 'Why verified' },
   { href: '#who', label: "Who it's for" },
   { href: '#product', label: 'Inside the marketplace' },
+  { href: '/about', label: 'About' },
 ]
 
 const AUDIENCES = {

@@ -15,6 +15,7 @@ export default async function DashboardPage() {
   if (!profile) redirect("/signup");
 
   const verified = isVerified(profile) || isAdmin(user);
+  const expired = profile.verificationStatus === "VERIFIED" && !verified;
 
   const [activeListings, inactiveListings, conversations, pendingBookings] =
     await Promise.all([
@@ -41,6 +42,9 @@ export default async function DashboardPage() {
     ...(profile.role === "PROVIDER"
       ? [{ href: "/my-listings", title: "My listings", desc: "Manage your service offerings.", badge: `${activeListings} active · ${inactiveListings} inactive`, locked: false }]
       : []),
+    ...(profile.role === "MEMBER"
+      ? [{ href: "/dashboard/become-provider", title: "Become a provider", desc: "Offer your own services to the community.", badge: null, locked: false }]
+      : []),
     { href: "/manage", title: "Booking requests", desc: "View and respond to booking requests.", badge: pendingBookings > 0 ? `${pendingBookings} pending` : null, locked: !verified },
   ];
 
@@ -55,9 +59,13 @@ export default async function DashboardPage() {
       {!verified && (
         <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[#E8D3A6] bg-[#F4E7CE] px-5 py-4">
           <div>
-            <p className="font-display font-bold text-[#5A4214]">Verification pending</p>
+            <p className="font-display font-bold text-[#5A4214]">
+              {expired ? "Verification expired" : "Verification pending"}
+            </p>
             <p className="mt-0.5 text-sm text-[#7A6230]">
-              Add your church details and a reference document to help an admin confirm you.
+              {expired
+                ? "Your verification has lapsed. Re-confirm your church details so a leader or admin can renew it."
+                : "Add your church details and a reference document to help an admin confirm you."}
             </p>
           </div>
           <a href="/dashboard/edit-church" className="shrink-0 rounded-full bg-clay px-4 py-2.5 text-sm font-semibold text-paper no-underline hover:bg-clay-dark">

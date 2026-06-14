@@ -4,6 +4,7 @@ import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
 import { ListingCard } from "@/components/ListingCard";
 import { Container, PageHeader, ui, EmptyState } from "@/components/ui";
+import SavedSearches from "@/components/SavedSearches";
 import { redirect } from "next/navigation";
 
 export default async function ListingsPage({
@@ -14,6 +15,7 @@ export default async function ListingsPage({
     category?: string;
     pricingType?: string;
     serviceArea?: string;
+    sort?: string;
   };
 }) {
   const user = await getCurrentUser();
@@ -28,6 +30,19 @@ export default async function ListingsPage({
 
   const categories = await prisma.category.findMany({
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+  });
+
+  const sort = searchParams.sort || "newest";
+  const orderBy =
+    sort === "oldest"
+      ? [{ featured: "desc" }, { createdAt: "asc" }]
+      : sort === "title"
+        ? [{ featured: "desc" }, { title: "asc" }]
+        : [{ featured: "desc" }, { createdAt: "desc" }];
+
+  const savedSearches = await prisma.savedSearch.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
   });
 
   const listings = await prisma.listing.findMany({
@@ -50,7 +65,7 @@ export default async function ListingsPage({
         : {}),
     },
     include: { provider: { include: { profile: true } } },
-    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+    orderBy: orderBy as any,
   });
 
   const favs = await prisma.favorite.findMany({
@@ -126,8 +141,23 @@ export default async function ListingsPage({
           <option value="FIXED">Fixed</option>
           <option value="QUOTE">Quote</option>
         </select>
+        <select name="sort" defaultValue={sort} className={`${ui.input} mt-0 w-auto`}>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Name A–Z</option>
+        </select>
         <button type="submit" className={ui.btnPrimary}>Search</button>
       </form>
+
+      <SavedSearches
+        searches={savedSearches}
+        current={{
+          keyword: searchParams.keyword,
+          category: searchParams.category,
+          serviceArea: searchParams.serviceArea,
+          pricingType: searchParams.pricingType,
+        }}
+      />
 
       <p className="mt-6 text-sm text-faint">
         <strong className="text-ink">{listings.length}</strong> listing{listings.length !== 1 ? "s" : ""} found
