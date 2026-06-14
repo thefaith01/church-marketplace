@@ -5,14 +5,14 @@ import { isAdmin } from "@/lib/auth";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user || !isAdmin(user)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const profileId = params.id;
+  const { id: profileId } = await params;
 
   const profile = await prisma.userProfile.update({
     where: { id: profileId },

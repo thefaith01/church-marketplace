@@ -5,14 +5,14 @@ import { isAdmin } from "@/lib/auth";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const user = await getCurrentUser();
   if (!user || !isAdmin(user)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const listingId = params.id;
+  const { id: listingId } = await params;
 
   const listing = await prisma.listing.findUnique({
     where: { id: listingId },
