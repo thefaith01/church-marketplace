@@ -32,16 +32,16 @@ Trust signals that fit a no-public-ratings model.
 
 - ⬜ Member endorsements / "vouches" (a member confirms they'd recommend someone),
   visible only inside the network
-- ⬜ Report / flag flow for users and listings, with an admin moderation queue
+- ✅ Report / flag flow for users and listings, with an admin moderation queue
 - ⬜ Verification renewal (status can expire and be re-confirmed)
 - ⬜ Admin audit log (who verified/deactivated what, when)
 - ⬜ Safety guidance on payments; disputes routed to church leaders
 
 ## Phase 2 — Discovery & matching
 
-- ⬜ First-class Category model (icons, slugs) instead of free-text strings
+- ✅ First-class Category model (icons, slugs); admin-managed, used by listing forms + browse
 - ⬜ Location + radius filtering, availability filters, sorting
-- ⬜ "Request a service": members post a need, providers respond
+- ✅ "Request a service": members post a need, providers respond by message
 - ⬜ Favorites / shortlist and saved searches
 
 ## Phase 3 — Engagement & retention
@@ -104,6 +104,9 @@ npx prisma migrate dev --name add_bio_and_password_reset
 
 # Wave 2: COMPLETED and CANCELLED booking states
 npx prisma migrate dev --name add_booking_states
+
+# Wave 3: Report, Category, and ServiceRequest models
+npx prisma migrate dev --name add_reports_categories_requests
 
 # 2. Commit the generated migration files along with the code.
 git add .

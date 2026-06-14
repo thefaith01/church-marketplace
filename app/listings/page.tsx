@@ -26,6 +26,10 @@ export default async function ListingsPage({
     return <VerificationGate title="Verification Required" />;
   }
 
+  const categories = await prisma.category.findMany({
+    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+  });
+
   const listings = await prisma.listing.findMany({
     where: {
       status: "ACTIVE",
@@ -59,7 +63,19 @@ export default async function ListingsPage({
 
       <form method="GET" className="flex flex-wrap gap-3">
         <input name="keyword" defaultValue={searchParams.keyword} placeholder="Keyword" className={`${ui.input} mt-0 w-44`} />
-        <input name="category" defaultValue={searchParams.category} placeholder="Category" className={`${ui.input} mt-0 w-44`} />
+        {categories.length > 0 ? (
+          <select name="category" defaultValue={searchParams.category} className={`${ui.input} mt-0 w-44`}>
+            <option value="">Any category</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.name}>
+                {c.icon ? `${c.icon} ` : ""}
+                {c.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input name="category" defaultValue={searchParams.category} placeholder="Category" className={`${ui.input} mt-0 w-44`} />
+        )}
         <input name="serviceArea" defaultValue={searchParams.serviceArea} placeholder="Service area" className={`${ui.input} mt-0 w-44`} />
         <select name="pricingType" defaultValue={searchParams.pricingType} className={`${ui.input} mt-0 w-auto`}>
           <option value="">Any pricing</option>

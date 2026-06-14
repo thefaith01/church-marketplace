@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/session";
 import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
 import { ListingActions } from "@/components/ListingActions";
+import { ReportButton } from "@/components/ReportButton";
 import { Badge } from "@/components/ui";
 import { redirect, notFound } from "next/navigation";
 
@@ -84,7 +85,12 @@ export default async function ListingDetailPage({
               Admins can view listings but do not place bookings.
             </div>
           ) : (
-            <ListingActions listingId={listing.id} providerId={listing.providerId} />
+            <>
+              <ListingActions listingId={listing.id} providerId={listing.providerId} />
+              <div className="mt-3 text-right">
+                <ReportButton listingId={listing.id} />
+              </div>
+            </>
           )}
         </div>
       </div>

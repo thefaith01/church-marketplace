@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ui } from "@/components/ui";
 
@@ -16,6 +16,16 @@ export default function CreateListingPage() {
     serviceArea: "",
     availabilityNotes: "",
   });
+
+  const [categories, setCategories] = useState<{ id: string; name: string; icon: string | null }[]>([]);
+  const [customCat, setCustomCat] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((r) => r.json())
+      .then((d) => Array.isArray(d) && setCategories(d))
+      .catch(() => {});
+  }, []);
 
   function update(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -52,7 +62,42 @@ export default function CreateListingPage() {
         </label>
         <label className="block">
           <span className={ui.label}>Category</span>
-          <input required className={ui.input} value={form.category} onChange={(e) => update("category", e.target.value)} placeholder="e.g. Plumbing" />
+          {categories.length > 0 ? (
+            <>
+              <select
+                className={ui.input}
+                value={customCat ? "__other__" : form.category}
+                onChange={(e) => {
+                  if (e.target.value === "__other__") {
+                    setCustomCat(true);
+                    update("category", "");
+                  } else {
+                    setCustomCat(false);
+                    update("category", e.target.value);
+                  }
+                }}
+              >
+                <option value="">Select a category</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.name}>
+                    {c.icon ? `${c.icon} ` : ""}
+                    {c.name}
+                  </option>
+                ))}
+                <option value="__other__">Other…</option>
+              </select>
+              {customCat && (
+                <input
+                  className={`${ui.input} mt-2`}
+                  value={form.category}
+                  onChange={(e) => update("category", e.target.value)}
+                  placeholder="New category"
+                />
+              )}
+            </>
+          ) : (
+            <input required className={ui.input} value={form.category} onChange={(e) => update("category", e.target.value)} placeholder="e.g. Plumbing" />
+          )}
         </label>
         <label className="block">
           <span className={ui.label}>Description</span>

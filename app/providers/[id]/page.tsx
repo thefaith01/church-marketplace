@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/session";
 import { canBrowseMarketplace, isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
 import { ListingCard } from "@/components/ListingCard";
+import { ReportButton } from "@/components/ReportButton";
 import { Badge, EmptyState } from "@/components/ui";
 import { redirect, notFound } from "next/navigation";
 
@@ -63,6 +64,12 @@ export default async function ProviderProfilePage({
         </div>
         {p.bio && <p className="mt-5 whitespace-pre-line text-sm leading-[1.6] text-muted">{p.bio}</p>}
       </div>
+
+      {user.id !== provider.id && (
+        <div className="mt-3 text-right">
+          <ReportButton reportedUserId={provider.id} />
+        </div>
+      )}
 
       <h2 className="mt-8 font-display text-xl font-bold text-ink">Active listings</h2>
       <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">

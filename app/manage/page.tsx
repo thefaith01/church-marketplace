@@ -26,8 +26,10 @@ export default async function ManagePage() {
     const links = [
       { href: "/admin/users", title: "Manage users", desc: "Verify or reject user registrations" },
       { href: "/admin/churches", title: "Manage churches", desc: "Create and manage linkable churches" },
+      { href: "/admin/categories", title: "Manage categories", desc: "Service categories members can pick from" },
       { href: "/admin/listings", title: "Manage listings", desc: "Review and manage service listings" },
       { href: "/admin/bookings", title: "Manage bookings", desc: "Track and manage booking requests" },
+      { href: "/admin/reports", title: "Reports", desc: "Review flagged listings and members" },
     ];
 
     return (

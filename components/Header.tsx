@@ -5,6 +5,7 @@ import { Arch } from "@/components/ui";
 const nav = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/listings", label: "Browse" },
+  { href: "/requests", label: "Requests" },
   { href: "/messages", label: "Messages" },
   { href: "/my-listings", label: "My Listings" },
   { href: "/manage", label: "Manage" },

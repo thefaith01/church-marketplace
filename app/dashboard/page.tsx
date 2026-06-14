@@ -34,6 +34,7 @@ export default async function DashboardPage() {
 
   const tiles: any[] = [
     { href: "/listings", title: "Browse services", desc: "Find trusted providers in your church community.", badge: null, locked: !verified },
+    { href: "/requests", title: "Service requests", desc: "Post a need, or respond to what others need.", badge: null, locked: !verified },
     { href: "/messages", title: "Messages", desc: "Connect with providers and manage conversations.", badge: conversations > 0 ? `${conversations} active` : null, locked: !verified },
     ...(profile.role === "PROVIDER"
       ? [{ href: "/my-listings", title: "My listings", desc: "Manage your service offerings.", badge: `${activeListings} active · ${inactiveListings} inactive`, locked: false }]
