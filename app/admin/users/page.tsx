@@ -66,6 +66,16 @@ export default async function AdminUsersPage() {
                         <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3 py-1 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">Reject</button>
                       </form>
                     )}
+                    {profile.churchReferenceLetter && (
+                      <a
+                        href={`/api/admin/verification-doc?profileId=${profile.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full border border-line px-3 py-1 text-xs font-semibold text-ink hover:bg-chip"
+                      >
+                        Doc
+                      </a>
+                    )}
                   </div>
                 </td>
               </tr>

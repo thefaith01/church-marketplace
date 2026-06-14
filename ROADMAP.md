@@ -23,6 +23,7 @@ The minimum for the marketplace to feel complete and reliable.
   provider, new message → recipient, verified → member
 - 🔨 Real password reset (token emailed, link sets a new password)
 - ✅ Booking lifecycle: COMPLETED and CANCELLED states + "mark as done" / cancel
+- ✅ Verification document uploads — private Supabase bucket, admin signed-URL viewing (needs SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY set and a "verification-docs" bucket)
 
 Requires database migrations (see the runbook at the bottom).
 
