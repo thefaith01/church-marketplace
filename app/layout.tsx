@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+import { ConditionalHeader } from "@/components/ConditionalHeader";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-white">
-        <Header />
+        <ConditionalHeader>
+          <Header />
+        </ConditionalHeader>
         <main className="min-h-screen bg-gray-50">{children}</main>
       </body>
     </html>
