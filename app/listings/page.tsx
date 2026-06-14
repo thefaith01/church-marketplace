@@ -88,7 +88,7 @@ export default async function ListingsPage({
     <Container size="wide">
       <PageHeader
         eyebrow="Whatever you need doing"
-        title="Find trusted services"
+        title="Find services"
         subtitle="Offered by verified members of your church network."
       />
 

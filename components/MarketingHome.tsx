@@ -35,7 +35,7 @@ const NAV = [
 const AUDIENCES = {
   members: {
     label: 'For members',
-    lead: 'Find trusted providers from your church and partner churches, never strangers from the open internet.',
+    lead: 'Find providers from your church and partner churches, never strangers from the open internet.',
     points: [
       'Browse services from people your community already vouches for.',
       'Search and filter for home, family, or professional help.',
@@ -50,12 +50,12 @@ const AUDIENCES = {
       'Create clear listings for your services, pricing and availability.',
       'Receive messages and bookings from verified members only.',
       'Flip listings Active or Inactive as your schedule changes.',
-      'Grow your livelihood inside a circle of genuine trust.',
+      'Grow your livelihood inside a community of real accountability.',
     ],
   },
   churches: {
     label: 'For churches',
-    lead: 'Steward trust for your congregation with simple, human verification.',
+    lead: 'Steward accountability for your congregation with simple, human verification.',
     points: [
       'Confirm membership so access stays gated to real members.',
       'Keep clean records of members, providers and listings.',
@@ -159,13 +159,11 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <span className="text-[13px] font-semibold text-[#3C5040]">For church members across congregations</span>
           </div>
           <h1 className="font-display text-[68px] font-extrabold leading-[0.98] tracking-[-0.03em] text-ink [text-wrap:balance]">
-            Hire people from
+            Hire from the
             <br />
-            the{" "}
             <a href="/about#ekklesia" className="font-serif text-[68px] font-medium italic text-clay hover:underline">
-              ekklesia
+              ekklesia<sup className="text-[26px] font-semibold not-italic">*</sup>
             </a>
-            .
           </h1>
           <p className="mt-6 max-w-[480px] text-[19px] leading-[1.55] text-[#5A4F40] [text-wrap:pretty]">
             A private marketplace where committed members of local churches hire one another across congregations, not just your own. Every member is church-verified before they can take part.
@@ -248,7 +246,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <section id="how" className="mx-auto max-w-[1200px] px-8 pb-14 pt-24">
         <div className="mx-auto mb-14 max-w-[620px] text-center">
           <p className="mb-3 font-serif text-xl italic text-clay">Four simple steps</p>
-          <h2 className="font-display text-[44px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">From stranger to trusted, the human way</h2>
+          <h2 className="font-display text-[44px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">From stranger to known, the human way</h2>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {[
@@ -275,7 +273,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <span className="font-display text-[22px] font-extrabold text-honey">4</span>
             </div>
             <h3 className="mb-2 font-display text-xl font-bold text-paper">Connect &amp; book</h3>
-            <p className="text-[15px] leading-[1.5] text-[#C9BCA6]">Message, agree the details, and book trusted people directly.</p>
+            <p className="text-[15px] leading-[1.5] text-[#C9BCA6]">Message, agree the details, and book people from your church family directly.</p>
           </div>
         </div>
       </section>
@@ -285,7 +283,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-16 px-8 py-[88px] lg:grid-cols-[1fr_0.85fr]">
           <div>
             <p className="mb-3.5 font-serif text-xl italic text-honey">Why verification comes first</p>
-            <h2 className="font-display text-[46px] font-bold leading-[1.04] tracking-[-0.02em] text-paper [text-wrap:balance]">Trust starts before the first hello.</h2>
+            <h2 className="font-display text-[46px] font-bold leading-[1.04] tracking-[-0.02em] text-paper [text-wrap:balance]">Accountability before the first hello.</h2>
             <p className="mt-[22px] max-w-[480px] text-lg leading-[1.6] text-[#CBD7C2]">
               On an open marketplace, anyone can sign up. Here, every person is a confirmed member of a local church, not just an attendee, before they can browse, message or book. That verification is the foundation everything else is built on.
             </p>
@@ -381,7 +379,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         <div className="grid grid-cols-1 items-center gap-12 rounded-[28px] border border-line bg-paper p-6 sm:p-9 lg:grid-cols-[0.85fr_1fr] lg:p-12">
           <div>
             <h2 className="font-display text-[38px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">Built for everyone in the pew</h2>
-            <p className="mt-3.5 text-base leading-[1.55] text-muted">Members hire, providers earn, and churches keep it trustworthy. Pick a view:</p>
+            <p className="mt-3.5 text-base leading-[1.55] text-muted">Members hire, providers earn, and churches keep it accountable. Pick a view:</p>
             <div className="mt-[26px] flex w-full gap-1.5 rounded-[28px] bg-chip p-[5px] sm:inline-flex sm:w-auto">
               {(['members', 'providers', 'churches'] as AudienceKey[]).map((k) => (
                 <button
@@ -477,7 +475,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <Arch stroke="#DDA23A" width={40} height={46} opacity={0.5} />
             </div>
             <h2 className="font-display text-[52px] font-extrabold leading-[1.02] tracking-[-0.025em] text-paper [text-wrap:balance]">Find your people.</h2>
-            <p className="mx-auto mt-[18px] max-w-[440px] text-lg leading-[1.5] text-[#C9BCA6]">Get verified through your church and join a marketplace that already trusts you.</p>
+            <p className="mx-auto mt-[18px] max-w-[440px] text-lg leading-[1.5] text-[#C9BCA6]">Get verified through your church and join a community grounded in real accountability.</p>
             <div className="mt-[34px] flex flex-wrap justify-center gap-3.5">
               <a href={ctaHref} className="rounded-full bg-clay px-[30px] py-[15px] text-base font-semibold text-paper no-underline">
                 {isLoggedIn ? 'Go to dashboard' : 'Get verified'}
@@ -496,7 +494,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <Arch width={24} height={28} />
               <span className="font-display text-[21px] font-extrabold text-ink">cmm</span>
             </div>
-            <p className="max-w-[240px] text-[14.5px] leading-[1.55] text-[#7A6E5C]">A community marketplace for verified church members. Trust, grounded in real relationships.</p>
+            <p className="max-w-[240px] text-[14.5px] leading-[1.55] text-[#7A6E5C]">A community marketplace for verified church members. Grounded in real congregations, not algorithm ratings.</p>
           </div>
           {FOOTER_COLS.map((col) => (
             <div key={col.head}>
@@ -592,7 +590,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                           <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#9A8C76" strokeWidth="1.8" />
                         </svg>
                       </div>
-                      <p className="mt-2 text-[13.5px] text-faint">{t === 'Messages' ? 'Unlocks after verification.' : 'Find trusted providers nearby.'}</p>
+                      <p className="mt-2 text-[13.5px] text-faint">{t === 'Messages' ? 'Unlocks after verification.' : 'Find providers nearby.'}</p>
                     </div>
                   ))}
                   <div className="col-span-1 flex items-center justify-between rounded-2xl bg-forest p-5 sm:col-span-2">
@@ -617,7 +615,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
           <div className="overflow-hidden rounded-[20px] border border-[#E2D9C8] bg-cream shadow-[0_24px_60px_-30px_rgba(60,40,20,0.4)]">
             <AppHeader active="Browse" />
             <div className="px-9 pb-10 pt-8">
-              <h3 className="font-display text-[30px] font-bold text-ink">Find trusted services</h3>
+              <h3 className="font-display text-[30px] font-bold text-ink">Find services</h3>
               <p className="mt-1 text-[15px] text-[#7A6E5C]">Offered by verified members of your church network.</p>
               <div className="mt-6 flex flex-wrap gap-[9px]">
                 {CATEGORIES.map((name) => {

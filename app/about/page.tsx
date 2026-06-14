@@ -19,7 +19,7 @@ const audiences = [
   {
     title: "For members",
     points: [
-      "Browse services from trusted providers in your church and partner churches.",
+      "Browse services from members of your church and partner churches.",
       "Use simple search and filters to find the right person for home, family, or professional needs.",
       "Send private messages to discuss availability, details, and next steps.",
       "Create booking requests that keep job details clear for everyone.",
@@ -31,7 +31,7 @@ const audiences = [
       "Create clear, text-based listings describing your services, pricing style, and availability.",
       "Receive messages and booking requests directly from verified church members.",
       "Manage which listings are Active or Inactive as your availability changes.",
-      "Serve in a context where trust is grounded in shared faith and community.",
+      "Serve in a context grounded in shared faith and real accountability.",
     ],
   },
   {
@@ -40,7 +40,7 @@ const audiences = [
       "Link users to churches and confirm verification so access stays gated to real members.",
       "Maintain simple records of churches, users, and listings in clean, table-based views.",
       "Deactivate churches or listings that are no longer appropriate.",
-      "Help your community steward trust, safety, and clarity as it grows.",
+      "Help your community steward accountability, safety, and clarity as it grows.",
     ],
   },
 ];
@@ -116,9 +116,14 @@ export default async function AboutPage() {
             verify it directly; there is no way to check whether a stranger online truly belongs to
             the body of Christ. The local church can be verified. So we join the two by the only means
             available: church membership. Everyone here is confirmed by their own local congregation,
-            which means they are submitted to its leadership and accountable within it. That local
-            accountability is what lets you trust a brother or sister from across the wider body you
-            may never have met.
+            which means they are submitted to its leadership and accountable within it.
+          </p>
+          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+            That accountability is a starting point, not a guarantee. We are all sinners, and no
+            church&apos;s vetting is perfect, so ordinary care still applies: ask questions, agree
+            terms clearly, and use your own judgment before you commit. What membership gives you is
+            not a promise that nothing will go wrong, but a real connection to a body that can be
+            turned to if it does.
           </p>
         </div>
       </section>
@@ -133,7 +138,7 @@ export default async function AboutPage() {
             Church Member Marketplace exists for Christians who want their spending to support fellow believers. Instead of paying anonymous providers, members can work with skilled tradespeople and professionals whose livelihoods support families, churches, and local communities.
           </p>
           <p className="mt-3 text-[17px] leading-[1.6] text-muted">
-            Everyone here is a verified member of a Christian church, giving you a foundation of trust before the first conversation. Trust is built on church community, not algorithm ratings.
+            Everyone here is a verified member of a Christian church, accountable to a real congregation rather than rated by an algorithm. That accountability is a starting point for your own judgment, not a substitute for it.
           </p>
         </div>
       </section>
@@ -181,7 +186,7 @@ export default async function AboutPage() {
       <section className="bg-[#EFE7D6] px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2.5 font-serif text-xl italic text-clay">Why verification comes first</p>
-          <h2 className="font-display text-[30px] font-bold tracking-[-0.02em] text-ink">Trust starts before the first hello</h2>
+          <h2 className="font-display text-[30px] font-bold tracking-[-0.02em] text-ink">Accountability before the first hello</h2>
           <p className="mt-4 text-[17px] leading-[1.6] text-muted">
             We keep core marketplace features private so you always know you're connecting with verified Christian providers, not strangers from the open internet. Browsing listings, viewing provider details, and sending messages or booking requests all unlock only after an admin confirms your church connection.
           </p>
