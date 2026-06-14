@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
   const serviceArea = (body.serviceArea as string)?.trim() || null;
   const availabilityNotes = (body.availabilityNotes as string)?.trim() || null;
   const isFreeHelp = body.isFreeHelp === true;
+  const imageUrl = (body.imageUrl as string)?.trim() || null;
 
   if (!title || !category || !description) {
     return NextResponse.json(
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
       serviceArea,
       availabilityNotes,
       isFreeHelp,
+      imageUrl,
       providerId: user.id,
     },
   });

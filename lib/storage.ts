@@ -83,3 +83,47 @@ export async function signVerificationDocUrl(
   if (!data?.signedURL) return null;
   return `${baseUrl}/storage/v1${data.signedURL}`;
 }
+
+/**
+ * Uploads a public image (avatar, listing photo) and returns its public URL,
+ * or null if storage is not configured.
+ *
+ * Requires a PUBLIC bucket. Defaults to "media"; override with
+ * SUPABASE_PUBLIC_BUCKET. Create a public bucket of that name in Supabase.
+ */
+export async function uploadPublicImage(
+  file: File,
+  prefix: string
+): Promise<string | null> {
+  const baseUrl = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const bucket = process.env.SUPABASE_PUBLIC_BUCKET || "media";
+  if (!baseUrl || !key) {
+    console.warn("[storage] not configured — skipping image upload");
+    return null;
+  }
+
+  const safeExt = (file.name.split(".").pop() || "jpg")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  const rand = Math.random().toString(36).slice(2, 8);
+  const path = `${prefix}/${Date.now()}-${rand}.${safeExt}`;
+  const bytes = Buffer.from(await file.arrayBuffer());
+
+  const res = await fetch(`${baseUrl}/storage/v1/object/${bucket}/${path}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": file.type || "application/octet-stream",
+      "x-upsert": "true",
+    },
+    body: bytes,
+  });
+
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Image upload failed (${res.status}): ${detail}`);
+  }
+
+  return `${baseUrl}/storage/v1/object/public/${bucket}/${path}`;
+}

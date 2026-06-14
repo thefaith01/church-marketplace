@@ -49,9 +49,14 @@ export default async function ProviderProfilePage({
 
       <div className="mt-4 rounded-[22px] border border-line bg-paper p-7 shadow-sm">
         <div className="flex items-center gap-4">
-          <span className="grid h-16 w-16 place-items-center rounded-full bg-clay font-display text-xl font-bold text-white">
-            {initials}
-          </span>
+          {p.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={p.avatarUrl} alt="" className="h-16 w-16 rounded-full object-cover" />
+          ) : (
+            <span className="grid h-16 w-16 place-items-center rounded-full bg-clay font-display text-xl font-bold text-white">
+              {initials}
+            </span>
+          )}
           <div>
             <h1 className="font-display text-[26px] font-bold tracking-[-0.02em] text-ink">{p.fullName}</h1>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">

@@ -25,6 +25,7 @@ export default async function ProfileSettingsPage() {
           initial={{
             fullName: profile.fullName,
             bio: profile.bio ?? "",
+            avatarUrl: profile.avatarUrl ?? "",
           }}
         />
       </div>

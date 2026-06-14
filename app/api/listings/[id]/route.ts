@@ -54,6 +54,7 @@ export async function PATCH(
       serviceArea: (body.serviceArea as string)?.trim() || null,
       availabilityNotes: (body.availabilityNotes as string)?.trim() || null,
       isFreeHelp: body.isFreeHelp === true,
+      imageUrl: (body.imageUrl as string)?.trim() || null,
       status,
     },
   });

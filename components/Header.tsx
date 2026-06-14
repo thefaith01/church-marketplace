@@ -6,6 +6,7 @@ const nav = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/listings", label: "Browse" },
   { href: "/requests", label: "Requests" },
+  { href: "/favorites", label: "Saved" },
   { href: "/messages", label: "Messages" },
   { href: "/my-listings", label: "My Listings" },
   { href: "/manage", label: "Manage" },

@@ -74,14 +74,17 @@ model User {
   reportsMade        Report[]         @relation("ReportsMade")
   reportsReceived    Report[]         @relation("ReportsReceived")
   serviceRequests    ServiceRequest[]
+  favorites          Favorite[]
 }
 
 model UserProfile {
   id                    String             @id @default(cuid())
   fullName              String
   bio                   String?
+  avatarUrl             String?
   role                  Role               @default(MEMBER)
   isChurchLeader        Boolean            @default(false)
+  backgroundCheckCleared Boolean           @default(false)
   verificationStatus    VerificationStatus @default(UNVERIFIED)
   subscriptionStatus    SubscriptionStatus @default(FREE)
   churchReferenceName   String?
@@ -123,11 +126,13 @@ model Listing {
   status            ActiveStatus @default(ACTIVE)
   featured          Boolean      @default(false)
   isFreeHelp        Boolean      @default(false)
+  imageUrl          String?
 
   providerId String
   provider   User              @relation(fields: [providerId], references: [id])
   bookings   BookingRequest[]
   reports    Report[]
+  favorites  Favorite[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -180,12 +185,24 @@ model Report {
 }
 
 model Category {
+  id                      String   @id @default(cuid())
+  name                    String
+  slug                    String   @unique
+  icon                    String?
+  sortOrder               Int      @default(0)
+  requiresBackgroundCheck Boolean  @default(false)
+  createdAt               DateTime @default(now())
+}
+
+model Favorite {
   id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  icon      String?
-  sortOrder Int      @default(0)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
   createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
 }
 
 model ServiceRequest {

@@ -53,6 +53,37 @@ export default async function ListingsPage({
     orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
   });
 
+  const favs = await prisma.favorite.findMany({
+    where: { userId: user.id },
+    select: { listingId: true },
+  });
+  const favSet = new Set(favs.map((f) => f.listingId));
+
+  // Recommendations: providers booked by members of the viewer's church.
+  let recommended: any[] = [];
+  if (profile.churchId) {
+    const churchBookings = await prisma.bookingRequest.findMany({
+      where: {
+        status: { in: ["ACCEPTED", "COMPLETED"] },
+        requester: { profile: { churchId: profile.churchId } },
+      },
+      select: { providerId: true },
+      distinct: ["providerId"],
+      take: 30,
+    });
+    const providerIds = churchBookings
+      .map((b) => b.providerId)
+      .filter((id) => id !== user.id);
+    if (providerIds.length) {
+      recommended = await prisma.listing.findMany({
+        where: { status: "ACTIVE", providerId: { in: providerIds } },
+        include: { provider: { include: { profile: true } } },
+        orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+        take: 3,
+      });
+    }
+  }
+
   return (
     <Container size="wide">
       <PageHeader
@@ -60,6 +91,18 @@ export default async function ListingsPage({
         title="Find trusted services"
         subtitle="Offered by verified members of your church network."
       />
+
+      {recommended.length > 0 && (
+        <div className="mb-8">
+          <h2 className="font-display text-lg font-bold text-ink">Hired by your church</h2>
+          <p className="mt-0.5 text-sm text-muted">Providers members of your church have booked.</p>
+          <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-3">
+            {recommended.map((l) => (
+              <ListingCard key={`rec-${l.id}`} listing={l} saved={favSet.has(l.id)} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <form method="GET" className="flex flex-wrap gap-3">
         <input name="keyword" defaultValue={searchParams.keyword} placeholder="Keyword" className={`${ui.input} mt-0 w-44`} />
@@ -92,7 +135,7 @@ export default async function ListingsPage({
 
       <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {listings.map((l) => (
-          <ListingCard key={l.id} listing={l} />
+          <ListingCard key={l.id} listing={l} saved={favSet.has(l.id)} />
         ))}
       </div>
 

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ui } from "@/components/ui";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export default function CreateListingPage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function CreateListingPage() {
     serviceArea: "",
     availabilityNotes: "",
     isFreeHelp: false,
+    imageUrl: "",
   });
 
   const [categories, setCategories] = useState<{ id: string; name: string; icon: string | null }[]>([]);
@@ -126,6 +128,13 @@ export default function CreateListingPage() {
           <span className={ui.label}>Availability notes</span>
           <input className={ui.input} value={form.availabilityNotes} onChange={(e) => update("availabilityNotes", e.target.value)} placeholder="e.g. Weekends and evenings" />
         </label>
+
+        <div>
+          <span className={ui.label}>Photo (optional)</span>
+          <div className="mt-1">
+            <ImageUpload value={form.imageUrl} onChange={(url) => setForm((f) => ({ ...f, imageUrl: url }))} />
+          </div>
+        </div>
 
         <label className="flex items-center gap-2.5 rounded-xl border border-line bg-paper p-3">
           <input

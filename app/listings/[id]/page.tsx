@@ -29,6 +29,11 @@ export default async function ListingDetailPage({
   });
   if (!listing) notFound();
 
+  const cat = await prisma.category.findFirst({
+    where: { name: { equals: listing.category, mode: "insensitive" } },
+  });
+  const needsCheck = cat?.requiresBackgroundCheck === true;
+
   const isOwner = listing.providerId === user.id;
   const admin = isAdmin(user);
 
@@ -43,8 +48,18 @@ export default async function ListingDetailPage({
           <div className="flex flex-wrap items-center gap-2">
             <Badge>{listing.category}</Badge>
             {listing.status !== "ACTIVE" && <Badge tone="neutral">{listing.status}</Badge>}
+            {needsCheck &&
+              (listing.provider.profile?.backgroundCheckCleared ? (
+                <Badge tone="verified">Background checked</Badge>
+              ) : (
+                <Badge tone="pending">Background check pending</Badge>
+              ))}
           </div>
           <h1 className="mt-3 font-display text-[30px] font-bold tracking-[-0.02em] text-ink">{listing.title}</h1>
+          {listing.imageUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={listing.imageUrl} alt="" className="mt-4 max-h-72 w-full rounded-2xl object-cover" />
+          )}
           <p className="mt-3 whitespace-pre-line text-sm leading-[1.6] text-[#3C3528]">{listing.description}</p>
 
           <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-[#EFE7D6] pt-5 text-sm">

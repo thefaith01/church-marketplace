@@ -88,6 +88,18 @@ export default async function AdminUsersPage() {
                         {profile.isChurchLeader ? "Leader ✓" : "Make leader"}
                       </button>
                     </form>
+                    <form action={`/api/admin/users/${profile.id}/toggle-check`} method="POST">
+                      <button
+                        type="submit"
+                        className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                          profile.backgroundCheckCleared
+                            ? "border-forest text-forest"
+                            : "border-line text-ink hover:bg-chip"
+                        }`}
+                      >
+                        {profile.backgroundCheckCleared ? "Checked ✓" : "Mark checked"}
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>

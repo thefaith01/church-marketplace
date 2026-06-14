@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ui } from "@/components/ui";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export function ProfileForm({
   initial,
 }: {
-  initial: { fullName: string; bio: string };
+  initial: { fullName: string; bio: string; avatarUrl: string };
 }) {
   const router = useRouter();
   const [form, setForm] = useState(initial);
@@ -36,6 +37,12 @@ export function ProfileForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <span className={ui.label}>Profile photo</span>
+        <div className="mt-1">
+          <ImageUpload value={form.avatarUrl} onChange={(url) => setForm((f) => ({ ...f, avatarUrl: url }))} rounded />
+        </div>
+      </div>
       <label className="block">
         <span className={ui.label}>Full name</span>
         <input required className={ui.input} value={form.fullName} onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))} />

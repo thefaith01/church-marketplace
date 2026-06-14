@@ -41,11 +41,18 @@ export default async function AdminCategoriesPage() {
               {c.name}
               <span className="ml-2 text-xs text-faint">/{c.slug}</span>
             </span>
-            <form action={`/api/admin/categories/${c.id}/delete`} method="POST">
-              <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3 py-1 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">
-                Delete
-              </button>
-            </form>
+            <div className="flex items-center gap-2">
+              <form action={`/api/admin/categories/${c.id}/toggle-check`} method="POST">
+                <button type="submit" className={`rounded-full border px-3 py-1 text-xs font-semibold ${c.requiresBackgroundCheck ? "border-forest text-forest" : "border-line text-ink hover:bg-chip"}`}>
+                  {c.requiresBackgroundCheck ? "Check required ✓" : "Require check"}
+                </button>
+              </form>
+              <form action={`/api/admin/categories/${c.id}/delete`} method="POST">
+                <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3 py-1 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">
+                  Delete
+                </button>
+              </form>
+            </div>
           </div>
         ))}
       </div>

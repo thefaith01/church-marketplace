@@ -33,6 +33,7 @@ Trust signals that fit a no-public-ratings model.
 
 - ✅ Church leader (elder) approval — leaders verify/revoke members of their own church
 - ✅ Report / flag flow for users and listings, with an admin moderation queue
+- ✅ Background-check flags for sensitive categories (admin-set; badged on listings)
 - ⬜ Verification renewal (status can expire and be re-confirmed)
 - ⬜ Admin audit log (who verified/deactivated what, when)
 - ⬜ Safety guidance on payments; disputes routed to church leaders
@@ -44,7 +45,8 @@ Trust signals that fit a no-public-ratings model.
 - ✅ "Request a service": members post a need, providers respond by message
 - ✅ Acts of service (free community help) listings, flagged and badged
 - ✅ Smart matching: providers emailed when a new request matches their category
-- ⬜ Favorites / shortlist and saved searches
+- ✅ "Hired by your church" recommendations on the browse page
+- ✅ Favorites / saved listings (saved searches still to do)
 
 ## Phase 3 — Engagement & retention
 
@@ -74,7 +76,7 @@ Trust signals that fit a no-public-ratings model.
 - ⬜ Input validation + rate limiting on auth and form-POST routes
 - ⬜ Security pass (JWT, bcrypt, CSRF on form posts, access controls)
 - ⬜ Accessibility audit, SEO + metadata, structured data on public pages
-- ⬜ Avatar / image uploads (Supabase storage helper already half-built)
+- ✅ Avatars + listing photos (needs a public "media" bucket configured)
 - ⬜ Error monitoring (Sentry), full responsive pass, PWA + push
 
 ---

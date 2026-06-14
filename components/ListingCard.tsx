@@ -1,10 +1,20 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
-export function ListingCard({ listing }: { listing: any }) {
+export function ListingCard({ listing, saved }: { listing: any; saved?: boolean }) {
   return (
-    <div className={`rounded-[18px] border bg-paper p-5 shadow-sm transition hover:shadow-md ${listing.featured ? "border-honey" : "border-line"}`}>
-      <div className="flex flex-wrap items-center gap-1.5">
+    <div className={`relative rounded-[18px] border bg-paper p-5 shadow-sm transition hover:shadow-md ${listing.featured ? "border-honey" : "border-line"}`}>
+      {saved !== undefined && (
+        <div className="absolute right-3 top-3">
+          <FavoriteButton listingId={listing.id} saved={saved} />
+        </div>
+      )}
+      {listing.imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={listing.imageUrl} alt="" className="mb-3 h-32 w-full rounded-xl object-cover" />
+      )}
+      <div className="flex flex-wrap items-center gap-1.5 pr-9">
         <Badge>{listing.category}</Badge>
         {listing.featured && <Badge tone="pending">Featured</Badge>}
         {listing.isFreeHelp && <Badge tone="verified">Free help</Badge>}

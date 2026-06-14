@@ -16,6 +16,7 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json();
   const fullName = (body.fullName as string)?.trim();
   const bio = (body.bio as string)?.trim() || null;
+  const avatarUrl = (body.avatarUrl as string)?.trim() || null;
 
   if (!fullName) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -23,7 +24,7 @@ export async function PATCH(req: NextRequest) {
 
   await prisma.userProfile.update({
     where: { id: profile.id },
-    data: { fullName, bio },
+    data: { fullName, bio, avatarUrl },
   });
 
   return NextResponse.json({ ok: true });
