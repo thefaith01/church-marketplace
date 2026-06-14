@@ -51,7 +51,8 @@ Trust signals that fit a no-public-ratings model.
 ## Phase 3 — Engagement & retention
 
 - ⬜ In-app notifications center + weekly digest email
-- ⬜ Real-time messaging via Supabase Realtime (replace refresh-based threads)
+- ✅ Live messaging (polling the authenticated API; messages appear without refresh).
+  A true-websocket upgrade needs Supabase Auth + RLS, since the app uses its own JWT.
 - ⬜ Provider availability calendar
 - ⬜ Testimonials limited to completed, verified bookings (moderated)
 

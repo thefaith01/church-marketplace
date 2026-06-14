@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
 import { VerificationGate } from "@/components/VerificationGate";
-import { MessageComposer } from "@/components/MessageComposer";
+import { MessageThread } from "@/components/MessageThread";
 import { redirect, notFound } from "next/navigation";
 
 export default async function MessageThreadPage({
@@ -48,31 +48,16 @@ export default async function MessageThreadPage({
         {other.profile?.fullName || other.email}
       </h1>
 
-      <div className="mt-5 space-y-3">
-        {conversation.messages.map((m) => {
-          const mine = m.senderId === user.id;
-          return (
-            <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
-                  mine ? "bg-clay text-paper" : "border border-line bg-paper text-ink"
-                }`}
-              >
-                <p className="whitespace-pre-line">{m.content}</p>
-                <p className={`mt-1 text-[10px] ${mine ? "text-[#F3D9CE]" : "text-faint"}`}>
-                  {new Date(m.timestamp).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-
-        {conversation.messages.length === 0 && (
-          <p className="text-center text-sm text-faint">No messages yet. Say hello.</p>
-        )}
-      </div>
-
-      <MessageComposer conversationId={conversation.id} />
+      <MessageThread
+        conversationId={conversation.id}
+        currentUserId={user.id}
+        initial={conversation.messages.map((m) => ({
+          id: m.id,
+          content: m.content,
+          senderId: m.senderId,
+          timestamp: m.timestamp.toISOString(),
+        }))}
+      />
     </div>
   );
 }
