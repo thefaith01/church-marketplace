@@ -1,140 +1,136 @@
 # CMM Roadmap
 
-A phased plan for building out Church Member Marketplace. The guiding principle:
-trust comes from real church membership and accountability, not star ratings.
-Features should reinforce that, not dilute it.
+A phased plan for building out Church Member Marketplace.
 
-Status keys: ✅ done · 🔨 in progress · ⬜ planned
+**Guiding principle.** The value is real church membership and the accountability
+it brings, not star ratings and not a promise that anyone is trustworthy.
+Membership is verified through a member's local church and is a starting point for
+your own judgment, never a substitute for it. Features should reinforce that.
+
+Status keys: ✅ done · 🔨 in progress · ⬜ planned · ✕ not pursuing
 
 ---
 
-## Phase 0 — Finish the core loop (COMPLETE ✅)
+## Live now (deployed)
 
-The minimum for the marketplace to feel complete and reliable.
+cmm-branded marketplace on Vercel + Supabase, custom domain **cmmarketplace.org**,
+transactional email via Resend, private document storage, and CI on every push.
+
+**Configured:** Resend (`RESEND_API_KEY`, `EMAIL_FROM`), `APP_URL`, Supabase
+(`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`), private `verification-docs` bucket,
+domain connected, GitHub Actions CI.
+
+**Outstanding config (small):**
+- Public `media` bucket in Supabase, to switch on avatars + listing photos
+- Rotate `JWT_SECRET` off the placeholder value (you said you'd do this later)
+- Complete the Vercel billing address so the domain auto-renews
+- Enable Row Level Security on the Supabase tables (part of the Phase 6 security pass)
+
+---
+
+## Phase 0 — Core loop (COMPLETE ✅)
 
 - ✅ Auth, verification gate, listings, messaging, bookings, admin
 - ✅ Full cmm rebrand across every page + shared UI kit
-- ✅ Create/edit/delete listings, listing detail, provider profile page (basic)
-- ✅ Re-verification with document upload
-- 🔨 Church linking: pick from an admin-managed list or type a reference
-- 🔨 Admin church management (create / activate / deactivate churches)
-- 🔨 Provider bio on profiles
-- 🔨 Email notifications: booking accepted/declined → requester, new booking →
-  provider, new message → recipient, verified → member
-- 🔨 Real password reset (token emailed, link sets a new password)
-- ✅ Booking lifecycle: COMPLETED and CANCELLED states + "mark as done" / cancel
-- ✅ Verification document uploads — private Supabase bucket, admin signed-URL viewing (configured: bucket + SUPABASE_URL/SERVICE_ROLE_KEY set)
+- ✅ Create / edit / delete listings, listing detail, provider profiles
+- ✅ Church linking (pick from an admin list or type) + admin church management
+- ✅ Provider bio
+- ✅ Re-verification with private document upload (admin signed-URL viewing)
+- ✅ Email notifications: booking accepted/declined → requester, new booking →
+  provider, new message → recipient (debounced), verified → member
+- ✅ Real password reset (emailed token → set a new password)
+- ✅ Booking lifecycle: ACCEPTED, DECLINED, COMPLETED, CANCELLED + mark-as-done / cancel
 
-Requires database migrations (see the runbook at the bottom).
-
-## Phase 1 — Trust & safety, the church way
-
-Trust signals that fit a no-public-ratings model.
+## Phase 1 — Accountability & safety, the church way
 
 - ✅ Church leader (elder) approval — leaders verify/revoke members of their own church
-- ✅ Report / flag flow for users and listings, with an admin moderation queue
+- ✅ Report / flag flow for listings and members + admin moderation queue
 - ✅ Background-check flags for sensitive categories (admin-set; badged on listings)
+- 🔨 Safety guidance in copy (due-diligence framing now on the About and Terms pages)
 - ⬜ Verification renewal (status can expire and be re-confirmed)
 - ⬜ Admin audit log (who verified/deactivated what, when)
-- ⬜ Safety guidance on payments; disputes routed to church leaders
 
 ## Phase 2 — Discovery & matching
 
-- ✅ First-class Category model (icons, slugs); admin-managed, used by listing forms + browse
-- ⬜ Location + radius filtering, availability filters, sorting
+- ✅ First-class Category model (icons, slugs); admin-managed, used by forms + browse
 - ✅ "Request a service": members post a need, providers respond by message
 - ✅ Acts of service (free community help) listings, flagged and badged
 - ✅ Smart matching: providers emailed when a new request matches their category
 - ✅ "Hired by your church" recommendations on the browse page
-- ✅ Favorites / saved listings (saved searches still to do)
+- ✅ Favorites / saved listings
+- ⬜ Saved searches
+- ⬜ Location + radius filtering, availability filters, sorting
 
 ## Phase 3 — Engagement & retention
 
+- ✅ Live messaging (polls the authenticated API; messages appear without refresh).
+  A true-websocket upgrade would need Supabase Auth + RLS, since the app uses its own JWT.
 - ⬜ In-app notifications center + weekly digest email
-- ✅ Live messaging (polling the authenticated API; messages appear without refresh).
-  A true-websocket upgrade needs Supabase Auth + RLS, since the app uses its own JWT.
-- ⬜ Provider availability calendar
+- ⬜ Provider availability calendar + "request a time"
 - ⬜ Testimonials limited to completed, verified bookings (moderated)
 
 ## Phase 4 — Church & admin tooling
 
 - ⬜ Split roles: platform admins vs per-church admins with scoped permissions
+  (elder approval in Phase 1 is the first step)
 - ⬜ Church onboarding flow + invite links for congregations
 - ⬜ Bulk verification and CSV member import
-- ⬜ Per-church analytics (signups, verifications, bookings)
+- ⬜ Per-church analytics (signups, verifications, bookings) + public church pages
 
 ## Phase 5 — Giving & monetization
 
-- ⬜ Receipts / "this supported a member of <church>" and per-church totals
 - ✅ Featured listings (admin-set; sorted first with a badge)
 - ⬜ Church sponsorships
-- Keep actual payment off-platform for now; add invoicing/receipts, not processing
+- ✕ Giving receipts / "supported your church" (declined)
+- Payments stay off-platform; add invoicing/quotes later, not processing
 
-## Phase 6 — Quality & infrastructure
+## Phase 6 — Quality, content & infrastructure
 
-- ✅ CI: GitHub Action running typecheck + build on every push (.github/workflows/ci.yml)
+- ✅ CI: GitHub Action running typecheck + build on every push
+- ✅ Avatars + listing photos (code done; needs the public `media` bucket)
+- ✅ Terms, Privacy, and Help/FAQ pages
+- ⬜ Guided onboarding (members vs providers)
 - ⬜ Tests (API routes, auth, booking flow)
 - ⬜ Input validation + rate limiting on auth and form-POST routes
-- ⬜ Security pass (JWT, bcrypt, CSRF on form posts, access controls)
-- ⬜ Accessibility audit, SEO + metadata, structured data on public pages
-- ✅ Avatars + listing photos (needs a public "media" bucket configured)
-- ⬜ Error monitoring (Sentry), full responsive pass, PWA + push
+- ⬜ Security pass: Row Level Security, JWT rotation, CSRF on form posts, access-control review
+- ⬜ Accessibility audit, SEO + metadata, structured data, full responsive pass
+- ⬜ Error monitoring (Sentry), PWA + push
 
 ---
 
-## Sequencing
+## Suggested next
 
-1. Finish Phase 0 (this work)
-2. Phase 4 church tooling + Phase 2 "request a service" — these unlock real usage
-   at more churches
-3. Phase 1 trust features + Phase 5 giving story
-4. Phase 6 quality/CI runs alongside everything from here on
+1. Switch on avatars/photos (create the `media` bucket) and the JWT rotation —
+   both small and already half-set-up.
+2. Notifications center + weekly digest (Phase 3), so members come back.
+3. Church tooling (Phase 4): invite links and per-church analytics, to grow to more churches.
+4. Run the security pass (Phase 6) in parallel as you head toward real users.
 
 ---
 
-## Migration runbook (Phase 0)
+## Migrations & deploy
 
-Phase 0 adds two things to the schema: `UserProfile.bio` and a
-`PasswordResetToken` model. Church linking needs no schema change (the
-`UserProfile.church` relation already exists).
+Your local `.env` points at the Supabase database, so `npx prisma migrate dev`
+applies changes straight to it. There is no separate `migrate deploy` step. CI
+runs typecheck + build on every push.
 
-Run this on your machine, in the `CMM` folder, after pulling these changes:
-
-There are two migrations to run (bio/reset was the first wave; booking states are
-the second). If you've already applied the first, just run the booking one.
+For each schema change: from the `CMM` folder run
 
 ```bash
-# Wave 1 (if not already applied): UserProfile.bio + PasswordResetToken
-npx prisma migrate dev --name add_bio_and_password_reset
-
-# Wave 2: COMPLETED and CANCELLED booking states
-npx prisma migrate dev --name add_booking_states
-
-# Wave 3: Report, Category, and ServiceRequest models
-npx prisma migrate dev --name add_reports_categories_requests
-
-# 2. Commit the generated migration files along with the code.
-git add .
-git commit -m "Phase 0: church linking, bio, emails, password reset + migration"
-git push
+npx prisma migrate dev --name <short_name>
+git add . && git commit -m "<message>" && git push
 ```
 
-Applying it to **production (Supabase)**. Your Vercel build runs
-`prisma generate && next build`, which updates the client types but does NOT
-apply migrations to the database. Pick one:
+Migrations applied so far:
 
-- Easiest: after pushing, run against production once:
-  `npx prisma migrate deploy` with your production `DIRECT_URL` in the
-  environment. This applies any pending migration files to Supabase.
-- Or paste the generated SQL (in
-  `prisma/migrations/<timestamp>_add_bio_and_password_reset/migration.sql`)
-  into the Supabase SQL editor and run it.
+```
+init
+add_bio_and_password_reset
+add_booking_states
+add_reports_categories_requests
+add_leader_featured_freehelp
+add_favorites_checks_images
+```
 
-Important: apply the migration to production **before or at the same time** as
-the deploy, so the new columns exist when the new code runs. If code referencing
-`bio` or the reset table ships before the DB has them, those routes will error at
-runtime.
-
-If you'd rather automate it, add `prisma migrate deploy &&` to the front of the
-`build` script in package.json so every deploy applies pending migrations. Tell
-me and I'll wire that up.
+If `prisma migrate dev` ever warns about resetting the database or "drift," stop
+and check before answering, so you don't wipe data on a shared database.
