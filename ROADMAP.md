@@ -95,8 +95,9 @@ domain connected, GitHub Actions CI.
   pre-approved roster (auto-links matching signups), or both
 - ✅ Per-church analytics at /leader/analytics (members, verified, pending, providers,
   listings, bookings, invites, roster)
-- ✅ Public church pages — /churches directory + /churches/[id] with a join CTA and the
-  church's public service listings
+- ✅ Shareable church pages — /churches/[id] (join CTA + the church's public service
+  listings) and /join/[code] work by URL for recruiting. No public directory and no nav
+  link, so the platform doesn't broadcast a list of every congregation (/churches → home).
 
 ## Phase 5 — Giving & monetization
 
