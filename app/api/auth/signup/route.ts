@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
   const churchReferenceCity = (body.get("churchReferenceCity") as string) || null;
   const churchReferencePerson = (body.get("churchReferencePerson") as string) || null;
   const churchId = (body.get("churchId") as string) || null;
+  const inviteCode = (body.get("inviteCode") as string) || null;
 
   const letterFile = body.get("churchReferenceLetter") as File | null;
   let churchReferenceLetterUrl: string | null = null;
@@ -47,6 +48,29 @@ export async function POST(req: NextRequest) {
       { error: "Email already registered" },
       { status: 400 }
     );
+  }
+
+  // Resolve which church to link to: an invite code wins, then an explicit
+  // choice from the form, then a pre-approved roster match on the email.
+  let resolvedChurchId: string | null = churchId;
+  let inviteToMark: string | null = null;
+  if (inviteCode) {
+    const byJoin = await prisma.church.findFirst({
+      where: { joinCode: inviteCode, status: "ACTIVE" },
+    });
+    if (byJoin) {
+      resolvedChurchId = byJoin.id;
+    } else {
+      const invite = await prisma.churchInvite.findUnique({ where: { token: inviteCode } });
+      if (invite && !invite.usedAt && (!invite.expiresAt || invite.expiresAt > new Date())) {
+        resolvedChurchId = invite.churchId;
+        inviteToMark = invite.id;
+      }
+    }
+  }
+  if (!resolvedChurchId) {
+    const roster = await prisma.churchRosterEntry.findFirst({ where: { email } });
+    if (roster) resolvedChurchId = roster.churchId;
   }
 
   const hash = await bcrypt.hash(password, 12);
@@ -63,11 +87,17 @@ export async function POST(req: NextRequest) {
           churchReferenceCity,
           churchReferencePerson,
           churchReferenceLetter: churchReferenceLetterUrl,
-          ...(churchId ? { churchId } : {}),
+          ...(resolvedChurchId ? { churchId: resolvedChurchId } : {}),
         },
       },
     },
   });
+
+  if (inviteToMark) {
+    await prisma.churchInvite
+      .update({ where: { id: inviteToMark }, data: { usedAt: new Date() } })
+      .catch(() => {});
+  }
 
   // Notify admins of the new signup. Never block account creation on email.
   try {

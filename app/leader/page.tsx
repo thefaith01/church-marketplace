@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { Container, PageHeader, Badge, EmptyState } from "@/components/ui";
+import { Container, PageHeader, Card, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
+import BulkVerify from "@/components/BulkVerify";
+import CopyLink from "@/components/CopyLink";
 
 export default async function LeaderPage() {
   const user = await getCurrentUser();
@@ -14,64 +16,73 @@ export default async function LeaderPage() {
   if (!me) redirect("/signup");
   if (!me.isChurchLeader || !me.churchId) redirect("/dashboard");
 
-  const members = await prisma.userProfile.findMany({
+  const membersRaw = await prisma.userProfile.findMany({
     where: { churchId: me.churchId, NOT: { id: me.id } },
     include: { user: true },
     orderBy: [{ verificationStatus: "asc" }, { createdAt: "desc" }],
   });
-
+  const members = membersRaw.map((m) => ({
+    id: m.id,
+    fullName: m.fullName,
+    email: m.user.email,
+    role: m.role,
+    verificationStatus: m.verificationStatus,
+  }));
   const pending = members.filter((m) => m.verificationStatus !== "VERIFIED").length;
+  const joinPath = me.church?.joinCode ? `/join/${me.church.joinCode}` : null;
 
   return (
     <Container size="wide">
       <PageHeader
-        eyebrow="Elder approval"
+        eyebrow="Church leader"
         title={`${me.church?.name || "Your church"} members`}
-        subtitle={`Confirm membership for people linked to your church. ${pending} awaiting you.`}
+        subtitle={`Confirm membership, invite people, and see your church at a glance. ${pending} awaiting you.`}
       />
 
-      <div className="overflow-x-auto rounded-[18px] border border-line bg-paper">
-        <table className="w-full text-sm">
-          <thead className="border-b border-line bg-chip/50">
-            <tr>
-              {["Name", "Email", "Role", "Status", "Action"].map((h) => (
-                <th key={h} className="px-5 py-3 text-left font-semibold text-[#5A4F40]">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {members.map((m) => (
-              <tr key={m.id} className="border-b border-line last:border-0 hover:bg-cream/60">
-                <td className="px-5 py-3 font-medium text-ink">{m.fullName}</td>
-                <td className="px-5 py-3 text-muted">{m.user.email}</td>
-                <td className="px-5 py-3"><Badge>{m.role}</Badge></td>
-                <td className="px-5 py-3">
-                  <Badge tone={m.verificationStatus === "VERIFIED" ? "verified" : m.verificationStatus === "PENDING" ? "pending" : "neutral"}>
-                    {m.verificationStatus}
-                  </Badge>
-                </td>
-                <td className="px-5 py-3">
-                  <div className="flex gap-2">
-                    {m.verificationStatus !== "VERIFIED" && (
-                      <form action={`/api/leader/${m.id}/verify`} method="POST">
-                        <button type="submit" className="rounded-full bg-forest px-3 py-1 text-xs font-semibold text-paper hover:opacity-90">Confirm</button>
-                      </form>
-                    )}
-                    {m.verificationStatus === "VERIFIED" && (
-                      <form action={`/api/leader/${m.id}/reject`} method="POST">
-                        <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3 py-1 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">Revoke</button>
-                      </form>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mb-6 grid gap-4 md:grid-cols-2">
+        <Card>
+          <p className="font-display font-bold text-ink">Invite link</p>
+          <p className="mt-1 text-sm text-muted">
+            Share this so people sign up already linked to your church. You still confirm each one.
+          </p>
+          <div className="mt-3">
+            {joinPath ? <CopyLink path={joinPath} /> : <p className="text-sm text-faint">No link created yet.</p>}
+          </div>
+          <form action="/api/leader/church/join-code" method="POST" className="mt-3">
+            <button
+              type="submit"
+              className="rounded-full border-[1.5px] border-[#D8C9AE] px-4 py-2 text-sm font-semibold text-ink hover:bg-chip"
+            >
+              {joinPath ? "Regenerate link" : "Create invite link"}
+            </button>
+          </form>
+        </Card>
+
+        <Card>
+          <p className="font-display font-bold text-ink">Tools</p>
+          <p className="mt-1 text-sm text-muted">Add many members at once, or see your church's numbers.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a href="/leader/import" className="rounded-full bg-clay px-4 py-2 text-sm font-semibold text-paper no-underline hover:bg-clay-dark">
+              Import members (CSV)
+            </a>
+            <a href="/leader/analytics" className="rounded-full border-[1.5px] border-[#D8C9AE] px-4 py-2 text-sm font-semibold text-ink no-underline hover:bg-chip">
+              Church analytics
+            </a>
+            <a href={`/churches/${me.churchId}`} className="rounded-full border-[1.5px] border-[#D8C9AE] px-4 py-2 text-sm font-semibold text-ink no-underline hover:bg-chip">
+              Public page
+            </a>
+          </div>
+        </Card>
       </div>
 
-      {members.length === 0 && (
-        <EmptyState icon="⛪" title="No members linked yet" hint="Members who select your church at signup appear here." />
+      {members.length > 0 ? (
+        <BulkVerify members={members} />
+      ) : (
+        <EmptyState
+          icon="⛪"
+          title="No members linked yet"
+          hint="Share your invite link or import a list to get started."
+        />
       )}
     </Container>
   );

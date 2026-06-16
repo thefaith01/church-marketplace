@@ -248,6 +248,19 @@ export function notifyProviderDecision(args: {
   });
 }
 
+/** Invite someone to join a specific church on the marketplace. */
+export function notifyChurchInvite(args: { to: string; churchName: string; link: string }) {
+  return sendEmail({
+    to: args.to,
+    subject: `You're invited to join ${args.churchName} on Church Member Marketplace`,
+    html: shell(
+      `Join ${args.churchName}`,
+      `You've been invited to join <strong>${args.churchName}</strong> on the Church Member Marketplace. Create your account to get started. A church leader will confirm your membership before the marketplace unlocks.`,
+      { label: "Accept invitation", href: args.link }
+    ),
+  });
+}
+
 /** Tell a provider that a new service request matches a category they offer. */
 export function notifyServiceRequestMatch(args: {
   to: string;

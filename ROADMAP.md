@@ -22,9 +22,10 @@ domain connected, GitHub Actions CI.
 
 **Outstanding config (small):**
 - Public `media` bucket in Supabase, to switch on avatars + listing photos
-- Rotate `JWT_SECRET` off the placeholder value (you said you'd do this later)
+- Rotate `JWT_SECRET` to a strong value (code now warns until you do) + redeploy
+- VAPID keys are set; web push is ready once the notifications batch is deployed
 - Complete the Vercel billing address so the domain auto-renews
-- Enable Row Level Security on the Supabase tables (part of the Phase 6 security pass)
+- Enable Row Level Security on the Supabase tables (optional defense in depth)
 
 ---
 
@@ -83,13 +84,19 @@ domain connected, GitHub Actions CI.
 - ⬜ Provider availability calendar + "request a time"
 - ⬜ Testimonials limited to completed, verified bookings (moderated)
 
-## Phase 4 — Church & admin tooling
+## Phase 4 — Church & admin tooling (COMPLETE ✅)
 
-- ⬜ Split roles: platform admins vs per-church admins with scoped permissions
-  (elder approval in Phase 1 is the first step)
-- ⬜ Church onboarding flow + invite links for congregations
-- ⬜ Bulk verification and CSV member import
-- ⬜ Per-church analytics (signups, verifications, bookings) + public church pages
+- ✅ Per-church admin = the church leader, scoped to their own church (invite links,
+  bulk verify, analytics, all limited to their congregation)
+- ✅ Church onboarding via invite links — shareable join link per church plus
+  single-use email invites; joiners are pre-linked to the church and still confirmed
+- ✅ Bulk verification — select multiple pending members and confirm them at once
+- ✅ CSV member import — paste/upload a list and choose to send invites, add to a
+  pre-approved roster (auto-links matching signups), or both
+- ✅ Per-church analytics at /leader/analytics (members, verified, pending, providers,
+  listings, bookings, invites, roster)
+- ✅ Public church pages — /churches directory + /churches/[id] with a join CTA and the
+  church's public service listings
 
 ## Phase 5 — Giving & monetization
 
@@ -117,11 +124,11 @@ domain connected, GitHub Actions CI.
 
 ## Suggested next
 
-1. Switch on avatars/photos (create the `media` bucket) and the JWT rotation —
-   both small and already half-set-up.
-2. Notifications center + weekly digest (Phase 3), so members come back.
-3. Church tooling (Phase 4): invite links and per-church analytics, to grow to more churches.
-4. Run the security pass (Phase 6) in parallel as you head toward real users.
+1. Rotate `JWT_SECRET` to a strong value and deploy the security batch (built, not yet pushed).
+2. Switch on avatars/photos by creating the public `media` bucket in Supabase (code already done).
+3. Church tooling (Phase 4): onboarding + invite links and per-church analytics, to grow to more churches.
+4. Finish the security pass: Row Level Security + CSRF tokens (both optional, defense in depth).
+5. Weekly digest email and provider availability / "request a time" (Phase 3).
 
 ---
 
@@ -149,22 +156,12 @@ add_leader_featured_freehelp
 add_favorites_checks_images
 add_provider_requests_audit_saved_verified
 add_notifications_push
+add_church_invites_roster
 ```
 
-> The `add_notifications_push` migration is **pending** — it adds the `Notification`,
-> `PushSubscription`, and `NotificationPreference` models. This batch also needs the
-> `web-push` package and VAPID keys (see the deploy notes when you run it).
-
-> The last migration above is **pending** — run it on your machine to apply this
-> batch's schema (the `verifiedAt` field plus the `ProviderRequest`, `AuditLog`,
-> and `SavedSearch` models):
->
-> ```bash
-> npx prisma migrate dev --name add_provider_requests_audit_saved_verified
-> ```
->
-> Until you run it, a local typecheck/build will flag the new Prisma models as
-> unknown — `prisma migrate dev` regenerates the client and clears that.
+All migrations above are applied and live. The next code batch (security hardening:
+rate limiting, validation, headers, JWT hardening) has **no** schema change, so it
+needs only `npm run build` + commit + push, plus rotating `JWT_SECRET` in Vercel.
 
 If `prisma migrate dev` ever warns about resetting the database or "drift," stop
 and check before answering, so you don't wipe data on a shared database.

@@ -12,6 +12,7 @@ export default function SignupPage() {
     fullName: "",
     role: "MEMBER",
     churchId: "",
+    inviteCode: "",
     churchReferenceName: "",
     churchReferenceCity: "",
     churchReferencePerson: "",
@@ -26,6 +27,17 @@ export default function SignupPage() {
       .then((r) => r.json())
       .then((data) => Array.isArray(data) && setChurches(data))
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const church = params.get("church");
+    const code = params.get("code");
+    setForm((f) => ({
+      ...f,
+      ...(church ? { churchId: church } : {}),
+      ...(code ? { inviteCode: code } : {}),
+    }));
   }, []);
 
   function set(k: string, v: any) {
@@ -50,6 +62,8 @@ export default function SignupPage() {
     router.push("/dashboard");
     router.refresh();
   }
+
+  const joiningChurch = churches.find((c) => c.id === form.churchId);
 
   return (
     <div className="mx-auto max-w-md px-6 py-16">
@@ -103,6 +117,12 @@ export default function SignupPage() {
 
           {step === 2 && (
             <>
+              {joiningChurch && (
+                <div className="rounded-xl bg-[#E9F0E9] p-3 text-sm text-[#2E5740]">
+                  You&rsquo;re joining <strong>{joiningChurch.name}</strong>. A church leader will
+                  confirm your membership.
+                </div>
+              )}
               <div className="rounded-xl bg-[#F4E7CE] p-3 text-sm text-[#8A6420]">
                 We need your church details so an admin can verify you. You can update these later from your dashboard.
               </div>

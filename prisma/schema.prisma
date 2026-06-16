@@ -121,11 +121,41 @@ model Church {
   city        String?
   region      String?
   contactInfo String?
+  description String?
+  joinCode    String?      @unique
   status      ActiveStatus @default(ACTIVE)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   profiles UserProfile[]
+  invites  ChurchInvite[]
+  roster   ChurchRosterEntry[]
+}
+
+model ChurchInvite {
+  id          String    @id @default(cuid())
+  churchId    String
+  church      Church    @relation(fields: [churchId], references: [id])
+  email       String
+  token       String    @unique
+  invitedById String
+  expiresAt   DateTime?
+  usedAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([churchId])
+}
+
+model ChurchRosterEntry {
+  id        String   @id @default(cuid())
+  churchId  String
+  church    Church   @relation(fields: [churchId], references: [id])
+  email     String
+  fullName  String?
+  addedById String
+  createdAt DateTime @default(now())
+
+  @@unique([churchId, email])
 }
 
 model Listing {
