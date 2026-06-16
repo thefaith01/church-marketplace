@@ -80,9 +80,13 @@ domain connected, GitHub Actions CI.
   Wired for messages, bookings (request/accept/decline), verification, and provider decisions.
 - ✅ Mobile header menu (hamburger) so navigation works on phones, logged in or out.
 - ✅ Admins have full user capabilities (create/manage listings, message, book) on top of admin.
+- ✅ Two-sided completion — provider marks done → member confirms (or reports a problem,
+  which reopens it and notifies the provider, with an option to escalate to the church
+  leader). Both sides are notified at each step.
+- ✅ Testimonials on completed bookings — member can leave an optional written testimonial
+  (no star ratings), moderated by an admin, shown on the provider's profile once approved.
 - ⬜ Weekly digest email
 - ⬜ Provider availability calendar + "request a time"
-- ⬜ Testimonials limited to completed, verified bookings (moderated)
 
 ## Phase 4 — Church & admin tooling (COMPLETE ✅)
 
@@ -158,6 +162,7 @@ add_favorites_checks_images
 add_provider_requests_audit_saved_verified
 add_notifications_push
 add_church_invites_roster
+add_booking_confirmation_testimonials
 ```
 
 All migrations above are applied and live. The next code batch (security hardening:

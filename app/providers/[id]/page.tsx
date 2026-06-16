@@ -33,6 +33,13 @@ export default async function ProviderProfilePage({
     orderBy: { createdAt: "desc" },
   });
 
+  const testimonials = await prisma.testimonial.findMany({
+    where: { providerId: id, status: "APPROVED" },
+    include: { author: { include: { profile: true } } },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+  });
+
   const p = provider.profile;
   const initials = p.fullName
     .split(" ")
@@ -84,6 +91,27 @@ export default async function ProviderProfilePage({
       </div>
       {listings.length === 0 && (
         <EmptyState icon="📋" title="No active listings" hint="This provider has nothing live right now." />
+      )}
+
+      {testimonials.length > 0 && (
+        <>
+          <h2 className="mt-8 font-display text-xl font-bold text-ink">What members say</h2>
+          <p className="mt-0.5 text-sm text-muted">
+            From people who completed a booking. Moderated, and no star ratings.
+          </p>
+          <div className="mt-4 space-y-3">
+            {testimonials.map((t) => (
+              <div key={t.id} className="rounded-[18px] border border-line bg-paper p-5">
+                <p className="whitespace-pre-wrap text-sm leading-[1.6] text-ink">
+                  &ldquo;{t.content}&rdquo;
+                </p>
+                <p className="mt-2 text-xs text-faint">
+                  — {t.author.profile?.fullName || "A member"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

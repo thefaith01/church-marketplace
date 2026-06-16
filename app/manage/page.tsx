@@ -4,6 +4,15 @@ import { isAdmin } from "@/lib/auth";
 import { Container, PageHeader, Badge, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 
+const STATUS_LABEL: Record<string, string> = {
+  PENDING: "Pending",
+  ACCEPTED: "In progress",
+  AWAITING_CONFIRMATION: "Awaiting confirmation",
+  COMPLETED: "Completed",
+  DECLINED: "Declined",
+  CANCELLED: "Cancelled",
+};
+
 export default async function ManagePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
@@ -31,6 +40,7 @@ export default async function ManagePage() {
       { href: "/admin/bookings", title: "Manage bookings", desc: "Track and manage booking requests" },
       { href: "/admin/reports", title: "Reports", desc: "Review flagged listings and members" },
       { href: "/admin/provider-requests", title: "Provider requests", desc: "Members asking to become providers" },
+      { href: "/admin/testimonials", title: "Testimonials", desc: "Moderate member testimonials" },
       { href: "/admin/audit", title: "Audit log", desc: "Recent admin and leader actions" },
     ];
 
@@ -68,6 +78,7 @@ export default async function ManagePage() {
       listing: true,
       requester: { include: { profile: true } },
       provider: { include: { profile: true } },
+      testimonial: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -77,78 +88,101 @@ export default async function ManagePage() {
       <PageHeader title="My booking requests" subtitle="View and manage your booking requests." />
 
       <div className="space-y-4">
-        {myBookings.map((booking) => (
-          <div key={booking.id} className="rounded-[18px] border border-line bg-paper p-5 shadow-sm">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <h3 className="font-display font-bold text-ink">{booking.listing.title}</h3>
-                <p className="mt-1 text-sm text-muted">{booking.jobDescription}</p>
-                <div className="mt-2 flex flex-wrap gap-4 text-xs text-faint">
-                  {booking.requesterId === user.id ? (
-                    <span>Requested to: {booking.provider.profile?.fullName}</span>
-                  ) : (
-                    <span>From: {booking.requester.profile?.fullName}</span>
-                  )}
-                  <span>Status: {booking.status}</span>
+        {myBookings.map((booking) => {
+          const isProvider = booking.providerId === user.id;
+          const isMember = booking.requesterId === user.id;
+          const showActions =
+            booking.status === "PENDING" ||
+            booking.status === "ACCEPTED" ||
+            booking.status === "AWAITING_CONFIRMATION" ||
+            booking.status === "COMPLETED" ||
+            !!booking.conversationId;
+          return (
+            <div key={booking.id} className="rounded-[18px] border border-line bg-paper p-5 shadow-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="font-display font-bold text-ink">{booking.listing.title}</h3>
+                  <p className="mt-1 text-sm text-muted">{booking.jobDescription}</p>
+                  <div className="mt-2 flex flex-wrap gap-4 text-xs text-faint">
+                    {isMember ? (
+                      <span>Requested to: {booking.provider.profile?.fullName}</span>
+                    ) : (
+                      <span>From: {booking.requester.profile?.fullName}</span>
+                    )}
+                    <span>Status: {STATUS_LABEL[booking.status] ?? booking.status}</span>
+                  </div>
                 </div>
+                <Badge
+                  tone={
+                    booking.status === "PENDING"
+                      ? "pending"
+                      : booking.status === "ACCEPTED"
+                        ? "info"
+                        : booking.status === "AWAITING_CONFIRMATION"
+                          ? "pending"
+                          : booking.status === "COMPLETED"
+                            ? "verified"
+                            : booking.status === "CANCELLED"
+                              ? "neutral"
+                              : "danger"
+                  }
+                >
+                  {STATUS_LABEL[booking.status] ?? booking.status}
+                </Badge>
               </div>
-              <Badge
-                tone={
-                  booking.status === "PENDING"
-                    ? "pending"
-                    : booking.status === "ACCEPTED"
-                      ? "info"
-                      : booking.status === "COMPLETED"
-                        ? "verified"
-                        : booking.status === "CANCELLED"
-                          ? "neutral"
-                          : "danger"
-                }
-              >
-                {booking.status}
-              </Badge>
-            </div>
 
-            {booking.status === "PENDING" || booking.status === "ACCEPTED" || booking.conversationId ? (
-              <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#EFE7D6] pt-3">
-                {booking.providerId === user.id && booking.status === "PENDING" && (
-                  <>
-                    <form action={`/api/bookings/${booking.id}/accept`} method="POST">
-                      <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">
-                        Accept
-                      </button>
+              {showActions && (
+                <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[#EFE7D6] pt-3">
+                  {isProvider && booking.status === "PENDING" && (
+                    <>
+                      <form action={`/api/bookings/${booking.id}/accept`} method="POST">
+                        <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">Accept</button>
+                      </form>
+                      <form action={`/api/bookings/${booking.id}/decline`} method="POST">
+                        <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3.5 py-1.5 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">Decline</button>
+                      </form>
+                    </>
+                  )}
+                  {isProvider && booking.status === "ACCEPTED" && (
+                    <form action={`/api/bookings/${booking.id}/complete`} method="POST">
+                      <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">Mark as done</button>
                     </form>
-                    <form action={`/api/bookings/${booking.id}/decline`} method="POST">
-                      <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3.5 py-1.5 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">
-                        Decline
-                      </button>
+                  )}
+                  {isProvider && booking.status === "AWAITING_CONFIRMATION" && (
+                    <span className="text-xs text-faint">Waiting for the member to confirm.</span>
+                  )}
+                  {isMember && booking.status === "AWAITING_CONFIRMATION" && (
+                    <>
+                      <form action={`/api/bookings/${booking.id}/confirm`} method="POST">
+                        <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">Confirm it&rsquo;s done</button>
+                      </form>
+                      <form action={`/api/bookings/${booking.id}/dispute`} method="POST">
+                        <button type="submit" className="rounded-full border-[1.5px] border-[#E2C3B6] px-3.5 py-1.5 text-xs font-semibold text-clay-dark hover:bg-[#F3E1D9]">Report a problem</button>
+                      </form>
+                    </>
+                  )}
+                  {isMember && booking.status === "COMPLETED" && !booking.testimonial && (
+                    <a href={`/bookings/${booking.id}/testimonial`} className="rounded-full bg-clay px-3.5 py-1.5 text-xs font-semibold text-paper no-underline hover:bg-clay-dark">Leave a testimonial</a>
+                  )}
+                  {isMember && (booking.status === "ACCEPTED" || booking.status === "AWAITING_CONFIRMATION") && (
+                    <form action={`/api/bookings/${booking.id}/escalate`} method="POST">
+                      <button type="submit" className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-chip">Flag to church leader</button>
                     </form>
-                  </>
-                )}
-                {booking.status === "ACCEPTED" && (
-                  <form action={`/api/bookings/${booking.id}/complete`} method="POST">
-                    <button type="submit" className="rounded-full bg-forest px-3.5 py-1.5 text-xs font-semibold text-paper hover:opacity-90">
-                      Mark as done
-                    </button>
-                  </form>
-                )}
-                {(booking.status === "ACCEPTED" ||
-                  (booking.status === "PENDING" && booking.requesterId === user.id)) && (
-                  <form action={`/api/bookings/${booking.id}/cancel`} method="POST">
-                    <button type="submit" className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-chip">
-                      Cancel
-                    </button>
-                  </form>
-                )}
-                {booking.conversationId && (
-                  <a href={`/messages/${booking.conversationId}`} className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink no-underline hover:bg-chip">
-                    Open conversation
-                  </a>
-                )}
-              </div>
-            ) : null}
-          </div>
-        ))}
+                  )}
+                  {(booking.status === "ACCEPTED" ||
+                    (booking.status === "PENDING" && isMember)) && (
+                    <form action={`/api/bookings/${booking.id}/cancel`} method="POST">
+                      <button type="submit" className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink hover:bg-chip">Cancel</button>
+                    </form>
+                  )}
+                  {booking.conversationId && (
+                    <a href={`/messages/${booking.conversationId}`} className="rounded-full border-[1.5px] border-[#D8C9AE] px-3.5 py-1.5 text-xs font-semibold text-ink no-underline hover:bg-chip">Open conversation</a>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {myBookings.length === 0 && (
