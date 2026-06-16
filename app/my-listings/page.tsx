@@ -11,7 +11,7 @@ export default async function MyListingsPage() {
   const profile = await prisma.userProfile.findUnique({
     where: { userId: user.id },
   });
-  if (!profile || profile.role === "MEMBER") redirect("/dashboard");
+  if (!profile || (profile.role === "MEMBER" && !user.isAdmin)) redirect("/dashboard");
 
   const listings = await prisma.listing.findMany({
     where: { providerId: user.id },

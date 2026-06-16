@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
-import { notifyProviderDecision } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 import { logAudit } from "@/lib/audit";
 
 export async function POST(
@@ -31,13 +32,24 @@ export async function POST(
   await logAudit(user.id, "Declined provider request", request.profile.fullName);
 
   try {
-    await notifyProviderDecision({
-      to: request.profile.user.email,
-      fullName: request.profile.fullName,
-      approved: false,
+    await notify({
+      userId: request.profile.userId,
+      category: "requests",
+      type: "provider_declined",
+      title: "Provider request update",
+      body: "Your request to become a provider was not approved at this time.",
+      url: "/dashboard",
+      email: {
+        subject: "Your provider request was declined",
+        html: shell(
+          "Provider request declined",
+          `Hi ${request.profile.fullName.split(" ")[0]}, your request to become a provider was not approved at this time. Reach out to your church or an admin if you have questions.`,
+          { label: "Go to dashboard", href: appLink("/dashboard") }
+        ),
+      },
     });
   } catch (err) {
-    console.error("[provider-request decline] email failed:", err);
+    console.error("[provider-request decline] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/admin/provider-requests", req.url));

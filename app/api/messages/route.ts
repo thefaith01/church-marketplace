@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { notifyNewMessage } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -70,14 +71,24 @@ export async function POST(req: NextRequest) {
         conversation.participantOneId === user.id
           ? conversation.participantTwoId
           : conversation.participantOneId;
-      const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
-      if (recipient) {
-        await notifyNewMessage({
-          to: recipient.email,
-          senderName: message.sender.profile?.fullName || user.email,
-          conversationId,
-        });
-      }
+      const senderName = message.sender.profile?.fullName || user.email;
+      const preview = content.length > 80 ? `${content.slice(0, 80)}…` : content;
+      await notify({
+        userId: recipientId,
+        category: "messages",
+        type: "message",
+        title: `New message from ${senderName}`,
+        body: preview,
+        url: `/messages/${conversationId}`,
+        email: {
+          subject: `New message from ${senderName}`,
+          html: shell(
+            "You have a new message",
+            `${senderName} sent you a message on the marketplace.`,
+            { label: "Open conversation", href: appLink(`/messages/${conversationId}`) }
+          ),
+        },
+      });
     }
   } catch (err) {
     console.error("[message] email failed:", err);

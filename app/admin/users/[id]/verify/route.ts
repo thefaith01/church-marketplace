@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
-import { notifyVerified } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 import { logAudit } from "@/lib/audit";
 
 export async function POST(
@@ -25,9 +26,24 @@ export async function POST(
   await logAudit(user.id, "Verified member", updated.fullName);
 
   try {
-    await notifyVerified({ to: updated.user.email, fullName: updated.fullName });
+    await notify({
+      userId: updated.userId,
+      category: "verification",
+      type: "verified",
+      title: "You're verified",
+      body: "Your church connection is confirmed. The marketplace is unlocked.",
+      url: "/dashboard",
+      email: {
+        subject: "You're verified — the marketplace is unlocked",
+        html: shell(
+          "You're verified",
+          `Hi ${updated.fullName.split(" ")[0]}, an admin has confirmed your church connection. You can now browse services, message providers, and make bookings.`,
+          { label: "Go to dashboard", href: appLink("/dashboard") }
+        ),
+      },
+    });
   } catch (err) {
-    console.error("[verify] email failed:", err);
+    console.error("[verify] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/admin/users", req.url));

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { findOrCreateConversation } from "@/lib/conversation";
-import { notifyNewBooking } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -72,10 +73,22 @@ export async function POST(req: NextRequest) {
       prisma.userProfile.findUnique({ where: { userId: user.id } }),
     ]);
     if (provider) {
-      await notifyNewBooking({
-        to: provider.email,
-        requesterName: requesterProfile?.fullName || user.email,
-        listingTitle: listing.title,
+      const requesterName = requesterProfile?.fullName || user.email;
+      await notify({
+        userId: provider.id,
+        category: "bookings",
+        type: "booking_request",
+        title: "New booking request",
+        body: `${requesterName} requested "${listing.title}".`,
+        url: "/manage",
+        email: {
+          subject: `New booking request: ${listing.title}`,
+          html: shell(
+            "New booking request",
+            `${requesterName} has requested your service "${listing.title}". Respond from your bookings.`,
+            { label: "View request", href: appLink("/manage") }
+          ),
+        },
       });
     }
   } catch (err) {

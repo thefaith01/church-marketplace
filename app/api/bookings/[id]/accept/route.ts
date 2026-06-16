@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { notifyBookingResponse } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 
 export async function POST(
   req: NextRequest,
@@ -34,14 +35,25 @@ export async function POST(
   });
 
   try {
-    await notifyBookingResponse({
-      to: booking.requester.email,
-      providerName: booking.provider.profile?.fullName || "The provider",
-      listingTitle: booking.listing.title,
-      accepted: true,
+    const providerName = booking.provider.profile?.fullName || "The provider";
+    await notify({
+      userId: booking.requesterId,
+      category: "bookings",
+      type: "booking_accepted",
+      title: "Booking accepted",
+      body: `${providerName} accepted your request for "${booking.listing.title}".`,
+      url: "/manage",
+      email: {
+        subject: "Your booking request was accepted",
+        html: shell(
+          "Booking accepted",
+          `${providerName} has accepted your booking request for "${booking.listing.title}".`,
+          { label: "View booking", href: appLink("/manage") }
+        ),
+      },
     });
   } catch (err) {
-    console.error("[booking accept] email failed:", err);
+    console.error("[booking accept] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/manage", req.url));

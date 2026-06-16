@@ -92,12 +92,12 @@ export async function notifyAdminsOfSignup(args: {
 }
 
 /** Absolute link into the app, if APP_URL is configured; otherwise a relative path. */
-function appLink(path: string) {
+export function appLink(path: string) {
   const base = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || "";
   return base ? `${base.replace(/\/$/, "")}${path}` : path;
 }
 
-function shell(heading: string, body: string, cta?: { label: string; href: string }) {
+export function shell(heading: string, body: string, cta?: { label: string; href: string }) {
   return `
     <div style="font-family: system-ui, sans-serif; color: #2A2018; max-width: 520px;">
       <h2 style="color:#C05A36;">${heading}</h2>

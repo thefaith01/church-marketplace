@@ -73,7 +73,13 @@ domain connected, GitHub Actions CI.
 
 - ✅ Live messaging (polls the authenticated API; messages appear without refresh).
   A true-websocket upgrade would need Supabase Auth + RLS, since the app uses its own JWT.
-- ⬜ In-app notifications center + weekly digest email
+- ✅ Notifications system — in-app center (bell + unread badge at /notifications),
+  web push (service worker + VAPID), and email, all routed through one dispatcher
+  (lib/notify) and controlled from a per-user preferences page (/dashboard/notifications).
+  Wired for messages, bookings (request/accept/decline), verification, and provider decisions.
+- ✅ Mobile header menu (hamburger) so navigation works on phones, logged in or out.
+- ✅ Admins have full user capabilities (create/manage listings, message, book) on top of admin.
+- ⬜ Weekly digest email
 - ⬜ Provider availability calendar + "request a time"
 - ⬜ Testimonials limited to completed, verified bookings (moderated)
 
@@ -139,7 +145,12 @@ add_reports_categories_requests
 add_leader_featured_freehelp
 add_favorites_checks_images
 add_provider_requests_audit_saved_verified
+add_notifications_push
 ```
+
+> The `add_notifications_push` migration is **pending** — it adds the `Notification`,
+> `PushSubscription`, and `NotificationPreference` models. This batch also needs the
+> `web-push` package and VAPID keys (see the deploy notes when you run it).
 
 > The last migration above is **pending** — run it on your machine to apply this
 > batch's schema (the `verifiedAt` field plus the `ProviderRequest`, `AuditLog`,

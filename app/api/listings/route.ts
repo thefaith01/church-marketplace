@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const profile = await prisma.userProfile.findUnique({
     where: { userId: user.id },
   });
-  if (!profile || profile.role === "MEMBER") {
+  if (!profile || (profile.role === "MEMBER" && !user.isAdmin)) {
     return NextResponse.json(
       { error: "Only providers can create listings" },
       { status: 403 }

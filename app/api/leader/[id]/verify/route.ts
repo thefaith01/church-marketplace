@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { canLeaderModerate } from "@/lib/auth";
-import { notifyVerified } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 import { logAudit } from "@/lib/audit";
 
 export async function POST(
@@ -38,9 +39,24 @@ export async function POST(
   await logAudit(user.id, "Confirmed member (leader)", target.fullName);
 
   try {
-    await notifyVerified({ to: target.user.email, fullName: target.fullName });
+    await notify({
+      userId: target.userId,
+      category: "verification",
+      type: "verified",
+      title: "You're verified",
+      body: "Your church leader confirmed your membership. The marketplace is unlocked.",
+      url: "/dashboard",
+      email: {
+        subject: "You're verified — the marketplace is unlocked",
+        html: shell(
+          "You're verified",
+          `Hi ${target.fullName.split(" ")[0]}, your church leader has confirmed your membership. You can now browse services, message providers, and make bookings.`,
+          { label: "Go to dashboard", href: appLink("/dashboard") }
+        ),
+      },
+    });
   } catch (err) {
-    console.error("[leader verify] email failed:", err);
+    console.error("[leader verify] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/leader", req.url));

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { isAdmin } from "@/lib/auth";
-import { notifyProviderDecision } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 import { logAudit } from "@/lib/audit";
 
 export async function POST(
@@ -37,13 +38,24 @@ export async function POST(
   await logAudit(user.id, "Approved provider request", request.profile.fullName);
 
   try {
-    await notifyProviderDecision({
-      to: request.profile.user.email,
-      fullName: request.profile.fullName,
-      approved: true,
+    await notify({
+      userId: request.profile.userId,
+      category: "requests",
+      type: "provider_approved",
+      title: "You're now a provider",
+      body: "Your request was approved. You can create listings and offer your services.",
+      url: "/my-listings",
+      email: {
+        subject: "Your provider request was approved",
+        html: shell(
+          "Provider request approved",
+          `Hi ${request.profile.fullName.split(" ")[0]}, your request to become a provider has been approved. You can now create listings and offer your services.`,
+          { label: "Go to my listings", href: appLink("/my-listings") }
+        ),
+      },
     });
   } catch (err) {
-    console.error("[provider-request approve] email failed:", err);
+    console.error("[provider-request approve] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/admin/provider-requests", req.url));

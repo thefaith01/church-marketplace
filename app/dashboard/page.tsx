@@ -19,10 +19,10 @@ export default async function DashboardPage() {
 
   const [activeListings, inactiveListings, conversations, pendingBookings] =
     await Promise.all([
-      profile.role === "PROVIDER"
+      profile.role === "PROVIDER" || isAdmin(user)
         ? prisma.listing.count({ where: { providerId: user.id, status: "ACTIVE" } })
         : 0,
-      profile.role === "PROVIDER"
+      profile.role === "PROVIDER" || isAdmin(user)
         ? prisma.listing.count({ where: { providerId: user.id, status: "INACTIVE" } })
         : 0,
       prisma.conversation.count({
@@ -39,12 +39,13 @@ export default async function DashboardPage() {
     { href: "/messages", title: "Messages", desc: "Connect with providers and manage conversations.", badge: conversations > 0 ? `${conversations} active` : null, locked: !verified },
     { href: "/favorites", title: "Saved", desc: "Listings you've saved for later.", badge: null, locked: !verified },
     ...(profile.isChurchLeader ? [{ href: "/leader", title: "Church members", desc: "Confirm membership for your congregation.", badge: null, locked: false }] : []),
-    ...(profile.role === "PROVIDER"
+    ...(profile.role === "PROVIDER" || isAdmin(user)
       ? [{ href: "/my-listings", title: "My listings", desc: "Manage your service offerings.", badge: `${activeListings} active · ${inactiveListings} inactive`, locked: false }]
       : []),
-    ...(profile.role === "MEMBER"
+    ...(profile.role === "MEMBER" && !isAdmin(user)
       ? [{ href: "/dashboard/become-provider", title: "Become a provider", desc: "Offer your own services to the community.", badge: null, locked: false }]
       : []),
+    { href: "/dashboard/notifications", title: "Notification settings", desc: "Email and push preferences for this account.", badge: null, locked: false },
     { href: "/manage", title: "Booking requests", desc: "View and respond to booking requests.", badge: pendingBookings > 0 ? `${pendingBookings} pending` : null, locked: !verified },
   ];
 

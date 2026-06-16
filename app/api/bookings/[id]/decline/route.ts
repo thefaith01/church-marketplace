@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { notifyBookingResponse } from "@/lib/email";
+import { notify } from "@/lib/notify";
+import { shell, appLink } from "@/lib/email";
 
 export async function POST(
   req: NextRequest,
@@ -34,14 +35,25 @@ export async function POST(
   });
 
   try {
-    await notifyBookingResponse({
-      to: booking.requester.email,
-      providerName: booking.provider.profile?.fullName || "The provider",
-      listingTitle: booking.listing.title,
-      accepted: false,
+    const providerName = booking.provider.profile?.fullName || "The provider";
+    await notify({
+      userId: booking.requesterId,
+      category: "bookings",
+      type: "booking_declined",
+      title: "Booking declined",
+      body: `${providerName} declined your request for "${booking.listing.title}".`,
+      url: "/manage",
+      email: {
+        subject: "Your booking request was declined",
+        html: shell(
+          "Booking declined",
+          `${providerName} has declined your booking request for "${booking.listing.title}".`,
+          { label: "View booking", href: appLink("/manage") }
+        ),
+      },
     });
   } catch (err) {
-    console.error("[booking decline] email failed:", err);
+    console.error("[booking decline] notify failed:", err);
   }
 
   return NextResponse.redirect(new URL("/manage", req.url));

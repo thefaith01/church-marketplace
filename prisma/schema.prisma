@@ -83,6 +83,9 @@ model User {
   favorites          Favorite[]
   auditLogs          AuditLog[]       @relation("Auditor")
   savedSearches      SavedSearch[]
+  notifications      Notification[]
+  pushSubscriptions  PushSubscription[]
+  notificationPreference NotificationPreference?
 }
 
 model UserProfile {
@@ -262,6 +265,50 @@ model SavedSearch {
   serviceArea String?
   pricingType String?
   createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String
+  title     String
+  body      String?
+  linkUrl   String?
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId, readAt])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model NotificationPreference {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  messagesEmail     Boolean @default(true)
+  messagesPush      Boolean @default(true)
+  bookingsEmail     Boolean @default(true)
+  bookingsPush      Boolean @default(true)
+  verificationEmail Boolean @default(true)
+  verificationPush  Boolean @default(true)
+  requestsEmail     Boolean @default(true)
+  requestsPush      Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model PasswordResetToken {
