@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { isEmail } from "@/lib/validate";
 import crypto from "crypto";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  // Cap reset emails per connection; respond ok regardless to avoid enumeration.
+  const rl = rateLimit(`reset:${clientIp(req)}`, 5, 15 * 60_000);
+  if (!rl.ok) {
+    return NextResponse.json({ ok: true });
+  }
+
   const { email } = await req.json().catch(() => ({}));
 
   // Always respond the same way, whether or not the account exists.
-  if (email) {
+  if (isEmail(email)) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
       const rawToken = crypto.randomBytes(32).toString("hex");

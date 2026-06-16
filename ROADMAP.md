@@ -105,8 +105,11 @@ domain connected, GitHub Actions CI.
 - ✅ Terms, Privacy, and Help/FAQ pages
 - ⬜ Guided onboarding (members vs providers)
 - ⬜ Tests (API routes, auth, booking flow)
-- ⬜ Input validation + rate limiting on auth and form-POST routes
-- ⬜ Security pass: Row Level Security, JWT rotation, CSRF on form posts, access-control review
+- ✅ Input validation + rate limiting on auth routes (login, signup, password reset)
+- ✅ Security response headers (HSTS, nosniff, frame-deny, referrer, permissions)
+- ✅ JWT secret hardening — code now requires a real secret and warns on the weak placeholder
+- 🔨 Security pass remainder: rotate JWT_SECRET to a strong value (your action),
+  Row Level Security on Supabase, CSRF tokens on form posts
 - ⬜ Accessibility audit, SEO + metadata, structured data, full responsive pass
 - ⬜ Error monitoring (Sentry), PWA + push
 
