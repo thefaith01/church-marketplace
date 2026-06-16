@@ -12,6 +12,7 @@ export function SiteFooter() {
         <span>© 2026 Church Member Marketplace</span>
         <div className="flex flex-wrap gap-4">
           <a href="/about" className="no-underline hover:text-clay">About</a>
+          <a href="/for-churches" className="no-underline hover:text-clay">For churches</a>
           <a href="/help" className="no-underline hover:text-clay">Help</a>
           <a href="/terms" className="no-underline hover:text-clay">Terms</a>
           <a href="/privacy" className="no-underline hover:text-clay">Privacy</a>

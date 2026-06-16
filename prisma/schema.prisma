@@ -95,6 +95,7 @@ model User {
   notificationPreference NotificationPreference?
   testimonialsWritten  Testimonial[] @relation("TestimonialsWritten")
   testimonialsReceived Testimonial[] @relation("TestimonialsReceived")
+  churchLeaderRequests ChurchLeaderRequest[]
 }
 
 model UserProfile {
@@ -139,6 +140,7 @@ model Church {
   profiles UserProfile[]
   invites  ChurchInvite[]
   roster   ChurchRosterEntry[]
+  leaderRequests ChurchLeaderRequest[]
 }
 
 model ChurchInvite {
@@ -348,6 +350,27 @@ model NotificationPreference {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum ChurchLeaderRequestStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
+model ChurchLeaderRequest {
+  id        String                    @id @default(cuid())
+  status    ChurchLeaderRequestStatus @default(PENDING)
+  userId    String
+  user      User                      @relation(fields: [userId], references: [id])
+  churchId  String
+  church    Church                    @relation(fields: [churchId], references: [id])
+  title     String?
+  note      String?
+  createdAt DateTime                  @default(now())
+  updatedAt DateTime                  @updatedAt
+
+  @@index([status])
 }
 
 model PasswordResetToken {

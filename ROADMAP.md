@@ -102,6 +102,11 @@ domain connected, GitHub Actions CI.
 - ✅ Shareable church pages — /churches/[id] (join CTA + the church's public service
   listings) and /join/[code] work by URL for recruiting. No public directory and no nav
   link, so the platform doesn't broadcast a list of every congregation (/churches → home).
+- ✅ Church leader self-onboarding — a "For churches" CTA (homepage nav + bottom CTA +
+  footer) leads to /for-churches, where a leader signs up and names their church. It stays
+  pending until an admin confirms at /admin/church-requests, which activates the church,
+  makes them its leader, verifies them, and generates their invite link. This is the main
+  growth loop: leaders onboard, then mass-invite their members.
 
 ## Phase 5 — Giving & monetization
 
@@ -163,6 +168,7 @@ add_provider_requests_audit_saved_verified
 add_notifications_push
 add_church_invites_roster
 add_booking_confirmation_testimonials
+add_church_leader_requests
 ```
 
 All migrations above are applied and live. The next code batch (security hardening:

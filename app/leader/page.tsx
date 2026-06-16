@@ -14,7 +14,31 @@ export default async function LeaderPage() {
     include: { church: true },
   });
   if (!me) redirect("/signup");
-  if (!me.isChurchLeader || !me.churchId) redirect("/dashboard");
+  if (!me.isChurchLeader || !me.churchId) {
+    const pending = await prisma.churchLeaderRequest.findFirst({
+      where: { userId: user.id, status: "PENDING" },
+      include: { church: true },
+    });
+    if (pending) {
+      return (
+        <Container size="narrow">
+          <PageHeader
+            eyebrow="Church onboarding"
+            title="Awaiting confirmation"
+            subtitle={`${pending.church.name} is pending review.`}
+          />
+          <Card>
+            <p className="text-muted">
+              Thanks for onboarding {pending.church.name}. An admin is confirming that you lead this
+              church, which keeps the whole network trustworthy. Once you&rsquo;re approved, your invite
+              link and member tools appear right here, and we&rsquo;ll email you.
+            </p>
+          </Card>
+        </Container>
+      );
+    }
+    redirect("/dashboard");
+  }
 
   const membersRaw = await prisma.userProfile.findMany({
     where: { churchId: me.churchId, NOT: { id: me.id } },

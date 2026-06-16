@@ -1,0 +1,55 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
+import { isAdmin } from "@/lib/auth";
+import { logAudit } from "@/lib/audit";
+import { notify } from "@/lib/notify";
+import { notifyChurchLeaderDecision } from "@/lib/email";
+import { joinCode } from "@/lib/token";
+
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser();
+  if (!user || !isAdmin(user)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+  const request = await prisma.churchLeaderRequest.findUnique({
+    where: { id },
+    include: { user: { include: { profile: true } }, church: true },
+  });
+  if (!request) return NextResponse.json({ error: "Request not found" }, { status: 404 });
+
+  await prisma.$transaction([
+    prisma.churchLeaderRequest.update({ where: { id }, data: { status: "APPROVED" } }),
+    prisma.church.update({
+      where: { id: request.churchId },
+      data: { status: "ACTIVE", ...(request.church.joinCode ? {} : { joinCode: joinCode() }) },
+    }),
+    prisma.userProfile.update({
+      where: { userId: request.userId },
+      data: { isChurchLeader: true, verificationStatus: "VERIFIED", verifiedAt: new Date() },
+    }),
+  ]);
+
+  await logAudit(user.id, "Approved church onboarding", request.church.name);
+
+  try {
+    await notify({
+      userId: request.userId,
+      category: "requests",
+      type: "church_approved",
+      title: "Your church is live",
+      body: `${request.church.name} is active. Share your invite link to bring your members in.`,
+      url: "/leader",
+    });
+    await notifyChurchLeaderDecision({
+      to: request.user.email,
+      fullName: request.user.profile?.fullName || "there",
+      churchName: request.church.name,
+      approved: true,
+    });
+  } catch (err) {
+    console.error("[church-request approve] notify failed:", err);
+  }
+
+  return NextResponse.redirect(new URL("/admin/church-requests", req.url));
+}

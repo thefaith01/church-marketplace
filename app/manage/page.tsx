@@ -39,6 +39,7 @@ export default async function ManagePage() {
       { href: "/admin/listings", title: "Manage listings", desc: "Review and manage service listings" },
       { href: "/admin/bookings", title: "Manage bookings", desc: "Track and manage booking requests" },
       { href: "/admin/reports", title: "Reports", desc: "Review flagged listings and members" },
+      { href: "/admin/church-requests", title: "Church onboarding", desc: "Confirm new church leaders" },
       { href: "/admin/provider-requests", title: "Provider requests", desc: "Members asking to become providers" },
       { href: "/admin/testimonials", title: "Testimonials", desc: "Moderate member testimonials" },
       { href: "/admin/audit", title: "Audit log", desc: "Recent admin and leader actions" },

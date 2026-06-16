@@ -261,6 +261,61 @@ export function notifyChurchInvite(args: { to: string; churchName: string; link:
   });
 }
 
+/** Tell admins a church leader wants to onboard their church. */
+export async function notifyAdminsOfChurchOnboarding(args: {
+  fullName: string;
+  email: string;
+  churchName: string;
+  churchCity?: string | null;
+  title?: string | null;
+  note?: string | null;
+}) {
+  const admins = await prisma.user.findMany({ where: { isAdmin: true }, select: { email: true } });
+  const recipients = admins.map((a) => a.email);
+  if (recipients.length === 0 && process.env.ADMIN_EMAIL) recipients.push(process.env.ADMIN_EMAIL);
+  if (recipients.length === 0) return { skipped: true as const };
+
+  const lines = [
+    `<strong>${args.fullName}</strong> wants to onboard a church as its leader.`,
+    `Church: ${args.churchName}${args.churchCity ? `, ${args.churchCity}` : ""}`,
+    `Their role: ${args.title || "Not given"}`,
+    `Email: ${args.email}`,
+    args.note ? `Note: ${args.note}` : "",
+  ]
+    .filter(Boolean)
+    .join("<br/>");
+
+  return sendEmail({
+    to: recipients,
+    subject: `Church onboarding request: ${args.churchName}`,
+    html: shell("New church onboarding request", lines, {
+      label: "Review requests",
+      href: appLink("/admin/church-requests"),
+    }),
+  });
+}
+
+/** Tell a church leader their onboarding was approved or declined. */
+export function notifyChurchLeaderDecision(args: {
+  to: string;
+  fullName: string;
+  churchName: string;
+  approved: boolean;
+}) {
+  const verb = args.approved ? "approved" : "declined";
+  return sendEmail({
+    to: args.to,
+    subject: `Your church onboarding was ${verb}`,
+    html: shell(
+      `Church onboarding ${verb}`,
+      args.approved
+        ? `Hi ${args.fullName.split(" ")[0]}, ${args.churchName} is now active and you're set up as its leader. Share your invite link to bring your members in, and confirm them as they join.`
+        : `Hi ${args.fullName.split(" ")[0]}, your request to onboard ${args.churchName} was not approved at this time. Reach out to an admin if you have questions.`,
+      { label: args.approved ? "Open church tools" : "Go to dashboard", href: appLink(args.approved ? "/leader" : "/dashboard") }
+    ),
+  });
+}
+
 /** Tell a provider that a new service request matches a category they offer. */
 export function notifyServiceRequestMatch(args: {
   to: string;

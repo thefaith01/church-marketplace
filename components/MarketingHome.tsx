@@ -30,6 +30,7 @@ const NAV = [
   { href: '#trust', label: 'Why verified' },
   { href: '#who', label: "Who it's for" },
   { href: '#product', label: 'Inside the marketplace' },
+  { href: '/for-churches', label: 'For churches' },
   { href: '/about', label: 'About' },
 ]
 
@@ -481,7 +482,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <a href={ctaHref} className="rounded-full bg-clay px-[30px] py-[15px] text-base font-semibold text-paper no-underline">
                 {isLoggedIn ? 'Go to dashboard' : 'Get verified'}
               </a>
-              <a href="/about" className="rounded-full border-[1.5px] border-[#4A3E30] px-7 py-[15px] text-base font-semibold text-paper no-underline">Talk to us about your church</a>
+              <a href="/for-churches" className="rounded-full border-[1.5px] border-[#4A3E30] px-7 py-[15px] text-base font-semibold text-paper no-underline">Bring your church</a>
             </div>
           </div>
         </div>
