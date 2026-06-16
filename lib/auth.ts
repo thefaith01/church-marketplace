@@ -33,7 +33,7 @@ export function canMessage(profile: any) {
 }
 
 export function canBook(profile: any) {
-  return isVerified(profile) && profile.role !== Role.ADMIN;
+  return isVerified(profile);
 }
 
 export function isAdmin(user: { isAdmin: boolean }) {

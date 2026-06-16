@@ -35,7 +35,6 @@ export default async function ListingDetailPage({
   const needsCheck = cat?.requiresBackgroundCheck === true;
 
   const isOwner = listing.providerId === user.id;
-  const admin = isAdmin(user);
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -94,10 +93,6 @@ export default async function ListingDetailPage({
             <div className="rounded-[20px] border border-[#CBD7C2] bg-sage p-5 text-sm text-forest">
               This is your listing.{" "}
               <a href="/my-listings" className="font-semibold underline">Manage it here</a>.
-            </div>
-          ) : admin ? (
-            <div className="rounded-[20px] border border-line bg-paper p-5 text-sm text-muted">
-              Admins can view listings but do not place bookings.
             </div>
           ) : (
             <>
