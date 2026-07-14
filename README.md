@@ -206,3 +206,5 @@ JWT_SECRET=... (use a strong random string)
 ## License
 
 MIT
+ 
+Last updated: 14/07/2026 19:06:14.03 
