@@ -12,7 +12,7 @@ export default async function ChurchPage({ params }: { params: Promise<{ id: str
   if (!church || church.status !== "ACTIVE") notFound();
 
   const listings = await prisma.listing.findMany({
-    where: { status: "ACTIVE", provider: { profile: { churchId: id } } },
+    where: { status: "ACTIVE", provider: { profile: { churchId: id, verificationStatus: "VERIFIED" } } },
     include: { provider: { include: { profile: true } } },
     orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
     take: 24,

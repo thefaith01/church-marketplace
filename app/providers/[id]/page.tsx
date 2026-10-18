@@ -26,6 +26,7 @@ export default async function ProviderProfilePage({
     include: { profile: { include: { church: true } } },
   });
   if (!provider || !provider.profile) notFound();
+  if (id !== user.id && !isAdmin(user) && provider.profile.verificationStatus !== "VERIFIED") notFound();
 
   const listings = await prisma.listing.findMany({
     where: { providerId: id, status: "ACTIVE" },

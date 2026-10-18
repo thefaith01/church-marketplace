@@ -28,6 +28,14 @@ export default async function ListingDetailPage({
     include: { provider: { include: { profile: true } } },
   });
   if (!listing) notFound();
+  // Listings from people who are not (or no longer) verified are not shown to anyone but the owner or an admin.
+  if (
+    listing.providerId !== user.id &&
+    !isAdmin(user) &&
+    listing.provider.profile?.verificationStatus !== "VERIFIED"
+  ) {
+    notFound();
+  }
 
   const cat = await prisma.category.findFirst({
     where: { name: { equals: listing.category, mode: "insensitive" } },
