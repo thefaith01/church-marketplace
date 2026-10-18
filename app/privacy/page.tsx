@@ -1,4 +1,10 @@
-export const metadata = { title: "Privacy · Church Member Marketplace" };
+import { pageMetadata } from "@/lib/seo";
+export const metadata = pageMetadata({
+  title: "Privacy",
+  description:
+    "What we collect, how we use it and who can see what on Church Member Marketplace. We do not sell your data.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

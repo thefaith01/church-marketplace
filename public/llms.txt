@@ -1,0 +1,46 @@
+# Church Member Marketplace
+
+> Church Member Marketplace (cmm) is a private marketplace where verified members of local churches hire one another across congregations. Every person is confirmed as a church member before they can browse, message or book. Joining is free, and payment is arranged directly between members, off the platform.
+
+Verification is a starting point for your own judgement, not a guarantee. Ordinary care still applies: ask questions, agree terms clearly and decide for yourself before you commit.
+
+## Who it is for
+
+- Members: find services from people your church and partner churches already know, message them privately and send booking requests.
+- Providers: list your services, pricing and availability, and receive messages and bookings from verified members only. You can also offer free help as an act of service.
+- Church leaders: confirm that your people are real members, invite your congregation with one link, and keep records of members, providers and listings.
+
+## How it works
+
+1. Sign up as a member or a provider with your email and a few details.
+2. Link your church by selecting it, or by sharing reference details so an admin can confirm your membership.
+3. Get verified. An admin or a leader from your church confirms your membership, and the marketplace unlocks.
+4. Connect and book. Message, agree the details and book people from your church family directly.
+
+Until you are verified you cannot browse listings, message or book. The listings, provider profiles, messages and church pages are private and are not published to the open web.
+
+## Service categories
+
+Home and Trades, Family and Care, Professional, Beauty and Wellness, Tutoring and Music, Food and Events.
+
+## Cost, payments and safety
+
+- Free to join.
+- Payment is arranged between you and the provider, off the platform. The marketplace does not handle money and is not a party to any agreement.
+- Members can report a listing or provider. Admins review reports and can deactivate accounts, listings or churches.
+- There are no public ratings or reviews. Accountability comes from each person's local church.
+- Where children or vulnerable adults are involved, take extra care and use your own judgement. A listing on the marketplace is not an endorsement.
+
+## Pages
+
+- [Home](https://www.cmmarketplace.org/): what the marketplace is and how it works
+- [About](https://www.cmmarketplace.org/about): why membership is the basis for trust, and what ekklesia means here
+- [For churches](https://www.cmmarketplace.org/for-churches): how a church leader onboards a congregation
+- [Help and FAQ](https://www.cmmarketplace.org/help): verification, bookings, payments, service requests, reporting
+- [Privacy](https://www.cmmarketplace.org/privacy): what is collected and who can see it
+- [Terms of use](https://www.cmmarketplace.org/terms): who can use the marketplace and acceptable use
+- [Sign up](https://www.cmmarketplace.org/signup): join free and get verified
+
+## Optional
+
+- Individual churches, members, providers and listings are deliberately not listed. Please do not try to index them.

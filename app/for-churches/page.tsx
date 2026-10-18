@@ -1,10 +1,13 @@
+import { pageMetadata } from "@/lib/seo";
 import { Container, Card } from "@/components/ui";
 import ChurchOnboardingForm from "@/components/ChurchOnboardingForm";
 
-export const metadata = {
-  title: "Bring your church | Church Member Marketplace",
-  description: "Onboard your whole congregation and invite members with one link.",
-};
+export const metadata = pageMetadata({
+  title: "Bring your church to the marketplace",
+  description:
+    "Church leaders can onboard a congregation with one invite link, confirm members as they join, and let their people hire one another with the accountability of a shared church.",
+  path: "/for-churches",
+});
 
 const STEPS = [
   { n: "1", t: "Sign up and name your church", d: "Tell us who you are and the church you lead. It takes a minute." },

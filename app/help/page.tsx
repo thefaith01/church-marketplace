@@ -1,4 +1,11 @@
-export const metadata = { title: "Help & FAQ · Church Member Marketplace" };
+import { pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+export const metadata = pageMetadata({
+  title: "Help and FAQ",
+  description:
+    "Answers on getting verified, how bookings and payments work, posting a service request, offering your services and reporting a problem.",
+  path: "/help",
+});
 
 const faqs = [
   {
@@ -35,9 +42,20 @@ const faqs = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function HelpPage() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
+      <JsonLd data={faqJsonLd} />
       <h1 className="font-display text-[34px] font-bold tracking-[-0.02em] text-ink">Help &amp; FAQ</h1>
       <p className="mt-2 text-sm text-faint">Answers to the most common questions.</p>
 
