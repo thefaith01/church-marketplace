@@ -48,6 +48,7 @@ export default async function ListingsPage({
   const listings = await prisma.listing.findMany({
     where: {
       status: "ACTIVE",
+      provider: { profile: { verificationStatus: "VERIFIED" } },
       ...(searchParams.keyword
         ? {
             OR: [
@@ -91,7 +92,7 @@ export default async function ListingsPage({
       .filter((id) => id !== user.id);
     if (providerIds.length) {
       recommended = await prisma.listing.findMany({
-        where: { status: "ACTIVE", providerId: { in: providerIds } },
+        where: { status: "ACTIVE", provider: { profile: { verificationStatus: "VERIFIED" } }, providerId: { in: providerIds } },
         include: { provider: { include: { profile: true } } },
         orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
         take: 3,

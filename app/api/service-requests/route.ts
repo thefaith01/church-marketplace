@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       const matches = await prisma.listing.findMany({
         where: {
           status: "ACTIVE",
+          provider: { profile: { verificationStatus: "VERIFIED" } },
           category: { equals: category, mode: "insensitive" },
           NOT: { providerId: user.id },
         },

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { findOrCreateConversation } from "@/lib/conversation";
+import { canBook, isVerified } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 import { shell, appLink } from "@/lib/email";
 
@@ -9,6 +10,14 @@ export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const bookerProfile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
+  if (!bookerProfile || (!canBook(bookerProfile) && !user.isAdmin)) {
+    return NextResponse.json(
+      { error: "Your account needs to be verified by your church before you can book." },
+      { status: 403 }
+    );
   }
 
   const body = await req.json();
@@ -25,8 +34,9 @@ export async function POST(req: NextRequest) {
 
   const listing = await prisma.listing.findUnique({
     where: { id: listingId },
+    include: { provider: { include: { profile: true } } },
   });
-  if (!listing) {
+  if (!listing || (listing.provider.profile && !isVerified(listing.provider.profile) && !user.isAdmin)) {
     return NextResponse.json({ error: "Listing not found" }, { status: 404 });
   }
   if (listing.providerId === user.id) {

@@ -3,11 +3,20 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { notify } from "@/lib/notify";
 import { shell, appLink } from "@/lib/email";
+import { canMessage } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const senderProfile = await prisma.userProfile.findUnique({ where: { userId: user.id } });
+  if (!senderProfile || (!canMessage(senderProfile) && !user.isAdmin)) {
+    return NextResponse.json(
+      { error: "Your account needs to be verified by your church before you can message." },
+      { status: 403 }
+    );
   }
 
   const { conversationId, content } = await req.json();

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { isVerified } from "@/lib/auth";
 
 const PRICING = ["HOURLY", "FIXED", "QUOTE"] as const;
 
@@ -35,6 +36,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: "Title, category, and description are required" },
       { status: 400 }
+    );
+  }
+
+  if (!user.isAdmin && !isVerified(profile)) {
+    return NextResponse.json(
+      { error: "Your church needs to verify your membership before you can list a service." },
+      { status: 403 }
     );
   }
 
