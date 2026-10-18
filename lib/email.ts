@@ -1,6 +1,12 @@
 import { prisma } from "./prisma";
 
-type SendArgs = { to: string | string[]; subject: string; html: string };
+type SendArgs = {
+  to: string | string[];
+  subject: string;
+  html: string;
+  text?: string;
+  headers?: Record<string, string>;
+};
 
 /**
  * Sends an email via the Resend REST API.
@@ -12,7 +18,7 @@ type SendArgs = { to: string | string[]; subject: string; html: string };
  *   EMAIL_FROM       - verified sender, e.g. "Church Marketplace <noreply@yourdomain.com>"
  *                      (falls back to Resend's onboarding@resend.dev sandbox sender)
  */
-export async function sendEmail({ to, subject, html }: SendArgs) {
+export async function sendEmail({ to, subject, html, text, headers }: SendArgs) {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
     console.warn("[email] RESEND_API_KEY not set — skipping email:", subject);
@@ -28,7 +34,14 @@ export async function sendEmail({ to, subject, html }: SendArgs) {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ from, to, subject, html }),
+    body: JSON.stringify({
+      from,
+      to,
+      subject,
+      html,
+      ...(text ? { text } : {}),
+      ...(headers ? { headers } : {}),
+    }),
   });
 
   if (!res.ok) {
