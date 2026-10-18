@@ -4,6 +4,7 @@ import { Container, PageHeader, Card, EmptyState } from "@/components/ui";
 import { redirect } from "next/navigation";
 import BulkVerify from "@/components/BulkVerify";
 import CopyLink from "@/components/CopyLink";
+import CopyMessage from "@/components/CopyMessage";
 
 export default async function LeaderPage() {
   const user = await getCurrentUser();
@@ -81,6 +82,18 @@ export default async function LeaderPage() {
             </button>
           </form>
         </Card>
+
+        {joinPath && (
+          <Card>
+            <p className="font-display font-bold text-ink">Ready to send message</p>
+            <p className="mt-1 text-sm text-muted">
+              Copy this into WhatsApp, an email or your church notices. Your invite link is already in it.
+            </p>
+            <div className="mt-3">
+              <CopyMessage path={joinPath} churchName={me.church?.name || "our church"} />
+            </div>
+          </Card>
+        )}
 
         <Card>
           <p className="font-display font-bold text-ink">Tools</p>
