@@ -1,12 +1,14 @@
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/session";
 import { Arch } from "@/components/ui";
 
-export const metadata = {
-  title: "About Us · Church Member Marketplace",
+export const metadata = pageMetadata({
+  title: "About us",
   description:
-    "A Christian marketplace grounded in local church community. Find and hire verified Christian providers, or offer your own services to fellow believers.",
-};
+    "Why we built a marketplace around church membership, what the ekklesia means to us, and how church verification works. It is a starting point for your own judgement, not a guarantee.",
+  path: "/about",
+});
 
 const steps = [
   { icon: "📧", title: "Sign up with your email", body: "Create an account as a Member or Provider using your email and a secure password." },

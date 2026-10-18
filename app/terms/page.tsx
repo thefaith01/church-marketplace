@@ -1,4 +1,10 @@
-export const metadata = { title: "Terms of Use · Church Member Marketplace" };
+import { pageMetadata } from "@/lib/seo";
+export const metadata = pageMetadata({
+  title: "Terms of use",
+  description:
+    "Who can use Church Member Marketplace, how bookings work, why payment is arranged off platform, and what we expect from members.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
