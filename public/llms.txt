@@ -37,6 +37,7 @@ Home and Trades, Family and Care, Professional, Beauty and Wellness, Tutoring an
 - [About](https://www.cmmarketplace.org/about): why membership is the basis for trust, and what ekklesia means here
 - [For churches](https://www.cmmarketplace.org/for-churches): how a church leader onboards a congregation
 - [Help and FAQ](https://www.cmmarketplace.org/help): verification, bookings, payments, service requests, reporting
+- [Safe hiring guide](https://www.cmmarketplace.org/safe-hiring): what to ask and agree before hiring a fellow church member, and what verification does and does not tell you
 - [Privacy](https://www.cmmarketplace.org/privacy): what is collected and who can see it
 - [Terms of use](https://www.cmmarketplace.org/terms): who can use the marketplace and acceptable use
 - [Sign up](https://www.cmmarketplace.org/signup): join free and get verified
