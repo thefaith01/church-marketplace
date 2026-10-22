@@ -3,9 +3,9 @@ import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/JsonLd";
 
 export const metadata = pageMetadata({
-  title: "How to hire someone from your church safely",
+  title: "How to hire a church member safely",
   description:
-    "A practical guide to hiring a fellow church member for work at home or for your family: what to ask, what to agree in writing, and what church verification does and does not tell you.",
+    "A practical guide to hiring a fellow church member, who may attend a different church from you, for work at home or for your family: what to ask, what to agree in writing, and what church verification does and does not tell you.",
   path: "/safe-hiring",
 });
 
@@ -51,7 +51,7 @@ export default function SafeHiringPage() {
     <div className="mx-auto max-w-2xl px-6 py-12">
       <JsonLd data={faqJsonLd} />
       <h1 className="font-display text-[34px] font-bold tracking-[-0.02em] text-ink">
-        How to hire someone from your church safely
+        How to hire a church member safely
       </h1>
       <p className="mt-3 text-[17px] leading-[1.6] text-muted">
         Hiring a fellow church member can feel easier than hiring a stranger, because you share a community. That is a real advantage, but it is not a reason to skip the usual care. Here is what we suggest.
