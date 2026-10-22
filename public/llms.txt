@@ -6,7 +6,7 @@ Verification is a starting point for your own judgement, not a guarantee. Ordina
 
 ## Who it is for
 
-- Members: find services from people your church and partner churches already know, message them privately and send booking requests.
+- Members: find services from verified members of churches across the network, message them privately and send booking requests.
 - Providers: list your services, pricing and availability, and receive messages and bookings from verified members only. You can also offer free help as an act of service.
 - Church leaders: confirm that your people are real members, invite your congregation with one link, and keep records of members, providers and listings.
 
@@ -15,7 +15,7 @@ Verification is a starting point for your own judgement, not a guarantee. Ordina
 1. Sign up as a member or a provider with your email and a few details.
 2. Link your church by selecting it, or by sharing reference details so an admin can confirm your membership.
 3. Get verified. An admin or a leader from your church confirms your membership, and the marketplace unlocks.
-4. Connect and book. Message, agree the details and book people from your church family directly.
+4. Connect and book. Message, agree the details and book verified church members directly.
 
 Until you are verified you cannot browse listings, message or book. The listings, provider profiles, messages and church pages are private and are not published to the open web.
 

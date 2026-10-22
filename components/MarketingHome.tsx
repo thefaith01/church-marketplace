@@ -37,7 +37,7 @@ const NAV = [
 const AUDIENCES = {
   members: {
     label: 'For members',
-    lead: 'Find providers from your church and partner churches, never strangers from the open internet.',
+    lead: 'Find providers from verified church members, never strangers from the open internet.',
     points: [
       'Browse services from people your community already vouches for.',
       'Search and filter for home, family, or professional help.',
@@ -275,7 +275,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <span className="font-display text-[22px] font-extrabold text-honey">4</span>
             </div>
             <h3 className="mb-2 font-display text-xl font-bold text-paper">Connect &amp; book</h3>
-            <p className="text-[15px] leading-[1.5] text-[#C9BCA6]">Message, agree the details, and book people from your church family directly.</p>
+            <p className="text-[15px] leading-[1.5] text-[#C9BCA6]">Message, agree the details, and book verified church members directly.</p>
           </div>
         </div>
       </section>
@@ -618,7 +618,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <AppHeader active="Browse" />
             <div className="px-9 pb-10 pt-8">
               <h3 className="font-display text-[30px] font-bold text-ink">Find services</h3>
-              <p className="mt-1 text-[15px] text-[#7A6E5C]">Offered by verified members of your church network.</p>
+              <p className="mt-1 text-[15px] text-[#7A6E5C]">Offered by verified church members across the network.</p>
               <div className="mt-6 flex flex-wrap gap-[9px]">
                 {CATEGORIES.map((name) => {
                   const active = cat === name

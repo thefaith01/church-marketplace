@@ -21,7 +21,7 @@ const audiences = [
   {
     title: "For members",
     points: [
-      "Browse services from members of your church and partner churches.",
+      "Browse services from verified members of churches across the network.",
       "Use simple search and filters to find the right person for home, family, or professional needs.",
       "Send private messages to discuss availability, details, and next steps.",
       "Create booking requests that keep job details clear for everyone.",

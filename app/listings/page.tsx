@@ -105,13 +105,13 @@ export default async function ListingsPage({
       <PageHeader
         eyebrow="Whatever you need doing"
         title="Find services"
-        subtitle="Offered by verified members of your church network."
+        subtitle="Offered by verified church members across the network."
       />
 
       {recommended.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-display text-lg font-bold text-ink">Hired by your church</h2>
-          <p className="mt-0.5 text-sm text-muted">Providers members of your church have booked.</p>
+          <h2 className="font-display text-lg font-bold text-ink">Hired by church members</h2>
+          <p className="mt-0.5 text-sm text-muted">Providers that verified members have booked.</p>
           <div className="mt-4 grid grid-cols-1 gap-5 md:grid-cols-3">
             {recommended.map((l) => (
               <ListingCard key={`rec-${l.id}`} listing={l} saved={favSet.has(l.id)} />
