@@ -197,6 +197,10 @@ model Conversation {
   id            String   @id @default(cuid())
   lastMessageAt DateTime @default(now())
 
+  // Per user archive. Null means active for that person. Archiving hides the chat for one person only.
+  archivedByOneAt DateTime?
+  archivedByTwoAt DateTime?
+
   participantOneId String
   participantOne   User   @relation("ParticipantOne", fields: [participantOneId], references: [id])
   participantTwoId String

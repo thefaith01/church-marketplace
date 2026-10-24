@@ -1,3 +1,4 @@
+import { archiveFilter } from "@/lib/conversation-archive";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
@@ -26,7 +27,7 @@ export default async function DashboardPage() {
         ? prisma.listing.count({ where: { providerId: user.id, status: "INACTIVE" } })
         : 0,
       prisma.conversation.count({
-        where: { OR: [{ participantOneId: user.id }, { participantTwoId: user.id }] },
+        where: archiveFilter(user.id, false),
       }),
       prisma.bookingRequest.count({
         where: { OR: [{ requesterId: user.id }, { providerId: user.id }], status: "PENDING" },
