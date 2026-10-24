@@ -1,3 +1,4 @@
+import { RESURFACE_DATA } from "@/lib/conversation-archive";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
 
   await prisma.conversation.update({
     where: { id: conversationId },
-    data: { lastMessageAt: new Date() },
+    data: { lastMessageAt: new Date(), ...RESURFACE_DATA },
   });
 
   // Notify the recipient, but suppress emails on rapid consecutive messages
