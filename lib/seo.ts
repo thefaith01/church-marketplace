@@ -4,7 +4,7 @@ export const SITE_URL = "https://www.cmmarketplace.org";
 export const SITE_NAME = "Church Member Marketplace";
 
 /** Public marketing pages. Used by the sitemap. Church pages and join links are deliberately absent. */
-export const PUBLIC_PATHS = ["/", "/about", "/for-churches", "/help", "/safe-hiring", "/privacy", "/terms", "/signup"] as const;
+export const PUBLIC_PATHS = ["/", "/about", "/for-churches", "/help", "/safe-hiring", "/how-verification-works", "/privacy", "/terms", "/signup"] as const;
 
 /** Metadata for a public page: unique title and description, canonical, Open Graph and Twitter tags. */
 export function pageMetadata(args: { title: string; description: string; path: string; absoluteTitle?: boolean }): Metadata {
