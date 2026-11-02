@@ -158,12 +158,12 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         <div>
           <div className="mb-[26px] inline-flex items-center gap-[9px] rounded-full border border-[#E2D5BD] bg-chip px-[11px] py-[7px]">
             <span className="h-[7px] w-[7px] rounded-full bg-forest shadow-[0_0_0_3px_rgba(46,87,64,0.16)]" />
-            <span className="text-[13px] font-semibold text-[#3C5040]">For church members across congregations</span>
+            <span className="text-sm font-semibold text-[#3C5040]">For church members across congregations</span>
           </div>
-          <h1 className="font-display text-[68px] font-extrabold leading-[0.98] tracking-[-0.03em] text-ink [text-wrap:balance]">
+          <h1 className="font-display text-[44px] font-extrabold sm:text-[56px] lg:text-[68px] leading-[0.98] tracking-[-0.03em] text-ink [text-wrap:balance]">
             Hire from the
             <br />
-            <a href="/about#ekklesia" className="font-serif text-[68px] font-medium italic text-clay hover:underline">
+            <a href="/about#ekklesia" className="font-serif text-[44px] font-medium italic sm:text-[56px] lg:text-[68px] text-clay hover:underline">
               ekklesia<sup className="text-[26px] font-semibold not-italic">*</sup>
             </a>
           </h1>
@@ -176,17 +176,13 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             </a>
             <a href="#how" className="rounded-full border-[1.5px] border-[#D8C9AE] px-6 py-[15px] text-base font-semibold text-ink no-underline">See how it works</a>
           </div>
-          <div className="mt-[38px] flex items-center gap-3.5">
-            <div className="flex">
-              <span className="grid h-9 w-9 place-items-center rounded-full border-[2.5px] border-cream bg-clay text-[13px] font-bold text-white">GA</span>
-              <span className="-ml-3 grid h-9 w-9 place-items-center rounded-full border-[2.5px] border-cream bg-forest text-[13px] font-bold text-white">DO</span>
-              <span className="-ml-3 grid h-9 w-9 place-items-center rounded-full border-[2.5px] border-cream bg-honey text-[13px] font-bold text-[#3A2A12]">EM</span>
-              <span className="-ml-3 grid h-9 w-9 place-items-center rounded-full border-[2.5px] border-cream bg-[#7A6A55] text-[13px] font-bold text-white">+</span>
-            </div>
-            <p className="text-sm leading-[1.4] text-muted">
-              Every member
-              <br />
-              <strong className="text-ink">verified by their church</strong>
+          <div className="mt-[38px] max-w-[480px] space-y-2 text-base leading-[1.5] text-muted">
+            <p>
+              Every member is <strong className="text-ink">verified by their church</strong>.
+            </p>
+            <p>
+              Lead a church?{' '}
+              <a href="/for-churches" className="font-semibold text-clay underline underline-offset-4">Bring your church to cmm</a>
             </p>
           </div>
         </div>
@@ -199,9 +195,9 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <span className="grid h-[52px] w-[52px] place-items-center rounded-full bg-clay font-display text-lg font-bold text-white">GA</span>
               <div className="flex-1">
                 <div className="text-[17px] font-bold text-ink">Grace Adeyemi</div>
-                <div className="text-[13px] text-[#8A7C66]">Redeemer Church, Croydon</div>
+                <div className="text-sm text-[#72665A]">Redeemer Church, Croydon</div>
               </div>
-              <span className="inline-flex items-center gap-[5px] rounded-full bg-sage px-2.5 py-[5px] text-[11.5px] font-bold text-forest">
+              <span className="inline-flex items-center gap-[5px] rounded-full bg-sage px-2.5 py-[5px] text-sm font-bold text-forest">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
                   <path d="M12 2l2.4 1.7 2.9-.2 1.2 2.7 2.5 1.5-.7 2.8.7 2.8-2.5 1.5-1.2 2.7-2.9-.2L12 22l-2.4-1.7-2.9.2-1.2-2.7L3 16.5l.7-2.8L3 10.9l2.5-1.5 1.2-2.7 2.9.2z" fill="#2E5740" />
                   <path d="M9 12l2 2 4-4" stroke="#E4EBDD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -212,7 +208,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <div className="mt-4 flex items-center justify-between border-t border-[#EFE7D6] pt-4">
               <span className="rounded-full bg-chip px-[11px] py-[5px] text-xs font-semibold text-[#6F5E45]">Home cleaning</span>
               <span className="font-display text-lg font-bold text-ink">
-                £18<span className="text-[13px] font-medium text-[#8A7C66]">/hr</span>
+                £18<span className="text-sm font-medium text-[#72665A]">/hr</span>
               </span>
             </div>
             <div className="mt-3.5 flex gap-2">
@@ -238,7 +234,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <div className="mt-6 overflow-hidden border-y border-[#E7DDC9] py-4">
         <div className="flex w-max animate-ticker gap-12 whitespace-nowrap">
           {[0, 1].map((i) => (
-            <span key={i} className="font-display text-[17px] font-semibold text-[#B4A488]">
+            <span key={i} className="font-display text-[17px] font-semibold text-faint">
               Cleaning&nbsp;&nbsp;·&nbsp;&nbsp;Plumbing&nbsp;&nbsp;·&nbsp;&nbsp;Childminding&nbsp;&nbsp;·&nbsp;&nbsp;Web design&nbsp;&nbsp;·&nbsp;&nbsp;Tutoring&nbsp;&nbsp;·&nbsp;&nbsp;Catering&nbsp;&nbsp;·&nbsp;&nbsp;Removals&nbsp;&nbsp;·&nbsp;&nbsp;Photography&nbsp;&nbsp;·&nbsp;&nbsp;Hair &amp; beauty&nbsp;&nbsp;·&nbsp;&nbsp;Bookkeeping&nbsp;&nbsp;·&nbsp;&nbsp;
             </span>
           ))}
@@ -249,7 +245,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <section id="how" className="mx-auto max-w-[1200px] px-8 pb-14 pt-24">
         <div className="mx-auto mb-14 max-w-[620px] text-center">
           <p className="mb-3 font-serif text-xl italic text-clay">Four simple steps</p>
-          <h2 className="font-display text-[44px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">From stranger to known, the human way</h2>
+          <h2 className="font-display text-[34px] font-bold sm:text-[44px] leading-[1.05] tracking-[-0.02em] text-ink">From stranger to known, the human way</h2>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {[
@@ -285,8 +281,8 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <section id="trust" className="mt-12 bg-forest">
         <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-16 px-8 py-[88px] lg:grid-cols-[1fr_0.85fr]">
           <div>
-            <p className="mb-3.5 font-serif text-xl italic text-honey">Why verification comes first</p>
-            <h2 className="font-display text-[46px] font-bold leading-[1.04] tracking-[-0.02em] text-paper [text-wrap:balance]">Accountability before the first hello.</h2>
+            <p className="mb-3.5 font-serif text-xl italic text-[#F0C874]">Why verification comes first</p>
+            <h2 className="font-display text-[34px] font-bold sm:text-[46px] leading-[1.04] tracking-[-0.02em] text-paper [text-wrap:balance]">Accountability before the first hello.</h2>
             <p className="mt-[22px] max-w-[480px] text-lg leading-[1.6] text-[#CBD7C2]">
               On an open marketplace, anyone can sign up. Here, every person is a confirmed member of a local church, not just an attendee, before they can browse, message or book. That verification is the foundation everything else is built on.
             </p>
@@ -298,7 +294,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               ].map((s) => (
                 <div key={s.label}>
                   <div className="font-display text-[28px] font-extrabold text-honey">{s.stat}</div>
-                  <div className="mt-0.5 text-sm text-[#A9BCA0]">{s.label}</div>
+                  <div className="mt-0.5 text-sm text-[#C5D4BD]">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -342,7 +338,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                 <span className={`grid h-[42px] w-[42px] flex-shrink-0 place-items-center rounded-xl ${c.bg}`}>{c.icon}</span>
                 <div>
                   <div className="text-[15.5px] font-bold text-ink">{c.title}</div>
-                  <div className="text-[13.5px] text-muted">{c.body}</div>
+                  <div className="text-sm text-muted">{c.body}</div>
                 </div>
               </div>
             ))}
@@ -355,7 +351,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="mb-2.5 font-serif text-xl italic text-clay">Whatever you need doing</p>
-            <h2 className="font-display text-[44px] font-bold leading-[1.05] tracking-[-0.02em] text-ink">Real skills, real neighbours</h2>
+            <h2 className="font-display text-[34px] font-bold sm:text-[44px] leading-[1.05] tracking-[-0.02em] text-ink">Real skills, real neighbours</h2>
           </div>
           <a href="/listings" className="border-b-2 border-clay pb-0.5 text-[15px] font-semibold text-ink no-underline">Browse all services →</a>
         </div>
@@ -371,7 +367,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <div key={c.title} className="rounded-[18px] border border-line bg-paper p-6">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none">{c.icon}</svg>
               <h3 className="mb-[5px] mt-4 font-display text-[19px] font-bold text-ink">{c.title}</h3>
-              <p className="text-sm text-[#7A6E5C]">{c.body}</p>
+              <p className="text-sm text-[#6F6456]">{c.body}</p>
             </div>
           ))}
         </div>
@@ -388,7 +384,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                 <button
                   key={k}
                   onClick={() => setAudience(k)}
-                  className={`flex-1 whitespace-nowrap rounded-full px-2 py-2.5 text-center text-[13.5px] font-semibold capitalize transition-all sm:flex-none sm:px-5 sm:text-[14.5px] ${
+                  className={`flex-1 whitespace-nowrap rounded-full px-2 py-2.5 text-center text-sm font-semibold capitalize transition-all sm:flex-none sm:px-5 sm:text-[14.5px] ${
                     audience === k ? 'bg-ink text-cream' : 'bg-transparent text-muted'
                   }`}
                 >
@@ -466,7 +462,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <p className="text-[14.5px] leading-[1.5] text-[#C8D7BF]">Through their giving and tithes, a share of your spend flows back to the local church.</p>
           </div>
         </div>
-        <p className="mt-[30px] text-center font-serif text-xl italic text-[#7A6E5C]">Every job becomes a small act of giving.</p>
+        <p className="mt-[30px] text-center font-serif text-xl italic text-[#6F6456]">Every job becomes a small act of giving.</p>
       </section>
 
       {/* ============================ CTA ============================ */}
@@ -497,11 +493,11 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <Arch width={24} height={28} />
               <span className="font-display text-[21px] font-extrabold text-ink">cmm</span>
             </div>
-            <p className="max-w-[240px] text-[14.5px] leading-[1.55] text-[#7A6E5C]">A community marketplace for verified church members. Grounded in real congregations, not algorithm ratings.</p>
+            <p className="max-w-[240px] text-[14.5px] leading-[1.55] text-[#6F6456]">A community marketplace for verified church members. Grounded in real congregations, not algorithm ratings.</p>
           </div>
           {FOOTER_COLS.map((col) => (
             <div key={col.head}>
-              <div className="mb-3.5 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{col.head}</div>
+              <div className="mb-3.5 text-sm font-bold uppercase tracking-[0.08em] text-faint">{col.head}</div>
               <div className="flex flex-col gap-2.5">
                 {col.links.map((x) => (
                   <a key={x.l} href={x.h} className="text-[15px] text-[#5A4F40] no-underline">{x.l}</a>
@@ -510,17 +506,17 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             </div>
           ))}
           <div>
-            <div className="mb-3.5 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">Coming soon</div>
+            <div className="mb-3.5 text-sm font-bold uppercase tracking-[0.08em] text-faint">Coming soon</div>
             <div className="flex flex-col gap-2.5">
               {['Events', 'Community', 'Mentorship'].map((l) => (
-                <span key={l} className="text-[15px] text-[#A99A82]">{l}</span>
+                <span key={l} className="text-[15px] text-[#72665A]">{l}</span>
               ))}
             </div>
           </div>
         </div>
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-3 border-t border-[#E7DDC9] px-8 pb-10 pt-5">
-          <span className="text-[13.5px] text-faint">© 2026 CMM Church Member Marketplace</span>
-          <div className="flex flex-wrap gap-4 text-[13.5px]">
+          <span className="text-sm text-faint">© 2026 CMM Church Member Marketplace</span>
+          <div className="flex flex-wrap gap-4 text-sm">
             <a href="/help" className="text-faint no-underline hover:text-clay">Help</a>
             <a href="/terms" className="text-faint no-underline hover:text-clay">Terms</a>
             <a href="/privacy" className="text-faint no-underline hover:text-clay">Privacy</a>
@@ -532,21 +528,21 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
       <section id="product" className="border-t border-[#DAD2C4] bg-[#E9E4DA]">
         <div className="mx-auto max-w-[1240px] px-8 pb-24 pt-20">
           <div className="mx-auto mb-14 max-w-[600px] text-center">
-            <p className="mb-2.5 font-serif text-xl italic text-clay">Inside the marketplace</p>
+            <p className="mb-2.5 font-serif text-xl italic text-clay-dark">Inside the marketplace</p>
             <h2 className="font-display text-[40px] font-bold tracking-[-0.02em] text-ink">The same warmth, all the way in</h2>
             <p className="mt-3 text-base text-muted">An illustrative preview of the member experience. Names and listings shown are samples only. The browse filter below is live, try it.</p>
           </div>
 
           {/* Dashboard frame */}
           <div className="mb-3.5 flex items-center gap-2.5">
-            <span className="font-display text-[15px] font-bold text-[#7A6E5C]">01 Member dashboard</span>
+            <span className="font-display text-[15px] font-bold text-[#6F6456]">Member dashboard (example, not real members)</span>
             <span className="h-px flex-1 bg-[#D5CCBC]" />
           </div>
           <div className="mb-14 overflow-hidden rounded-[20px] border border-[#E2D9C8] bg-cream shadow-[0_24px_60px_-30px_rgba(60,40,20,0.4)]">
             <AppHeader active="Dashboard" />
             <div className="px-9 pb-10 pt-8">
               <h3 className="font-display text-[30px] font-bold text-ink">Welcome back, Ruth</h3>
-              <p className="mt-1 text-[15px] text-[#7A6E5C]">Your hub for the church marketplace.</p>
+              <p className="mt-1 text-[15px] text-[#6F6456]">Your hub for the church marketplace.</p>
               <div className="mt-[22px] flex flex-col items-start gap-3 rounded-2xl border border-[#E8D3A6] bg-[#F4E7CE] px-[22px] py-[18px] sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <div className="flex items-center gap-3.5">
                   <span className="grid h-[42px] w-[42px] flex-shrink-0 place-items-center rounded-xl bg-honey">
@@ -589,19 +585,19 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                       <div className="flex justify-between">
                         <span className="text-base font-bold text-ink">{t}</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                          <rect x="5" y="11" width="14" height="9" rx="2" stroke="#9A8C76" strokeWidth="1.8" />
-                          <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#9A8C76" strokeWidth="1.8" />
+                          <rect x="5" y="11" width="14" height="9" rx="2" stroke="#72665A" strokeWidth="1.8" />
+                          <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#72665A" strokeWidth="1.8" />
                         </svg>
                       </div>
-                      <p className="mt-2 text-[13.5px] text-faint">{t === 'Messages' ? 'Unlocks after verification.' : 'Find providers nearby.'}</p>
+                      <p className="mt-2 text-sm text-faint">{t === 'Messages' ? 'Unlocks after verification.' : 'Find providers nearby.'}</p>
                     </div>
                   ))}
                   <div className="col-span-1 flex items-center justify-between rounded-2xl bg-forest p-5 sm:col-span-2">
                     <div>
                       <div className="text-base font-bold text-paper">While you wait…</div>
-                      <p className="mt-1 text-[13.5px] text-[#B6C8AD]">Complete your profile so verification is quick.</p>
+                      <p className="mt-1 text-sm text-[#B6C8AD]">Complete your profile so verification is quick.</p>
                     </div>
-                    <a href="#" className="whitespace-nowrap rounded-full bg-honey px-4 py-[9px] text-[13.5px] font-bold text-[#3A2A12] no-underline">Finish profile</a>
+                    <a href="#" className="whitespace-nowrap rounded-full bg-honey px-4 py-[9px] text-sm font-bold text-[#3A2A12] no-underline">Finish profile</a>
                   </div>
                 </div>
               </div>
@@ -610,7 +606,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
 
           {/* Listings frame */}
           <div className="mb-3.5 flex items-center gap-2.5">
-            <span className="font-display text-[15px] font-bold text-[#7A6E5C]">
+            <span className="font-display text-[15px] font-bold text-[#6F6456]">
               02 Browse services <span className="text-clay">(live filter)</span>
             </span>
             <span className="h-px flex-1 bg-[#D5CCBC]" />
@@ -619,7 +615,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <AppHeader active="Browse" />
             <div className="px-9 pb-10 pt-8">
               <h3 className="font-display text-[30px] font-bold text-ink">Find services</h3>
-              <p className="mt-1 text-[15px] text-[#7A6E5C]">Offered by verified church members across the network.</p>
+              <p className="mt-1 text-[15px] text-[#6F6456]">Offered by verified church members across the network.</p>
               <div className="mt-6 flex flex-wrap gap-[9px]">
                 {CATEGORIES.map((name) => {
                   const active = cat === name
@@ -627,7 +623,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                     <button
                       key={name}
                       onClick={() => setCat(name)}
-                      className={`whitespace-nowrap rounded-full border px-4 py-2 text-[13.5px] font-semibold transition-all ${
+                      className={`whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-all ${
                         active ? 'border-clay bg-clay text-paper' : 'border-[#E2D7C2] bg-white text-muted'
                       }`}
                     >
@@ -646,7 +642,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                       <span className="grid h-[42px] w-[42px] place-items-center rounded-full bg-clay font-display text-sm font-bold text-white">{l.initials}</span>
                       <div className="min-w-0 flex-1">
                         <div className="text-[15px] font-bold text-ink">{l.name}</div>
-                        <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[12.5px] text-faint">{l.church}</div>
+                        <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-faint">{l.church}</div>
                       </div>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M12 3l7 3v5c0 4.4-3 8.3-7 9.5C8 18.3 5 14.4 5 10V6l7-3z" fill="#E4EBDD" />
@@ -656,11 +652,11 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                     <h4 className="my-3.5 font-display text-[17px] font-bold text-ink">{l.title}</h4>
                     <div className="flex items-center justify-between">
                       <span className="rounded-full bg-chip px-2.5 py-1 text-xs font-semibold text-[#6F5E45]">{l.category}</span>
-                      <span className="text-[13px] text-[#7A6E5C]">{l.area}</span>
+                      <span className="text-sm text-[#6F6456]">{l.area}</span>
                     </div>
                     <div className="mt-3.5 flex items-center justify-between border-t border-[#EFE7D6] pt-3.5">
                       <span className="font-display text-base font-bold text-ink">{l.price}</span>
-                      <span className="rounded-full bg-clay px-3.5 py-[7px] text-[13px] font-semibold text-paper">View</span>
+                      <span className="rounded-full bg-clay px-3.5 py-[7px] text-sm font-semibold text-paper">View</span>
                     </div>
                   </div>
                 ))}
@@ -687,10 +683,10 @@ function AppHeader({ active }: { active: 'Dashboard' | 'Browse' }) {
       </div>
       <div className="hidden gap-6 md:flex">
         {items.map((i) => (
-          <span key={i} className={`text-sm ${i === active ? 'font-semibold text-ink' : 'text-[#8A7C66]'}`}>{i}</span>
+          <span key={i} className={`text-sm ${i === active ? 'font-semibold text-ink' : 'text-[#72665A]'}`}>{i}</span>
         ))}
       </div>
-      <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-forest text-[13px] font-bold text-white">RA</span>
+      <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-forest text-sm font-bold text-white">RA</span>
     </div>
   )
 }
