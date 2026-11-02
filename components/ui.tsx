@@ -20,7 +20,7 @@ export const ui = {
 };
 
 export function Arch({
-  stroke = "#C05A36",
+  stroke = "#B0502D",
   width = 24,
   height = 28,
   opacity = 0.45,

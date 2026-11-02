@@ -7,7 +7,7 @@ import { useState } from 'react'
 /* ------------------------------------------------------------------ */
 
 function Arch({
-  stroke = '#C05A36',
+  stroke = '#B0502D',
   width = 26,
   height = 30,
   opacity = 0.45,
@@ -319,7 +319,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
                 bg: 'bg-[#F1E2CC]',
                 icon: (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 5h16v11H7l-3 3z" stroke="#C05A36" strokeWidth="1.8" strokeLinejoin="round" />
+                    <path d="M4 5h16v11H7l-3 3z" stroke="#B0502D" strokeWidth="1.8" strokeLinejoin="round" />
                   </svg>
                 ),
                 title: 'Private, members-only',
@@ -360,12 +360,12 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
         </div>
         <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3">
           {[
-            { title: 'Home & Trades', body: 'Cleaning, plumbing, repairs, removals', icon: <path d="M3 11l9-7 9 7M5 9.5V20h14V9.5M9.5 20v-6h5v6" stroke="#C05A36" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /> },
-            { title: 'Family & Care', body: 'Childminding, eldercare, tutoring', icon: <path d="M12 20s-7-4.3-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.7 12 20 12 20z" stroke="#C05A36" strokeWidth="1.7" strokeLinejoin="round" /> },
-            { title: 'Professional', body: 'Design, bookkeeping, photography', icon: <><rect x="3" y="7" width="18" height="13" rx="2" stroke="#C05A36" strokeWidth="1.7" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#C05A36" strokeWidth="1.7" strokeLinecap="round" /></> },
-            { title: 'Beauty & Wellness', body: 'Hair, braiding, fitness, therapy', icon: <><path d="M12 3v18M5 8c0 4 3 5 7 5s7-1 7-5" stroke="#C05A36" strokeWidth="1.7" strokeLinecap="round" /><circle cx="12" cy="5" r="2" stroke="#C05A36" strokeWidth="1.7" /></> },
-            { title: 'Tutoring & Music', body: 'Maths, English, piano, vocals', icon: <><path d="M9 18V6l11-2v12M9 14l11-2" stroke="#C05A36" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /><circle cx="6.5" cy="18" r="2.5" stroke="#C05A36" strokeWidth="1.7" /></> },
-            { title: 'Food & Events', body: 'Catering, baking, event help', icon: <path d="M6 3v8a3 3 0 0 0 6 0V3M9 3v18M18 3c-1.5 1-2 3-2 6s.5 4 2 4v8" stroke="#C05A36" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /> },
+            { title: 'Home & Trades', body: 'Cleaning, plumbing, repairs, removals', icon: <path d="M3 11l9-7 9 7M5 9.5V20h14V9.5M9.5 20v-6h5v6" stroke="#B0502D" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /> },
+            { title: 'Family & Care', body: 'Childminding, eldercare, tutoring', icon: <path d="M12 20s-7-4.3-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.7 12 20 12 20z" stroke="#B0502D" strokeWidth="1.7" strokeLinejoin="round" /> },
+            { title: 'Professional', body: 'Design, bookkeeping, photography', icon: <><rect x="3" y="7" width="18" height="13" rx="2" stroke="#B0502D" strokeWidth="1.7" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#B0502D" strokeWidth="1.7" strokeLinecap="round" /></> },
+            { title: 'Beauty & Wellness', body: 'Hair, braiding, fitness, therapy', icon: <><path d="M12 3v18M5 8c0 4 3 5 7 5s7-1 7-5" stroke="#B0502D" strokeWidth="1.7" strokeLinecap="round" /><circle cx="12" cy="5" r="2" stroke="#B0502D" strokeWidth="1.7" /></> },
+            { title: 'Tutoring & Music', body: 'Maths, English, piano, vocals', icon: <><path d="M9 18V6l11-2v12M9 14l11-2" stroke="#B0502D" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /><circle cx="6.5" cy="18" r="2.5" stroke="#B0502D" strokeWidth="1.7" /></> },
+            { title: 'Food & Events', body: 'Catering, baking, event help', icon: <path d="M6 3v8a3 3 0 0 0 6 0V3M9 3v18M18 3c-1.5 1-2 3-2 6s.5 4 2 4v8" stroke="#B0502D" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /> },
           ].map((c) => (
             <div key={c.title} className="rounded-[18px] border border-line bg-paper p-6">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none">{c.icon}</svg>
@@ -442,8 +442,8 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
             <div className="mb-[34px] flex items-center justify-between">
               <span className="font-display text-[15px] font-extrabold text-[#C9B79A]">02</span>
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                <circle cx="9" cy="9" r="5" stroke="#C05A36" strokeWidth="1.8" />
-                <path d="M14.5 5.2a5 5 0 0 1 0 9.6" stroke="#C05A36" strokeWidth="1.8" strokeLinecap="round" />
+                <circle cx="9" cy="9" r="5" stroke="#B0502D" strokeWidth="1.8" />
+                <path d="M14.5 5.2a5 5 0 0 1 0 9.6" stroke="#B0502D" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
             </div>
             <h3 className="mb-[7px] font-display text-[22px] font-bold text-ink">They earn</h3>

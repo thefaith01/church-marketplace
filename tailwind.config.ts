@@ -11,7 +11,7 @@ const config: Config = {
         cream: '#F5EEE1',
         paper: '#FCF8F1',
         ink: '#2A2018',
-        clay: { DEFAULT: '#C05A36', dark: '#A8472A' },
+        clay: { DEFAULT: '#B0502D', dark: '#963F22' },
         forest: '#2E5740',
         honey: '#DDA23A',
         muted: '#6F6456',
