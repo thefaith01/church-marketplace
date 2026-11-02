@@ -67,13 +67,13 @@ export default function SignupPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-16">
-      <div className="rounded-[24px] border border-line bg-paper p-8 shadow-sm">
+      <div className="rounded-[24px] border border-line bg-paper p-8">
         <div className="flex items-center gap-2.5">
           <Arch />
           <span className="font-display text-xl font-extrabold text-ink">cmm</span>
         </div>
         <h1 className="mt-5 font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Create your account</h1>
-        <p className="mt-1 text-sm text-muted">Step {step} of 2</p>
+        <p className="mt-1.5 text-base text-muted">Step {step} of 2</p>
 
         <form
           onSubmit={step === 1 ? (e) => { e.preventDefault(); setStep(2); } : handleSubmit}
@@ -99,12 +99,12 @@ export default function SignupPage() {
                   {(["MEMBER", "PROVIDER"] as const).map((r) => (
                     <label
                       key={r}
-                      className={`flex-1 cursor-pointer rounded-2xl border-2 p-4 text-center text-sm font-semibold transition
+                      className={`flex-1 cursor-pointer rounded-2xl border-2 p-4 text-center text-base font-semibold transition
                         ${form.role === r ? "border-clay bg-chip text-clay-dark" : "border-line text-muted"}`}
                     >
                       <input type="radio" className="sr-only" value={r} checked={form.role === r} onChange={() => set("role", r)} />
-                      {r === "MEMBER" ? "👤 Member" : "🔧 Provider"}
-                      <p className="mt-1 text-xs font-normal text-faint">
+                      {r === "MEMBER" ? "Member" : "Provider"}
+                      <p className="mt-1 text-sm font-normal text-muted">
                         {r === "MEMBER" ? "I want to hire providers" : "I want to offer services"}
                       </p>
                     </label>
@@ -118,12 +118,12 @@ export default function SignupPage() {
           {step === 2 && (
             <>
               {joiningChurch && (
-                <div className="rounded-xl bg-[#E9F0E9] p-3 text-sm text-[#2E5740]">
+                <div className="rounded-xl bg-[#E9F0E9] p-3 text-base text-[#2E5740]">
                   You&rsquo;re joining <strong>{joiningChurch.name}</strong>. A church leader will
                   confirm your membership.
                 </div>
               )}
-              <div className="rounded-xl bg-[#F4E7CE] p-3 text-sm text-[#8A6420]">
+              <div className="rounded-xl bg-[#F4E7CE] p-3 text-base text-[#7A5518]">
                 We need your church details so an admin can verify you. You can update these later from your dashboard.
               </div>
               {churches.length > 0 && (
@@ -154,9 +154,9 @@ export default function SignupPage() {
               </label>
               <label className="block">
                 <span className={ui.label}>Reference letter (optional, PDF or image)</span>
-                <input type="file" accept=".pdf,image/*" className="mt-1 block text-sm text-muted" onChange={(e) => set("churchReferenceLetter", e.target.files?.[0] ?? null)} />
+                <input type="file" accept=".pdf,image/*" className="mt-1 block text-base text-muted" onChange={(e) => set("churchReferenceLetter", e.target.files?.[0] ?? null)} />
               </label>
-              {error && <p className="text-sm text-clay-dark">{error}</p>}
+              {error && <p className="text-base text-clay-dark">{error}</p>}
               <div className="flex gap-3">
                 <button type="button" onClick={() => setStep(1)} className={`flex-1 ${ui.btnGhost}`}>← Back</button>
                 <button type="submit" disabled={loading} className={`flex-1 ${ui.btnPrimary}`}>
@@ -167,9 +167,13 @@ export default function SignupPage() {
           )}
         </form>
 
-        <p className="mt-5 text-center text-sm text-muted">
+        <p className="mt-5 text-center text-base text-muted">
           Already a member?{" "}
           <a href="/login" className={ui.link}>Log in</a>
+        </p>
+        <p className="mt-3 text-center text-base text-muted">
+          Lead a church?{" "}
+          <a href="/for-churches" className={ui.link}>Bring your church to cmm</a>
         </p>
       </div>
     </div>
