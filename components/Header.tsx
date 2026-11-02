@@ -28,7 +28,7 @@ export async function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-[26px] md:flex">
+        <nav className="hidden items-center gap-[26px] lg:flex">
           {nav.map((n) => (
             <Link
               key={n.href}
@@ -45,7 +45,7 @@ export async function Header() {
             <>
               <NotificationBell />
               <span className="hidden text-sm text-muted lg:inline">{user.email}</span>
-              <form action="/api/auth/logout" method="POST" className="hidden md:block">
+              <form action="/api/auth/logout" method="POST" className="hidden lg:block">
                 <button
                   type="submit"
                   className="whitespace-nowrap rounded-full bg-clay px-5 py-2.5 text-[15px] font-semibold text-paper transition-colors hover:bg-clay-dark"
@@ -58,13 +58,13 @@ export async function Header() {
             <>
               <Link
                 href="/login"
-                className="hidden whitespace-nowrap text-[15px] font-semibold text-ink no-underline md:inline"
+                className="hidden whitespace-nowrap text-[15px] font-semibold text-ink no-underline lg:inline"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="hidden whitespace-nowrap rounded-full bg-clay px-5 py-2.5 text-[15px] font-semibold text-paper no-underline transition-colors hover:bg-clay-dark md:inline-block"
+                className="hidden whitespace-nowrap rounded-full bg-clay px-5 py-2.5 text-[15px] font-semibold text-paper no-underline transition-colors hover:bg-clay-dark lg:inline-block"
               >
                 Get verified
               </Link>

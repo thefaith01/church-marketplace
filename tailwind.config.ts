@@ -15,7 +15,7 @@ const config: Config = {
         forest: '#2E5740',
         honey: '#DDA23A',
         muted: '#6F6456',
-        faint: '#9A8C76',
+        faint: '#72665A',
         line: '#EBE1CE',
         chip: '#EDE3D0',
         sage: '#E4EBDD',

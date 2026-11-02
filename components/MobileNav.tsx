@@ -18,7 +18,7 @@ export default function MobileNav({ email }: { email: string | null }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
