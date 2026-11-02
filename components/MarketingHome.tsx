@@ -219,6 +219,7 @@ export function MarketingHome({ isLoggedIn = false }: { isLoggedIn?: boolean }) 
               <button className="flex-1 rounded-xl bg-clay p-[11px] text-sm font-semibold text-paper">Request booking</button>
               <button className="rounded-xl border-[1.5px] border-[#E5D8C0] bg-white px-3.5 py-[11px] text-sm font-semibold text-ink">Message</button>
             </div>
+            <p className="mt-3 text-center text-xs text-muted">Example profile for illustration. Not a real member.</p>
           </div>
           <div className="absolute bottom-6 right-0 flex animate-floaty2 items-center gap-[11px] rounded-2xl bg-forest px-[18px] py-3.5 text-[#EAF1E2] shadow-[0_16px_32px_-12px_rgba(46,87,64,0.5)]">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
