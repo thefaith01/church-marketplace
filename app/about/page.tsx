@@ -11,10 +11,10 @@ export const metadata = pageMetadata({
 });
 
 const steps = [
-  { icon: "📧", title: "Sign up with your email", body: "Create an account as a Member or Provider using your email and a secure password." },
-  { icon: "⛪", title: "Link to your church", body: "Select your church or share basic reference details so an admin can confirm your connection." },
-  { icon: "🔎", title: "Browse, search, and connect", body: "Once verified, explore services, read clear descriptions, and message providers in a simple inbox." },
-  { icon: "📅", title: "Request and coordinate bookings", body: "Send booking requests, agree terms directly, and coordinate in a way that suits you both." },
+  { title: "Sign up with your email", body: "Create an account as a Member or Provider using your email and a secure password." },
+  { title: "Link to your church", body: "Select your church or share basic reference details so an admin can confirm your connection." },
+  { title: "Browse, search, and connect", body: "Once verified, explore services, read clear descriptions, and message providers in a simple inbox." },
+  { title: "Request and coordinate bookings", body: "Send booking requests, agree terms directly, and coordinate in a way that suits you both." },
 ];
 
 const audiences = [
@@ -64,10 +64,10 @@ export default async function AboutPage() {
           <div className="mb-5 flex justify-center">
             <Arch stroke="#DDA23A" width={38} height={44} opacity={0.5} />
           </div>
-          <h1 className="font-display text-[44px] font-bold leading-[1.05] tracking-[-0.02em] [text-wrap:balance]">
+          <h1 className="font-display text-[34px] font-bold leading-[1.05] sm:text-[44px] tracking-[-0.02em] [text-wrap:balance]">
             A Christian marketplace grounded in local church community
           </h1>
-          <p className="mt-5 text-lg leading-[1.55] text-[#CBD7C2]">
+          <p className="mt-5 text-lg leading-[1.55] text-[#DCE6D4]">
             Find and hire verified Christian providers from churches across the marketplace, or offer your own services to a community built on faith and accountability.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3 text-sm">
@@ -80,17 +80,17 @@ export default async function AboutPage() {
       <section id="ekklesia" className="scroll-mt-20 px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2.5 font-serif text-xl italic text-clay">The word behind the marketplace</p>
-          <h2 className="font-display text-[32px] font-bold leading-[1.08] tracking-[-0.02em] text-ink">
+          <h2 className="font-display text-[28px] font-bold leading-[1.08] sm:text-[32px] tracking-[-0.02em] text-ink">
             What we mean by the ekklesia
           </h2>
-          <p className="mt-4 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-4 text-[18px] leading-[1.6] text-muted">
             Ekklesia (ἐκκλησία) means &quot;assembly,&quot; the company of those God calls out to
             himself. In the New Testament it carries two senses at once. It is the local church: a
             particular congregation you can name, gather with, and be known by. And it is the
             universal church: every believer in Christ across all places and times, his one body and
             his bride.
           </p>
-          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-3 text-[18px] leading-[1.6] text-muted">
             Scripture holds both together.{" "}
             <a
               href="https://www.biblegateway.com/passage/?search=Matthew%2018%3A17&version=NASB1995"
@@ -113,14 +113,14 @@ export default async function AboutPage() {
             lifts our eyes to the universal church, Christ&apos;s body gathered under him as head, the
             bride he loves and is making holy.
           </p>
-          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-3 text-[18px] leading-[1.6] text-muted">
             This marketplace lives where the two meet. The universal church is real, but you cannot
             verify it directly; there is no way to check whether a stranger online truly belongs to
             the body of Christ. The local church can be verified. So we join the two by the only means
             available: church membership. Everyone here is confirmed by their own local congregation,
             which means they are submitted to its leadership and accountable within it.
           </p>
-          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-3 text-[18px] leading-[1.6] text-muted">
             That accountability is a starting point, not a guarantee. We are all sinners, and no
             church&apos;s vetting is perfect, so ordinary care still applies: ask questions, agree
             terms clearly, and use your own judgment before you commit. What membership gives you is
@@ -133,13 +133,13 @@ export default async function AboutPage() {
       <section className="px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2.5 font-serif text-xl italic text-clay">Bigger than a transaction</p>
-          <h2 className="font-display text-[32px] font-bold leading-[1.08] tracking-[-0.02em] text-ink">
+          <h2 className="font-display text-[28px] font-bold leading-[1.08] sm:text-[32px] tracking-[-0.02em] text-ink">
             Supporting one another through our work
           </h2>
-          <p className="mt-4 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-4 text-[18px] leading-[1.6] text-muted">
             Church Member Marketplace exists for Christians who want their spending to support fellow believers. Instead of paying anonymous providers, members can work with skilled tradespeople and professionals whose livelihoods support families, churches, and local communities.
           </p>
-          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-3 text-[18px] leading-[1.6] text-muted">
             Everyone here is a verified member of a Christian church, accountable to a real congregation rather than rated by an algorithm. That accountability is a starting point for your own judgment, not a substitute for it.
           </p>
         </div>
@@ -149,12 +149,11 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-4xl">
           <h2 className="text-center font-display text-[30px] font-bold tracking-[-0.02em] text-ink">How it works</h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {steps.map((s, i) => (
-              <div key={s.title} className="flex gap-4 rounded-[20px] border border-line bg-paper p-6">
-                <div className="text-3xl">{s.icon}</div>
+            {steps.map((s) => (
+              <div key={s.title} className="rounded-[20px] border border-line bg-paper p-6">
                 <div>
-                  <h3 className="font-display text-lg font-bold text-ink">{i + 1}. {s.title}</h3>
-                  <p className="mt-1 text-sm leading-[1.5] text-muted">{s.body}</p>
+                  <h3 className="font-display text-xl font-bold text-ink">{s.title}</h3>
+                  <p className="mt-1.5 text-base leading-[1.55] text-muted">{s.body}</p>
                 </div>
               </div>
             ))}
@@ -169,9 +168,9 @@ export default async function AboutPage() {
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {audiences.map((a) => (
-              <div key={a.title} className="rounded-[20px] border border-line bg-paper p-6 shadow-sm">
+              <div key={a.title} className="rounded-[20px] border border-line bg-paper p-6">
                 <h3 className="font-display text-lg font-bold text-clay">{a.title}</h3>
-                <ul className="mt-3 space-y-2 text-sm text-muted">
+                <ul className="mt-3 space-y-2.5 text-base leading-[1.5] text-muted">
                   {a.points.map((p) => (
                     <li key={p} className="flex gap-2">
                       <span className="text-forest">•</span>
@@ -187,12 +186,12 @@ export default async function AboutPage() {
 
       <section className="bg-[#EFE7D6] px-6 py-14">
         <div className="mx-auto max-w-3xl">
-          <p className="mb-2.5 font-serif text-xl italic text-clay">Why verification comes first</p>
+          <p className="mb-2.5 font-serif text-xl italic text-clay-dark">Why verification comes first</p>
           <h2 className="font-display text-[30px] font-bold tracking-[-0.02em] text-ink">Accountability before the first hello</h2>
-          <p className="mt-4 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-4 text-[18px] leading-[1.6] text-muted">
             We keep core marketplace features private so you always know you're connecting with verified Christian providers, not strangers from the open internet. Browsing listings, viewing provider details, and sending messages or booking requests all unlock only after an admin confirms your church connection.
           </p>
-          <p className="mt-3 text-[17px] leading-[1.6] text-muted">
+          <p className="mt-3 text-[18px] leading-[1.6] text-muted">
             Verification is simple and human. Platform admins review new signups, link them to churches, and set verification status. No algorithms, just clear records and accountable oversight. Most churches choose a point person who can confirm membership in a way that fits their context.
           </p>
         </div>
@@ -204,8 +203,8 @@ export default async function AboutPage() {
           <div className="mt-8 space-y-6">
             {faqs.map((f) => (
               <div key={f.q} className="rounded-[18px] border border-line bg-paper p-5">
-                <h3 className="font-display text-base font-bold text-ink">{f.q}</h3>
-                <p className="mt-1 text-sm leading-[1.55] text-muted">{f.a}</p>
+                <h3 className="font-display text-lg font-bold text-ink">{f.q}</h3>
+                <p className="mt-1.5 text-base leading-[1.55] text-muted">{f.a}</p>
               </div>
             ))}
           </div>
@@ -231,7 +230,11 @@ export default async function AboutPage() {
               </>
             )}
           </div>
-          <p className="mt-6 text-sm text-[#A99A82]">
+          <p className="mt-6 text-base text-[#C9BCA6]">
+            Lead a church?{" "}
+            <Link href="/for-churches" className="font-semibold text-paper underline underline-offset-4">Bring your church to cmm</Link>
+          </p>
+          <p className="mt-3 text-base text-[#C9BCA6]">
             Questions about privacy, verification, or eligibility? Reach out to your church's point person or a Platform Admin.
           </p>
         </div>
