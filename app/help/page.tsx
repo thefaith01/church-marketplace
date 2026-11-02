@@ -56,20 +56,23 @@ export default function HelpPage() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
       <JsonLd data={faqJsonLd} />
-      <h1 className="font-display text-[34px] font-bold tracking-[-0.02em] text-ink">Help &amp; FAQ</h1>
-      <p className="mt-2 text-sm text-faint">Answers to the most common questions.</p>
+      <h1 className="font-display text-[34px] font-bold tracking-[-0.02em] text-ink sm:text-[44px]">Help &amp; FAQ</h1>
+      <p className="mt-3 text-lg text-muted">Answers to the most common questions.</p>
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-10 space-y-5">
         {faqs.map((f) => (
-          <div key={f.q} className="rounded-[18px] border border-line bg-paper p-5">
-            <h2 className="font-display text-base font-bold text-ink">{f.q}</h2>
-            <p className="mt-1 text-[15px] leading-[1.6] text-muted">{f.a}</p>
+          <div key={f.q} className="rounded-[18px] border border-line bg-paper p-6">
+            <h2 className="font-display text-xl font-bold text-ink">{f.q}</h2>
+            <p className="mt-2 text-base leading-[1.65] text-muted">{f.a}</p>
           </div>
         ))}
       </div>
 
-      <p className="mt-10 text-sm">
+      <p className="mt-10 text-base">
         <a href="/about" className="font-semibold text-clay hover:underline">More about us →</a>
+      </p>
+      <p className="mt-3 text-base">
+        <a href="/for-churches" className="font-semibold text-clay-dark hover:underline">Lead a church? Bring your church to cmm →</a>
       </p>
     </div>
   );
