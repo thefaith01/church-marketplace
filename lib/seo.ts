@@ -20,9 +20,11 @@ export function pageMetadata(args: { title: string; description: string; path: s
       url: args.path,
       title: fullTitle,
       description: args.description,
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Church Member Marketplace" }],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
+      images: ["/opengraph-image"],
       title: fullTitle,
       description: args.description,
     },
