@@ -2,6 +2,8 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { Container, Card, ui } from "@/components/ui";
 import ChurchOnboardingForm from "@/components/ChurchOnboardingForm";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_URL, SITE_NAME } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Bring your church to the marketplace",
@@ -17,9 +19,20 @@ const STEPS = [
   { t: "Confirm members as they join", d: "People sign up through your link already linked to your church. You confirm each one, in bulk if you like." },
 ];
 
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How a church leader brings a congregation to Church Member Marketplace",
+  description: "Sign up, get confirmed, share one invite link and confirm members as they join.",
+  url: `${SITE_URL}/for-churches`,
+  publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+  step: STEPS.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.t, text: s.d })),
+};
+
 export default function ForChurchesPage() {
   return (
     <Container size="wide">
+      <JsonLd data={howToJsonLd} />
       <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-14">
         <div>
           <p className="font-serif text-xl italic text-clay">For church leaders</p>
