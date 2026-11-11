@@ -2,6 +2,8 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/session";
 import { Arch } from "@/components/ui";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_URL, SITE_NAME } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "About us",
@@ -54,11 +56,21 @@ const faqs = [
   { q: "Can our church join later?", a: "Yes. Members can sign up now and share church reference details. An admin can create and activate your church record once leadership is ready. Smaller congregations, multi-site churches, and networks can all take part." },
 ];
 
+const aboutJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "About Church Member Marketplace",
+  url: `${SITE_URL}/about`,
+  isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  about: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+};
+
 export default async function AboutPage() {
   const user = await getCurrentUser();
 
   return (
     <div className="bg-cream font-sans text-ink">
+      <JsonLd data={aboutJsonLd} />
       <section className="bg-forest px-6 py-20 text-paper">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mb-5 flex justify-center">
